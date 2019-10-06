@@ -3,38 +3,38 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://example.com/post/</loc>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/post/</loc>
     <lastmod>2017-03-02T12:00:00-05:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://example.com/contact/</loc>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/contact/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://example.com/</loc>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://example.com/about/</loc>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/about/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://example.com/categories/</loc>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/categories/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
-    <loc>https://example.com/tags/</loc>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/tags/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
