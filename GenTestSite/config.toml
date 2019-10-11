@@ -17,7 +17,7 @@ canonifyURLs = true
   filename = "sitemap.xml"
 
 [params]
-  favicon = ""
+  favicon = "/images/gentest_logo.png"
   description = ""
   facebook = ""
   twitter = ""
