@@ -1,5 +1,5 @@
 ---
-title: "Meet the Team"
+title: "The Team"
 featured_image: '/images/main_screen.jpg'
 ---
 <style type=text/css>
