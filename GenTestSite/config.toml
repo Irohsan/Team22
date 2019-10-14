@@ -2,6 +2,7 @@ title = "GenTest"
 baseURL = "https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/"
 languageCode = "en-us"
 theme = "ananke"
+themes-dir="themes"
 
 MetaDataFormat = "yaml"
 DefaultContentLanguage = "en"
