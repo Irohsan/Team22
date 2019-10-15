@@ -1,6 +1,6 @@
 ---
 title: " "
-featured_image: '/images/main_screen.jpg'
+featured_image: '/images/main_screen.svg'
 description: ""
 ---
 ## Automatic Standalone Unit Test Generation for DeepState
@@ -8,7 +8,8 @@ description: ""
 [DeepState](https://github.com/trailofbits/deepstate) is a software platform that enables
     comprehensive testing of a codebase with very little work from the programmer. GenTest
     seeks to bring DeepState into the mainstream by designing software to improve integrations
-    with mainstream testing platforms such as GoogleTest.
+    with mainstream testing platforms such as GoogleTest. For more about our project and proposed solution,
+    click [here](/post/).
 
 
 

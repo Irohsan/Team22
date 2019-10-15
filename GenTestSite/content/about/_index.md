@@ -1,6 +1,6 @@
 ---
 title: "Team"
-featured_image: '/images/main_screen.jpg'
+featured_image: '/images/main_screen.svg'
 ---
 <style type=text/css>
 th, td {

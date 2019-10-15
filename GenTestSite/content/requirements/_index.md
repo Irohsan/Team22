@@ -2,13 +2,13 @@
 title =  "Requirements"
 date = 2019-10-13T20:06:08-07:00
 tags = []
-featured_image = "/images/main_screen.jpg"
+featured_image = "/images/main_screen.svg"
 description = ""
 +++
 # Project Requirements 
 
 
-The current set of known requirements for the GenTest software are outlined in the table below. It provides a brief requirement description to the best of our knowledge. All of the requirements represent a good-faith attempt to compile system requirements as described in the [Project Overview](https://www.cefns.nau.edu/~edo/Classes/CS_Capstone/Projects/F19/Groce-Deepstate.pdf) document and gained from discussions with Dr. Groce regarding DeepState.
+The current set of known requirements for the GenTest software is outlined in the table below. It provides a brief requirement description to the best of our knowledge. All of the requirements represent a good-faith attempt to compile system requirements as described in the [Project Overview](https://www.cefns.nau.edu/~edo/Classes/CS_Capstone/Projects/F19/Groce-Deepstate.pdf) document and gained from discussions with Dr. Groce regarding DeepState.
     Any or all of the requirements above are subject to change and are not in any way final. As we continue forward in discussing design solutions, these requirements will serve as the foundation for design considerations and other important details to come.
 
 
