@@ -28,7 +28,18 @@ int main( int numArgs, char** args )
 {
     if( numArgs != NUM_ARGS )
     {
+        //probably want to create/utilize some sort of logger
+
         cout << "Invalid number of args" << endl;
     }
 
+    //Detect if valid DeepState test file (args[1])
+
+    //pass into TranslationEngine with Vector pointer
+
+    //pass binary file into binary parser (this might be done in the translation engine)
+
+    //take vector and pass into FileAssembler
+
+    //take output of FileAssembler and write to output file (args[2])
 }
