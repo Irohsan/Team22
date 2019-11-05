@@ -17,8 +17,18 @@
 
 **/
 
+#include <iostream>
 
-class Driver
+//number of args (test, binary, output name)
+const static int NUM_ARGS = 3;
+
+using namespace std;
+
+int main( int numArgs, char** args )
 {
+    if( numArgs != NUM_ARGS )
+    {
+        cout << "Invalid number of args" << endl;
+    }
 
-};
+}

@@ -18,6 +18,8 @@
 
 **/
 
+#include "TranslationEngine.h"
+
 class TranslationEngine
 {
 
