@@ -1,13 +1,13 @@
 // Program Information //////////////////////////////////////////////
 /**
-  * @file Driver.cpp
+  * @file DataStructures.cpp
   *
   * @team GenTest ( Team 22 )
   *
-  * @brief This will be the main runner class for GenTest
+  * @brief Storage of different data structure classes
   *
-  * @details This class will be used for creating and starting GenTest
-  *          and its other functions
+  * @details This class will be used for the creation and storage for code
+  *           relating to created data structures
   *
   * @version 0.01
   *          Tristan Miller ( 5 November 2019 )
@@ -17,8 +17,4 @@
 
 **/
 
-
-class Driver
-{
-
-};
+// data structures go here as needed ( we can split these into separate files for readability if need be )
