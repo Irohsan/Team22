@@ -18,9 +18,24 @@
 
 **/
 
+#include <vector>
 
+using namespace std;
 
 class FileAssembler
 {
+    FileAssembler(char* outputFile )
+    {
+        //setup output data structure
+        //maybe open file for output
+    }
 
+
+    void generateFile(vector* inputVector)
+    {
+        /** this could probably be done recursively for coolness factor, will need to insert values from
+         *  the other storage bit with values into the cfg as well as using the cfg to create new files
+         */
+
+    }
 };

@@ -1,8 +1,0 @@
-//
-// Created by craps on 11/5/2019.
-//
-
-#ifndef GENTEST_TRANSLATIONENGINE_H
-#define GENTEST_TRANSLATIONENGINE_H
-
-#endif //GENTEST_TRANSLATIONENGINE_H

@@ -18,7 +18,7 @@
 
 **/
 
-#include "TranslationEngine.h"
+#include "../../include/TranslationEngine/TranslationEngine.h"
 
 class TranslationEngine
 {

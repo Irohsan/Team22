@@ -18,7 +18,7 @@
 
 **/
 
-#include "BinaryParser.h"
+#include "../../include/BinaryParser/BinaryParser.h"
 
 class BinaryParser
 {

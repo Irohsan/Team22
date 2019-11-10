@@ -1,8 +1,0 @@
-//
-// Created by craps on 11/5/2019.
-//
-
-#ifndef GENTEST_FILEASSEMBLER_H
-#define GENTEST_FILEASSEMBLER_H
-
-#endif //GENTEST_FILEASSEMBLER_H
