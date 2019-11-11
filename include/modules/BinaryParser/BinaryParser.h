@@ -26,6 +26,27 @@ class BinaryParser
  public:
     BinaryParser() = default;
 
+    /**
+     * Parse unstructured data from an input stream.
+     * @param inputStream the stream to parse data from. 
+     * @pre inputStream is a reference to a valid istream,
+     *      so operations on it will be defined.
+     * @post this->data will contain the binary data present in
+     *       inputStream
+     **/
+    void parse( std::istream& inputStream );
+
+    /**
+     * Open a file with name 'fileName', and parse
+     * the unstructured binary data from it.
+     * @param fileName The name of the file to read.
+     * @throws Exception if the file was not opened 
+     *         successfully.
+     * @post this->data will contain the binary data present in
+     *       inputStream
+     **/
+    void parse( const std::string& fileName );
+
  private:
 
     /**

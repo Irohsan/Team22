@@ -24,5 +24,39 @@
 
 void BinaryParser::parse( const std::string& fileName )
 {
+    std::ifstream file( fileName,
+                        std::ios::in | std::ios::binary
+                      );
 
+    // make sure an exception is thrown if the file
+    // is not opened successfully
+    file.exceptions( std::ifstream::badbit );
+    fromStream( file );
+}
+
+void parse( std::istream& inputStream )
+{
+    fromStream( inputStream ); 
+}
+
+void BinaryParser::fromStream( std::istream& inputStream )
+{
+    std::string contents;
+    file.seekg( 0, std::ios::end );
+    contents.resize( file.tellg() );
+    file.seekg( 0, std::ios::beg );
+    file.read( &contents[ 0 ], contents.size() );
+
+    data.resize( contents.size() );
+    stringToData( contents );
+}
+
+void BinaryParser::stringToData( const std::string& string )
+{
+    const byte *dataPtr = ( const byte *) string.c_str();
+
+    std::memcpy( &data[ 0 ],
+                 dataPtr,
+                 sizeof( byte ) * string.size()
+               );
 }
