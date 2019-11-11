@@ -38,4 +38,14 @@ class FileAssembler
          */
 
     }
+
+    void output(/**Datastructure we create for file output**/ )
+    {
+        /** recursively or iteratively go through the data structure
+         * output the file at one time as opposed to when each line is created
+         * this will save some I/O time.
+         */
+
+
+    }
 };
