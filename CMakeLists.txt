@@ -27,13 +27,15 @@ add_library(gentest_util STATIC src/modules/util/Util.cpp
 
 option( BUILD_TESTS "Determines whether to build tests." ON )
 if(BUILD_TESTS)
-  include_directories(test lib)
-  add_library( test_lib STATIC test/modules/TestBinaryParser.cpp
+
+  include_directories(lib)
+  add_executable(gentest_test test/TestMain.cpp)
+  add_library( test_lib STATIC
+               test/modules/TestBinaryParser.cpp
                test/modules/TestFileAssembler.cpp
                test/modules/TestTranslationEngine.cpp
                test/modules/TestUtil.cpp
   )  
-  add_executable(gentest_test test/TestMain.cpp)
   enable_testing()
 
   target_link_libraries(gentest_test PUBLIC
