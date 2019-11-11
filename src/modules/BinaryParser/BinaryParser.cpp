@@ -17,8 +17,8 @@
   (Legal terms of use/libraries used need to be added here once we get to that point)
 
 **/
-
 #include "BinaryParser.h"
+
 #include <cstdint>
 #include <cstring>
 
@@ -34,7 +34,7 @@ void BinaryParser::parse( const std::string& fileName )
     fromStream( file );
 }
 
-void parse( std::istream& inputStream )
+void BinaryParser::parse( std::istream& inputStream )
 {
     fromStream( inputStream ); 
 }
@@ -42,10 +42,10 @@ void parse( std::istream& inputStream )
 void BinaryParser::fromStream( std::istream& inputStream )
 {
     std::string contents;
-    file.seekg( 0, std::ios::end );
-    contents.resize( file.tellg() );
-    file.seekg( 0, std::ios::beg );
-    file.read( &contents[ 0 ], contents.size() );
+    inputStream.seekg( 0, std::ios::end );
+    contents.resize( inputStream.tellg() );
+    inputStream.seekg( 0, std::ios::beg );
+    inputStream.read( &contents[ 0 ], contents.size() );
 
     data.resize( contents.size() );
     stringToData( contents );
