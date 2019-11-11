@@ -18,7 +18,9 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-add_library(gentest_binaryparser STATIC src/modules/BinaryParser/BinaryParser.cpp)
+add_library(gentest_binaryparser STATIC src/modules/BinaryParser/BinaryParser.cpp
+            src/modules/BinaryParser/BinaryIterator.cpp
+  )
 add_library(gentest_fileassembler STATIC src/modules/FileAssembler/FileAssembler.cpp)
 add_library(gentest_translationengine STATIC src/modules/TranslationEngine/TranslationEngine.cpp)
 add_library(gentest_util STATIC src/modules/util/Util.cpp

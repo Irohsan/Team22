@@ -1,0 +1,9 @@
+#ifndef BINARY_ITERATOR_HH_INCLUDED
+#define BINARY_ITERATOR_HH_INCLUDED
+
+class BinaryIterator
+{
+
+};
+
+#endif // BINARY_ITERATOR_HH_INCLUDED
