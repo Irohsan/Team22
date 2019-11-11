@@ -19,8 +19,10 @@
 **/
 
 #include "BinaryParser.h"
+#include <cstdint>
+#include <cstring>
 
-class BinaryParser
+void BinaryParser::parse( const std::string& fileName )
 {
 
-};
+}
