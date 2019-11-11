@@ -21,6 +21,7 @@
 
 #include <cstdint>
 #include <cstring>
+#include <stdexcept>
 
 void BinaryParser::parse( const std::string& fileName )
 {
@@ -37,6 +38,18 @@ void BinaryParser::parse( const std::string& fileName )
 void BinaryParser::parse( std::istream& inputStream )
 {
     fromStream( inputStream ); 
+}
+
+BinaryIterator BinaryParser::getIterator()
+{
+    if( !data.size() )
+        {
+            throw std::runtime_error( "Iterator cannot be "
+                                      "returned for empty binary "
+                                      "data"
+                                    );
+        }
+    return BinaryIterator( &data );
 }
 
 void BinaryParser::fromStream( std::istream& inputStream )

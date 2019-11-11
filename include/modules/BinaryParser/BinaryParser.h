@@ -10,6 +10,7 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include "BinaryIterator.h"
 
 /**
  * Type alias byte to unsigned char 
@@ -46,6 +47,16 @@ class BinaryParser
      *       inputStream
      **/
     void parse( const std::string& fileName );
+
+    /**
+     * Returns a BinaryIterator object to iterate over
+     * this BinaryParser's data. 
+     * @throws std::runtime_error if this BinaryParser is 
+     *         empty.
+     * @returns BinaryIterator whose pointer is at the beginning 
+     *          of this member's data.
+     **/
+    BinaryIterator getIterator();
 
  private:
 
