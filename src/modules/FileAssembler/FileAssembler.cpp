@@ -19,33 +19,32 @@
 **/
 
 #include <vector>
+#include <string>
 
-using namespace std;
-
-class FileAssembler
-{
-    FileAssembler(char* outputFile )
-    {
-        //setup output data structure
-        //maybe open file for output
-    }
-
-
-    void generateFile(vector* inputVector)
-    {
-        /** this could probably be done recursively for coolness factor, will need to insert values from
-         *  the other storage bit with values into the cfg as well as using the cfg to create new files
-         */
-
-    }
-
-    void output(/**Datastructure we create for file output**/ )
-    {
-        /** recursively or iteratively go through the data structure
-         * output the file at one time as opposed to when each line is created
-         * this will save some I/O time.
-         */
-
-
-    }
-};
+//class FileAssembler
+//{
+//    FileAssembler( const std::string& outputFile )
+//    {
+//        //setup output data structure
+//        //maybe open file for output
+//    }
+//
+//
+//    void generateFile(std::vector* inputVector)
+//    {
+//        /** this could probably be done recursively for coolness factor, will need to insert values from
+//         *  the other storage bit with values into the cfg as well as using the cfg to create new files
+//         */
+//
+//    }
+//
+//    void output(/**Datastructure we create for file output**/ )
+//    {
+//        /** recursively or iteratively go through the data structure
+//         * output the file at one time as opposed to when each line is created
+//         * this will save some I/O time.
+//         */
+//
+//
+//    }
+//};

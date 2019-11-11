@@ -19,4 +19,4 @@
 
 // data structures go here as needed ( we can split these into separate files for readability if need be )
 
-#include "../../include/util/DataStructures.h"
+#include "DataStructures.h"
