@@ -2,6 +2,7 @@
 #define BINARY_ITERATOR_HH_INCLUDED
 #include <vector>
 #include <cstddef>
+#include <stdexcept>
 
 using byte = unsigned char;
 
@@ -26,6 +27,8 @@ class BinaryIterator
      * Template type allows for the retrieval of 
      * different types from the same data.     
      * @note this method advances the iterator
+     * @throws std::runtime_error if there is not enough 
+     *         space for another member of type T.
      * @returns T initialized from the unstructured 
      *          binary data
      **/
@@ -39,8 +42,11 @@ class BinaryIterator
               )
                 {
                     // TODO: endianness?
-                    return T( (T*) &( dataPtr->at( index++ ) ) );
+                    return T( *(T*) &( dataPtr->at( index++ ) ) );
                 }
+            throw std::runtime_error( "Specified type requested is larger than "
+                                      "the remaining memory."
+                                      );
         }
 
  private:
