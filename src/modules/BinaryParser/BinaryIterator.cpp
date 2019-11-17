@@ -1,4 +1,15 @@
 #include "BinaryIterator.h"
+
+int BinaryIterator::nextInt()
+{
+    return next<int>();
+}
+
+unsigned char BinaryIterator::nextUChar()
+{
+    return next<unsigned char>();
+}
+
 void BinaryIterator::rewind()
 {
     rewind( 1 );

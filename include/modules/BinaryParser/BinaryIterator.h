@@ -66,6 +66,20 @@ class BinaryIterator
      **/
     void rewind( std::size_t step );
 
+    // Begin template specializations for primitive types
+
+    /**
+     * Get the next integer from the BinaryIterator
+     * @returns an integer from the Iterator's data.
+     **/
+    int nextInt();
+
+    /**
+     * Get the next unsigned char from the BinaryIterator
+     * @returns an unsigned char from the Iterator's data.
+     **/
+    unsigned char nextUChar();
+
  private:
     /**
      * A pointer to unstructured binary data.
