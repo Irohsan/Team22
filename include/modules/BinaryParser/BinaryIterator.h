@@ -49,6 +49,23 @@ class BinaryIterator
                                       );
         }
 
+    /**
+     * Rewind the iterator back one position.
+     * This is equivalent to calling
+     * BinaryIterator::rewind( 1 )
+     **/
+    void rewind();
+
+    /**
+     * Rewind the iterator's pointer back 
+     * step bytes.
+     * @param step the number of bytes to rewind the 
+     *        iterator.
+     * @note If step > index, the iterator 
+     *       points to the 0'th position.
+     **/
+    void rewind( std::size_t step );
+
  private:
     /**
      * A pointer to unstructured binary data.
