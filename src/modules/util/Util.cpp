@@ -18,3 +18,40 @@
 **/
 
 #include "Util.h"
+
+
+std::string TranslateDictionary::getTranslation( NTerminal nTToGet )
+{
+    return toTranslate.find( nTToGet )->second;
+}
+
+void TranslateDictionary::generateTranslateMapFromConfig()
+{
+    std::string line, key, value;
+
+    auto iterator = toTranslate.begin();
+
+    while( getline( translateFile, line ) )
+    {
+        key = line.substr( 0, line.find( "=" ) );
+
+        value = line.substr( line.find( "=" ) + 1, line.length() );
+
+        //really dirty way to populate toTranslate map
+        toTranslate.insert( iterator, std::pair< NTerminal, std::string >
+                ( needTranslateString.find(key)->second, value ) );
+    }
+}
+
+void TranslateDictionary::openTranslateFile( const std::string& fileName )
+{
+    translateFile.open( fileName );
+
+    //error handling for invalid file
+    if( translateFile.fail() )
+    {
+        throw FileException(fileName, translateFile.fail() );
+    }
+
+}
+

@@ -19,8 +19,10 @@
 **/
 
 #include "TranslationEngine.h"
-#include <fstream>
-#include <iostream>
+#include "Util.h"
+#include <sstream>
+
+
 
 
 const std::string SAMPLE_VALUE1 = "5323232323232323";
@@ -57,7 +59,7 @@ void CFG::toString()
         std::cout << heldLine.data << "\n";
     }
 }
-
+//TODO: Fix getString
 std::string CFG::getString()
 {
     if( heldLine.nonTerminalCode == X_INT )
@@ -72,9 +74,15 @@ std::string CFG::getString()
 
 
 //FileParser Functions
-void FileParser::openHarnessFile( char * harnessFilePath )
+void FileParser::openHarnessFile( const std::string& fileName )
 {
-    harnessFile.open( harnessFilePath );
+    harnessFile.open( fileName );
+
+    //error handling for invalid file
+    if( harnessFile.fail() )
+    {
+        throw FileException(fileName, harnessFile.fail() );
+    }
 }
 
 void FileParser::scanFile()
@@ -236,11 +244,36 @@ void FileParser::displayTranslatedFile()
     }
 }
 
-void FileParser::writeToFile()
+//TODO: make translatedToString actually return a string of the function for testing purposes
+//this function will need work, the TranslateDictionary will make this substantially easier
+std::string FileParser::translatedToString()
+{
+    //local variables
+    std::stringstream stringStream;
+
+    int index = 0;
+
+    std::string output;
+
+    while( index < (int)fileVector.size() )
+    {
+        stringStream << fileVector[index].getString() << std::endl;
+
+        index++;
+    }
+
+    output = stringStream.str();
+
+    std::cout<<output;
+
+    return "test";
+}
+
+void FileParser::writeToFile(std::string fileName)
 {
     std::ofstream outputFile;
 
-    outputFile.open( "translated_test1.cpp" );
+    outputFile.open( fileName );
 
     // Local variables.
     int index = 0;
@@ -257,13 +290,13 @@ void FileParser::writeToFile()
 }
 
 
-void runTranslator( char * harnessFilePath )
+void runTranslator( const std::string& fileName )
 {
     //initialization of moduleParser
     FileParser moduleParser;
 
-    //opens harness file (might want to add error handling)
-    moduleParser.openHarnessFile( harnessFilePath );
+    //opens harness file
+    moduleParser.openHarnessFile( fileName );
 
     moduleParser.scanFile();
 

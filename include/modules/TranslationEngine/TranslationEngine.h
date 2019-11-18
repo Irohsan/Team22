@@ -19,6 +19,9 @@
 
 #include <string>
 #include <vector>
+#include <fstream>
+#include <iostream>
+#include <map>
 
 
 typedef enum NonTerminals
@@ -81,6 +84,8 @@ typedef enum NonTerminals
     ASSUME_LE,
     ASSUME_GT,
     ASSUME_GE,
+    TEST_FUNC,                  //function for a test
+    ONE_OF,
     NO_TRANSLATE
 
 } NTerminal;
@@ -117,7 +122,7 @@ public:
     std::fstream harnessFile;
     std::vector<CFG> fileVector;
 
-    void openHarnessFile( char * harnessFilePath );
+    void openHarnessFile( const std::string& fileName );
 
     void scanFile();
 
@@ -125,16 +130,14 @@ public:
 
     std::string removeWhitespace( std::string line );
 
-
     void displayTranslatedFile();
 
+    std::string translatedToString();
 
-    void writeToFile();
+    void writeToFile(std::string fileName);
 
 };
 
-
-
-void runTranslator( char * harnessFilePath );
+void runTranslator( const std::string& fileName );
 
 #endif //GENTEST_TRANSLATIONENGINE_H
