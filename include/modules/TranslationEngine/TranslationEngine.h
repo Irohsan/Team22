@@ -17,6 +17,9 @@
 #ifndef GENTEST_TRANSLATIONENGINE_H
 #define GENTEST_TRANSLATIONENGINE_H
 
+#include <string>
+#include <vector>
+
 
 typedef enum NonTerminals
 {
@@ -81,6 +84,55 @@ typedef enum NonTerminals
     NO_TRANSLATE
 
 } NTerminal;
+
+
+/**
+ * A Line is used for storing non terminals and lines of code
+ */
+class Line
+{
+public:
+    NTerminal nonTerminalCode;
+    std::string data;
+};
+
+
+
+class CFG {
+
+public:
+    Line heldLine;
+
+    void add( NTerminal nonTerminal, std::string data );
+
+    void toString();
+
+    std::string getString();
+
+};
+
+class FileParser
+{
+public:
+    std::fstream harnessFile;
+    std::vector<CFG> fileVector;
+
+    void openHarnessFile( char * harnessFilePath );
+
+    void scanFile();
+
+    void scanLine( std::string line );
+
+    std::string removeWhitespace( std::string line );
+
+
+    void displayTranslatedFile();
+
+
+    void writeToFile();
+
+};
+
 
 
 void runTranslator( char * harnessFilePath );

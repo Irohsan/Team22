@@ -1,6 +1,7 @@
 #define CATCH_CONFIG_MAIN // DO NOT define this anywhere else
 #include "catch.hpp"
 #include "BinaryParser.h"
+#include "TranslationEngine.h"
 
 
 // BinaryParser Tests
@@ -84,6 +85,13 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 
 
 // TranslationEngine Tests
+TEST_CASE( "Test TranslationEngine", "[translation_engine]")
+{
+    SECTION( "Translation Engine FileParser Tests" )
+    {
+
+    }
+}
 
 
 

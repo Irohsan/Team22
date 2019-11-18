@@ -37,7 +37,8 @@ if(BUILD_TESTS)
                test/modules/TestFileAssembler.cpp
                test/modules/TestTranslationEngine.cpp
                test/modules/TestUtil.cpp
-  )  
+  )
+  add_executable(gentest_testTE test/modules/TestTranslationEngine.cpp)
   enable_testing()
 
   target_link_libraries(gentest_test PUBLIC
