@@ -20,6 +20,7 @@
 
 #include <vector>
 #include <string>
+#include "FileAssembler.h"
 
 //class FileAssembler
 //{
