@@ -1,6 +1,5 @@
 #define CATCH_CONFIG_MAIN // DO NOT define this anywhere else
 
-#include <Util.h>
 #include "catch.hpp"
 #include "BinaryParser.h"
 #include "TranslationEngine.h"
@@ -150,6 +149,10 @@ TEST_CASE( "Test File Parser", "[file_parser]")
 
 TEST_CASE("TranslateDictionary tests", "[translate_dictionary]")
 {
+    TranslateDictionary translateDictionary;
+
+    translateDictionary.openTranslateFile( "../test/test_data/catchTranslation.cfg" );
+
     SECTION( "Test for TranslateDictionary Build" )
     {
         TranslateDictionary td;
@@ -169,26 +172,55 @@ TEST_CASE("TranslateDictionary tests", "[translate_dictionary]")
         REQUIRE_THROWS_AS( td.openTranslateFile( "../test/test_data/nonexistentTranslation.cfg" ), FileException );
     }
 
-    SECTION( "Test for translation population" )
+
+    SECTION( "Test for default translation population")
     {
-        TranslateDictionary td;
+        translateDictionary.buildDefaultTranslations();
 
-        td.openTranslateFile( "../test/test_data/catchTranslation.cfg" );
-
-        td.generateTranslateMapFromConfig();
-
-        assert(33 == td.toTranslate.size());
+        assert( translateDictionary.getSize() == 12 );
     }
 
-    SECTION( "Test for translation get" )
+    SECTION( "Test for config translation load" )
     {
-        TranslateDictionary td;
+        translateDictionary.generateTranslateMapFromConfig();
 
-        td.openTranslateFile( "../test/test_data/catchTranslation.cfg" );
+        assert( translateDictionary.getSize() == 21 );
+    }
 
-        td.generateTranslateMapFromConfig();
+    SECTION( "Build full translation engine" )
+    {
+        translateDictionary.buildFullTranslationDictionary();
 
-        assert( td.getTranslation(X_INT) == "int");
+        assert( translateDictionary.getSize() == 33 );
+    }
+
+    SECTION( "Find string for NTerminal Value (default translations)" )
+    {
+        translateDictionary.buildFullTranslationDictionary();
+
+        assert(translateDictionary.findNTerminal( X_INT ) == "int");
+    }
+
+    SECTION( "Find NTerminal for string (default translations)" )
+    {
+        translateDictionary.buildFullTranslationDictionary();
+
+        assert( translateDictionary.findTranslateTo( "int" ) == X_INT );
+    }
+
+    //TODO: Fix these two tests
+    SECTION( "Find string for NTerminal Value (generated translations)" )
+    {
+        translateDictionary.buildFullTranslationDictionary();
+
+        assert(translateDictionary.findNTerminal( TEST_FUNC ) == "TEST");
+    }
+
+    SECTION( "Find NTerminal for string (generated translations)" )
+    {
+        translateDictionary.buildFullTranslationDictionary();
+
+        assert( translateDictionary.findTranslateTo( "TEST" ) == TEST_FUNC );
     }
 
 }

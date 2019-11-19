@@ -17,8 +17,8 @@
 #ifndef GENTEST_UTIL_H
 #define GENTEST_UTIL_H
 
-#include <bits/exception.h>
 #include <string>
+#include <utility>
 #include "TranslationEngine.h"
 
 
@@ -58,27 +58,50 @@ const std::map < std::string, NTerminal > needTranslateString =
 class FileException : public std::exception
 {
 protected:
-    const std::string& fileName;
+    const std::string fileName;
 
     const bool fileFail;
 
 public:
-    FileException( const std::string& fileName, const bool fileFail=true ):
-    fileName(fileName),
+    explicit FileException( std::string  fileName, const bool fileFail=true ):
+    fileName(std::move(fileName)),
     fileFail(fileFail)
     {/*empty function*/}
-
 };
+
+class TranslationException : public std::exception
+{
+protected:
+    const std::string translation;
+public:
+    explicit TranslationException( std::string  translation ):
+    translation(std::move(translation))
+    {/*empty function*/}
+};
+
+class NTerminalException : public std::exception
+{
+protected:
+    const NTerminal nTerminal;
+public:
+    explicit NTerminalException( const NTerminal nTerminal ):
+            nTerminal(nTerminal)
+    {/*empty function*/}
+};
+
 
 /**
  * @brief will contain a single translation of a NT
  *
- * @details class that will hold the translations of NT's
+ * @details struct that will hold the translations of NT's
  */
-class TranslateObject
+struct TranslateEntry
 {
-    NTerminal nonTerminalCode;
-    std::string translateTo;
+    NTerminal nTToTranslate;
+
+    std::string translation;
+
+    TranslateEntry *next = nullptr;
 };
 
 /**
@@ -91,9 +114,7 @@ class TranslateDictionary
 public:
     std::fstream translateFile;
 
-    std::vector< TranslateObject > translationStorage;
-
-    std::string getTranslation( NTerminal stringToGet );
+    struct TranslateEntry *head = nullptr, *tail;
 
     //setup default population of toTranslate
     //will be populated from testConfig as well
@@ -114,11 +135,39 @@ public:
                     { X_UNSIGNED_LONG, "unsigned long" },
                     { X_UNSIGNED_SHORT, "unsigned short" }
             };
+    void buildDefaultTranslations();
 
+    int getSize();
 
     void generateTranslateMapFromConfig();
 
     void openTranslateFile( const std::string& fileName );
+
+    void addTranslation(NTerminal NTToAdd, const std::basic_string<char>& translateTo );
+
+    void buildFullTranslationDictionary();
+
+    NTerminal findTranslateTo( const std::string& translation );
+
+    std::string findNTerminal( NTerminal nTerminal );
+
+
+
+
+
+private:
+    /**
+     * recursive helper function to get size, this function
+     * assumes that the list is already populated
+     * @param entry current entry to check for tail
+     * @return size of TranslateEntry list
+     */
+    static int getSizeRecursiveHelp( struct TranslateEntry *entry );
+
+    static NTerminal findTranslateToHelper( const std::string& translation, struct TranslateEntry *entry );
+
+    static std::string findNTerminalToHelper( NTerminal currentNTerminal,
+                                       struct TranslateEntry *entry );
 };
 
 
