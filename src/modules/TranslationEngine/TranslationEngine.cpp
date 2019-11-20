@@ -19,7 +19,6 @@
 **/
 
 #include "TranslationEngine.h"
-#include "Util.h"
 #include <sstream>
 
 
@@ -74,6 +73,13 @@ std::string CFG::getString()
 
 
 //FileParser Functions
+void FileParser::buildTranslateDictionary(const std::string &fileName)
+{
+    translateDictionary.openTranslateFile( fileName );
+
+    translateDictionary.buildFullTranslationDictionary();
+}
+
 void FileParser::openHarnessFile( const std::string& fileName )
 {
     harnessFile.open( fileName );
@@ -112,6 +118,24 @@ void FileParser::scanFile()
     }
 
 }
+
+//TODO: Continue work on more robust scanLine
+/*
+void FileParser::scanLine( std::string line )
+{
+    std::string tempString;
+
+    CFG newLine;
+
+    TranslateEntry *foundEntry = translateDictionary.doesStringContainTranslation( line );
+
+    //if a translation is found
+    if( foundEntry != nullptr )
+    {
+
+    }
+}
+*/
 
 void FileParser::scanLine( std::string line )
 {
@@ -290,10 +314,12 @@ void FileParser::writeToFile(std::string fileName)
 }
 
 
-void runTranslator( const std::string& fileName )
+void runTranslator( const std::string& fileName, const std::string& configFileName )
 {
     //initialization of moduleParser
     FileParser moduleParser;
+
+    moduleParser.buildTranslateDictionary( configFileName );
 
     //opens harness file
     moduleParser.openHarnessFile( fileName );

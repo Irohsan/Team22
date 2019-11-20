@@ -115,6 +115,8 @@ TEST_CASE( "Test File Parser", "[file_parser]")
     {
         FileParser fp;
 
+        fp.buildTranslateDictionary( "../test/test_data/catchTranslation.cfg" );
+
         //output from this test file
         std::string translated = "int ident1(int x) {\n"
                       "    return x;\n"
@@ -172,7 +174,6 @@ TEST_CASE("TranslateDictionary tests", "[translate_dictionary]")
         REQUIRE_THROWS_AS( td.openTranslateFile( "../test/test_data/nonexistentTranslation.cfg" ), FileException );
     }
 
-
     SECTION( "Test for default translation population")
     {
         translateDictionary.buildDefaultTranslations();
@@ -208,12 +209,11 @@ TEST_CASE("TranslateDictionary tests", "[translate_dictionary]")
         assert( translateDictionary.findTranslateTo( "int" ) == X_INT );
     }
 
-    //TODO: Fix these two tests
     SECTION( "Find string for NTerminal Value (generated translations)" )
     {
         translateDictionary.buildFullTranslationDictionary();
 
-        assert(translateDictionary.findNTerminal( TEST_FUNC ) == "TEST");
+        assert( translateDictionary.findNTerminal( TEST_FUNC ) == "TEST" );
     }
 
     SECTION( "Find NTerminal for string (generated translations)" )
@@ -222,5 +222,4 @@ TEST_CASE("TranslateDictionary tests", "[translate_dictionary]")
 
         assert( translateDictionary.findTranslateTo( "TEST" ) == TEST_FUNC );
     }
-
 }

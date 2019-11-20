@@ -23,7 +23,7 @@
 //TranslateDictionary Class functions
 void TranslateDictionary::buildDefaultTranslations()
 {
-    for (const auto &nTToTranslate : toTranslate)
+    for ( const auto &nTToTranslate : toTranslate )
     {
         addTranslation( nTToTranslate.first, nTToTranslate.second );
     }
@@ -65,6 +65,8 @@ void TranslateDictionary::addTranslation(NTerminal NTToAdd, const std::basic_str
     //temp value needed to convert const value translateTo to a non-const value
     std::string temp;
 
+    auto iterator = beforeTranslate.find(NTToAdd);
+
     //create initial node
     if( head == nullptr )
     {
@@ -76,6 +78,16 @@ void TranslateDictionary::addTranslation(NTerminal NTToAdd, const std::basic_str
 
         temp = translateTo;
 
+        //if accessing correct NTerminal
+        if( iterator->first == NTToAdd )
+        {
+            head->toTranslate = iterator->second;
+        }
+        else
+        {
+            head->toTranslate = "";
+        }
+
         head->translation = temp;
     }
     else
@@ -86,6 +98,16 @@ void TranslateDictionary::addTranslation(NTerminal NTToAdd, const std::basic_str
         tail = tail->next;
 
         tail->nTToTranslate = NTToAdd;
+
+        //if accessing correct NTerminal
+        if( iterator->first == NTToAdd )
+        {
+            tail->toTranslate = iterator->second;
+        }
+        else
+        {
+            tail->toTranslate = "";
+        }
 
         tail->translation = translateTo;
     }
@@ -108,6 +130,11 @@ std::string TranslateDictionary::findNTerminal( NTerminal nTerminal )
     return findNTerminalToHelper( nTerminal, head );
 }
 
+TranslateEntry* TranslateDictionary::doesStringContainTranslation( const std::string& stringToCheck )
+{
+    return doesStringContainTranslationHelp( stringToCheck, head );
+}
+
 
 //private TranslateDictionary functions
 int TranslateDictionary::getSizeRecursiveHelp( struct TranslateEntry *entry )
@@ -124,7 +151,8 @@ NTerminal TranslateDictionary::findTranslateToHelper( const std::string& transla
 {
     if( entry == nullptr )
     {
-        throw TranslationException( translation );
+        //if translation isn't in dictionary, dont translate
+        return NO_TRANSLATE;
     }
     else
     {
@@ -144,7 +172,8 @@ std::string TranslateDictionary::findNTerminalToHelper( NTerminal currentNTermin
 {
     if( entry == nullptr )
     {
-        throw NTerminalException( currentNTerminal );
+        //if translation isn't in dictionary, dont translate
+        return "";
     }
     else
     {
@@ -159,6 +188,33 @@ std::string TranslateDictionary::findNTerminalToHelper( NTerminal currentNTermin
     }
 }
 
+TranslateEntry* TranslateDictionary::doesStringContainTranslationHelp(
+                                       const std::string& stringToCheck, struct TranslateEntry *entry )
+{
+    std::string translationToCheck;
+
+    translationToCheck = entry->translation;
+
+    //if entry is never found
+    if( entry == nullptr )
+    {
+        return nullptr;
+    }
+    //if current entry doesnt have a translation
+    else if( entry->toTranslate.empty() )
+    {
+        return doesStringContainTranslationHelp( stringToCheck, entry->next );
+    }
+    //if a translation is found
+    else if( stringToCheck.find( entry->toTranslate ) != std::string::npos )
+    {
+        return entry;
+    }
+    else
+    {
+        return doesStringContainTranslationHelp( stringToCheck, entry->next );
+    }
+}
 
 
 
