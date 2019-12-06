@@ -50,6 +50,7 @@ const std::string SYMB_UNDER_SHORT = "symbolic_short";
 const std::string SYMB_UNDER_CHAR = "symbolic_char";
 const std::string SYMB_UNDER_FLOAT = "symbolic_float";
 const std::string SYMB_UNDER_DOUBLE = "symbolic_double";
+const std::string SYMB_UNDER_UNSIGNED = "symbolic_unsigned";
 
 const std::string SYMB_BRACKET_INT = "Symbolic<int>";
 const std::string SYMB_BRACKET_UINT8 = "Symbolic<uint8_t>";
@@ -61,6 +62,7 @@ const std::string SYMB_BRACKET_SHORT = "Symbolic<short>";
 const std::string SYMB_BRACKET_CHAR = "Symbolic<char>";
 const std::string SYMB_BRACKET_FLOAT = "Symbolic<float>";
 const std::string SYMB_BRACKET_DOUBLE = "Symbolic<double>";
+const std::string SYMB_BRACKET_UNSIGNED = "Symbolic<unsigned>";
 
 const std::string SYMBOLIC_BRACKETS = "Symbolic";
 
@@ -109,7 +111,7 @@ typedef enum NonTerminals
     UINT16,
     UINT32,
     UINT64,
-    USIGNED_INT,
+    UNSIGNED_INT,
     UNSIGNED_LONG,
     UNSIGNED_SHORT,
     X_INT,                      // Symbloic Type Non-Terminals.
@@ -124,6 +126,8 @@ typedef enum NonTerminals
     X_USIGNED_INT,
     X_UNSIGNED_LONG,
     X_UNSIGNED_SHORT,
+    X_UNSIGNED,
+    X_CHAR,
     LEFT_SHIFT,                 // Shift Operators >>/<<
     RIGHT_SHIFT,
     ASSERT,

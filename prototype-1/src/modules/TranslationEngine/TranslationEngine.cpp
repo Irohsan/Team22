@@ -206,6 +206,15 @@ class Parser
                     // Reset string.
                     appendString = EMPTY_STRING;
                 }
+                else if( isSymbolic( line ) )
+                {
+                    // Append data to line.
+                    appendLine.initialize( header );
+                    appendLine.addToBody( substr( strippedLine, strippedLine.find( SPACE ), (int) strippedLine.length() - 1 ) );
+                  
+                    // Add to file vector.
+                    this->fileVector.at( this->functionHandle ).push_back( appendLine ); 
+                }
             }
         }
 
@@ -482,6 +491,6 @@ void runTranslator( char * harnessFilePath )
 
     outputVector = harnessParser.getOutputVector();
 
-    outputVector.at( 1 ).at(8).toString();
+    outputVector.at( 1 ).at(1).toString();
 }
 

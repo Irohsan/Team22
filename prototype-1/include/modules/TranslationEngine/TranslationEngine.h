@@ -198,6 +198,60 @@ class GoogleTestDictionary
 
             break;
 
+            case X_INT:
+    
+                return "int";
+    
+            break;
+
+            case X_UINT8:
+        
+                return "uint8_t";
+
+            break;
+
+            case X_UINT16:
+        
+                return "uint16_t";
+
+            break;
+
+            case X_UINT32:
+
+                return "uint32_t";
+
+            break;
+
+            case X_UINT64:
+
+                return "uint64_t";
+
+            break;
+
+            case X_UNSIGNED:
+                
+                return "unsigned";
+
+            break;
+
+            case X_CHAR:
+
+                return "char";
+
+            break;
+
+            case X_FLOAT:
+
+                return "float";
+
+            break;
+
+            case X_DOUBLE:
+
+                return "double";
+
+            break;
+
             default:
 
                 return EMPTY_STRING;
@@ -305,6 +359,10 @@ class CFGDictionary
         {
             return TEST;
         }
+        else if( string.compare( S_ASSERT ) == 0 )
+	    {
+	        return ASSERT;
+	    }
 	    else if( string.compare( S_DEEPSTATE_ASSERT ) == 0 )
 	    {
             return DEEPSTATE_ASSERT;
@@ -332,10 +390,46 @@ class CFGDictionary
         {
             return X_UINT16;
         }
-	    else if( string.compare( S_ASSERT ) == 0 )
-	    {
-	        return ASSERT;
-	    }
+        else if( string.compare( SYMB_UNDER_UINT32 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT32 ) == 0 )
+        {
+            return X_UINT32;
+        }
+        else if( string.compare( SYMB_UNDER_UINT64 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT64 ) == 0 )
+        {
+            return X_UINT32;
+        }
+        else if( string.compare( SYMB_UNDER_UNSIGNED ) == 0
+                 || string.compare( SYMB_BRACKET_UNSIGNED ) == 0 )
+        {
+            return X_UNSIGNED;
+        }
+        else if( string.compare( SYMB_UNDER_LONG ) == 0
+                 || string.compare( SYMB_BRACKET_LONG ) == 0 )
+        {
+            return X_LONG;
+        }
+        else if( string.compare( SYMB_UNDER_SHORT ) == 0
+                 || string.compare( SYMB_BRACKET_SHORT ) == 0 )
+        {
+            return X_SHORT;
+        }
+        else if( string.compare( SYMB_UNDER_CHAR ) == 0
+                 || string.compare( SYMB_BRACKET_CHAR ) == 0 )
+        {
+            return X_CHAR;
+        }
+        else if( string.compare( SYMB_UNDER_FLOAT ) == 0
+                 || string.compare( SYMB_BRACKET_FLOAT ) == 0 )
+        {
+            return X_FLOAT;
+        }
+        else if( string.compare( SYMB_UNDER_DOUBLE ) == 0
+                 || string.compare( SYMB_BRACKET_DOUBLE ) == 0 )
+        {
+            return X_DOUBLE;
+        }
 
         return NO_TRANSLATE;
     }    
