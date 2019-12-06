@@ -1,0 +1,2 @@
+/usr/bin/ar qc libtest_lib.a  CMakeFiles/test_lib.dir/test/modules/TestBinaryParser.cpp.o CMakeFiles/test_lib.dir/test/modules/TestFileAssembler.cpp.o CMakeFiles/test_lib.dir/test/modules/TestTranslationEngine.cpp.o CMakeFiles/test_lib.dir/test/modules/TestUtil.cpp.o
+/usr/bin/ranlib libtest_lib.a

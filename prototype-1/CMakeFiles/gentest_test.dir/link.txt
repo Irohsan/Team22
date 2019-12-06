@@ -1,0 +1,1 @@
+/usr/bin/c++  -O3 -DNDEBUG   CMakeFiles/gentest_test.dir/test/TestMain.cpp.o  -o gentest_test libtest_lib.a libgentest_binaryparser.a libgentest_fileassembler.a libgentest_translationengine.a libgentest_util.a 
