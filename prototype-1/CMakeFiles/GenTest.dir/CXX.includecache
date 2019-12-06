@@ -6,11 +6,11 @@
 
 #IncludeRegexTransform: 
 
-/home/iroh/Documents/CS476/GenTest/Team22-demo/src/main.cpp
+/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/main.cpp
 iostream
 -
 TranslationEngine.h
-/home/iroh/Documents/CS476/GenTest/Team22-demo/src/TranslationEngine.h
+/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/TranslationEngine.h
 
 include/modules/TranslationEngine/TranslationEngine.h
 Util.h

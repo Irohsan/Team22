@@ -102,6 +102,12 @@ class GoogleTestDictionary
 
             break;
 
+            case ASSERT:
+            
+                return "ASSERT_TRUE";
+
+            break;
+
             case ASSUME_GT:
 
                 return EXPECT_GT;
@@ -326,6 +332,10 @@ class CFGDictionary
         {
             return X_UINT16;
         }
+	    else if( string.compare( S_ASSERT ) == 0 )
+	    {
+	        return ASSERT;
+	    }
 
         return NO_TRANSLATE;
     }    

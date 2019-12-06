@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/iroh/Documents/CS476/GenTest/Team22-demo
+CMAKE_SOURCE_DIR = /home/iroh/Documents/CS476/GenTest/Team22/prototype-1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/iroh/Documents/CS476/GenTest/Team22-demo
+CMAKE_BINARY_DIR = /home/iroh/Documents/CS476/GenTest/Team22/prototype-1
 
 # Include any dependencies generated for this target.
 include CMakeFiles/gentest_binaryparser.dir/depend.make
@@ -59,29 +59,29 @@ include CMakeFiles/gentest_binaryparser.dir/flags.make
 
 CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.o: CMakeFiles/gentest_binaryparser.dir/flags.make
 CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.o: src/modules/BinaryParser/BinaryParser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.o -c /home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryParser.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.o -c /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryParser.cpp
 
 CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryParser.cpp > CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryParser.cpp > CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.i
 
 CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryParser.cpp -o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryParser.cpp -o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.s
 
 CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.o: CMakeFiles/gentest_binaryparser.dir/flags.make
 CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.o: src/modules/BinaryParser/BinaryIterator.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.o -c /home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryIterator.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.o -c /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryIterator.cpp
 
 CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryIterator.cpp > CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryIterator.cpp > CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.i
 
 CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryIterator.cpp -o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryIterator.cpp -o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.s
 
 # Object files for target gentest_binaryparser
 gentest_binaryparser_OBJECTS = \
@@ -95,7 +95,7 @@ libgentest_binaryparser.a: CMakeFiles/gentest_binaryparser.dir/src/modules/Binar
 libgentest_binaryparser.a: CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.o
 libgentest_binaryparser.a: CMakeFiles/gentest_binaryparser.dir/build.make
 libgentest_binaryparser.a: CMakeFiles/gentest_binaryparser.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libgentest_binaryparser.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libgentest_binaryparser.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/gentest_binaryparser.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/gentest_binaryparser.dir/link.txt --verbose=$(VERBOSE)
 
@@ -109,6 +109,6 @@ CMakeFiles/gentest_binaryparser.dir/clean:
 .PHONY : CMakeFiles/gentest_binaryparser.dir/clean
 
 CMakeFiles/gentest_binaryparser.dir/depend:
-	cd /home/iroh/Documents/CS476/GenTest/Team22-demo && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/iroh/Documents/CS476/GenTest/Team22-demo /home/iroh/Documents/CS476/GenTest/Team22-demo /home/iroh/Documents/CS476/GenTest/Team22-demo /home/iroh/Documents/CS476/GenTest/Team22-demo /home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles/gentest_binaryparser.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles/gentest_binaryparser.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/gentest_binaryparser.dir/depend
 

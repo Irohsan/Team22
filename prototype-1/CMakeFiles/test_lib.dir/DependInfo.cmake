@@ -4,10 +4,10 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/iroh/Documents/CS476/GenTest/Team22-demo/test/modules/TestBinaryParser.cpp" "/home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles/test_lib.dir/test/modules/TestBinaryParser.cpp.o"
-  "/home/iroh/Documents/CS476/GenTest/Team22-demo/test/modules/TestFileAssembler.cpp" "/home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles/test_lib.dir/test/modules/TestFileAssembler.cpp.o"
-  "/home/iroh/Documents/CS476/GenTest/Team22-demo/test/modules/TestTranslationEngine.cpp" "/home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles/test_lib.dir/test/modules/TestTranslationEngine.cpp.o"
-  "/home/iroh/Documents/CS476/GenTest/Team22-demo/test/modules/TestUtil.cpp" "/home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles/test_lib.dir/test/modules/TestUtil.cpp.o"
+  "/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/test/modules/TestBinaryParser.cpp" "/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles/test_lib.dir/test/modules/TestBinaryParser.cpp.o"
+  "/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/test/modules/TestFileAssembler.cpp" "/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles/test_lib.dir/test/modules/TestFileAssembler.cpp.o"
+  "/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/test/modules/TestTranslationEngine.cpp" "/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles/test_lib.dir/test/modules/TestTranslationEngine.cpp.o"
+  "/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/test/modules/TestUtil.cpp" "/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles/test_lib.dir/test/modules/TestUtil.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

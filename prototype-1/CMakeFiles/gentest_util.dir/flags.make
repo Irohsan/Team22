@@ -6,5 +6,5 @@ CXX_FLAGS = -O3 -DNDEBUG   -Wall -std=c++11 -Wextra -O3 -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/iroh/Documents/CS476/GenTest/Team22-demo/include/modules/BinaryParser -I/home/iroh/Documents/CS476/GenTest/Team22-demo/include/modules/FileAssembler -I/home/iroh/Documents/CS476/GenTest/Team22-demo/include/modules/TranslationEngine -I/home/iroh/Documents/CS476/GenTest/Team22-demo/include/modules/util -I/home/iroh/Documents/CS476/GenTest/Team22-demo/lib 
+CXX_INCLUDES = -I/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/include/modules/BinaryParser -I/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/include/modules/FileAssembler -I/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/include/modules/TranslationEngine -I/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/include/modules/util -I/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/lib 
 

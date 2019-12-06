@@ -6,13 +6,13 @@
 
 #IncludeRegexTransform: 
 
-/home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryIterator.cpp
+/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryIterator.cpp
 BinaryIterator.h
-/home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryIterator.h
+/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryIterator.h
 
-/home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryParser.cpp
+/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryParser.cpp
 BinaryParser.h
-/home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/BinaryParser/BinaryParser.h
+/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/BinaryParser/BinaryParser.h
 cstdint
 -
 cstring

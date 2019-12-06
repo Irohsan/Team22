@@ -14,6 +14,7 @@
 * Constant Definitions
 *******************************/
 
+const std::string S_ASSERT = "ASSERT";
 const std::string S_ASSERT_GT = "ASSERT_GT";
 const std::string S_ASSERT_LT = "ASSERT_LT";
 const std::string S_ASSERT_GE = "ASSERT_GE";
@@ -125,6 +126,7 @@ typedef enum NonTerminals
     X_UNSIGNED_SHORT,
     LEFT_SHIFT,                 // Shift Operators >>/<<
     RIGHT_SHIFT,
+    ASSERT,
     ASSERT_GT,                  // Assertion operators.
     ASSERT_GE,
     ASSERT_LT,

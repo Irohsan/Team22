@@ -1,2 +1,0 @@
-/usr/bin/ar qc libgentest_fileassembler.a  CMakeFiles/gentest_fileassembler.dir/src/modules/FileAssembler/FileAssembler.cpp.o
-/usr/bin/ranlib libgentest_fileassembler.a

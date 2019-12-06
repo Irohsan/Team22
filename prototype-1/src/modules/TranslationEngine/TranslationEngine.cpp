@@ -153,6 +153,7 @@ class Parser
         std::string appendString = EMPTY_STRING, currentChar;
         std::string strippedLine;
 
+        appendLine.setHeader( header );
         strippedLine = stripBeginWhiteSpace( line );
         
         for( int index = 0; index < (int) strippedLine.length(); index++ )
@@ -209,7 +210,7 @@ class Parser
         }
 
         
-        if( header == NO_TRANSLATE )
+        if( appendLine.getHeader().compare( EMPTY_STRING ) == 0 )
         {
             // Setup appendLine.
             appendLine.initialize( header, EMPTY_STRING, EMPTY_STRING );
@@ -480,5 +481,7 @@ void runTranslator( char * harnessFilePath )
     harnessParser.runParser();
 
     outputVector = harnessParser.getOutputVector();
+
+    outputVector.at( 1 ).at(8).toString();
 }
 

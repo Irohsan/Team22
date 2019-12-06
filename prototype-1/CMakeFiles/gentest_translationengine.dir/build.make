@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/iroh/Documents/CS476/GenTest/Team22-demo
+CMAKE_SOURCE_DIR = /home/iroh/Documents/CS476/GenTest/Team22/prototype-1
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/iroh/Documents/CS476/GenTest/Team22-demo
+CMAKE_BINARY_DIR = /home/iroh/Documents/CS476/GenTest/Team22/prototype-1
 
 # Include any dependencies generated for this target.
 include CMakeFiles/gentest_translationengine.dir/depend.make
@@ -59,16 +59,16 @@ include CMakeFiles/gentest_translationengine.dir/flags.make
 
 CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.o: CMakeFiles/gentest_translationengine.dir/flags.make
 CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.o: src/modules/TranslationEngine/TranslationEngine.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.o -c /home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/TranslationEngine/TranslationEngine.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.o -c /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/TranslationEngine/TranslationEngine.cpp
 
 CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/TranslationEngine/TranslationEngine.cpp > CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/TranslationEngine/TranslationEngine.cpp > CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.i
 
 CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/TranslationEngine/TranslationEngine.cpp -o CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/TranslationEngine/TranslationEngine.cpp -o CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.s
 
 # Object files for target gentest_translationengine
 gentest_translationengine_OBJECTS = \
@@ -80,7 +80,7 @@ gentest_translationengine_EXTERNAL_OBJECTS =
 libgentest_translationengine.a: CMakeFiles/gentest_translationengine.dir/src/modules/TranslationEngine/TranslationEngine.cpp.o
 libgentest_translationengine.a: CMakeFiles/gentest_translationengine.dir/build.make
 libgentest_translationengine.a: CMakeFiles/gentest_translationengine.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libgentest_translationengine.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libgentest_translationengine.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/gentest_translationengine.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/gentest_translationengine.dir/link.txt --verbose=$(VERBOSE)
 
@@ -94,6 +94,6 @@ CMakeFiles/gentest_translationengine.dir/clean:
 .PHONY : CMakeFiles/gentest_translationengine.dir/clean
 
 CMakeFiles/gentest_translationengine.dir/depend:
-	cd /home/iroh/Documents/CS476/GenTest/Team22-demo && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/iroh/Documents/CS476/GenTest/Team22-demo /home/iroh/Documents/CS476/GenTest/Team22-demo /home/iroh/Documents/CS476/GenTest/Team22-demo /home/iroh/Documents/CS476/GenTest/Team22-demo /home/iroh/Documents/CS476/GenTest/Team22-demo/CMakeFiles/gentest_translationengine.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 /home/iroh/Documents/CS476/GenTest/Team22/prototype-1 /home/iroh/Documents/CS476/GenTest/Team22/prototype-1/CMakeFiles/gentest_translationengine.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/gentest_translationengine.dir/depend
 

@@ -1,2 +1,0 @@
-/usr/bin/ar qc libgentest_util.a  CMakeFiles/gentest_util.dir/src/modules/util/Util.cpp.o CMakeFiles/gentest_util.dir/src/modules/util/DataStructures.cpp.o
-/usr/bin/ranlib libgentest_util.a

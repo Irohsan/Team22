@@ -6,9 +6,9 @@
 
 #IncludeRegexTransform: 
 
-/home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/util/Util.cpp
+/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/util/Util.cpp
 Util.h
-/home/iroh/Documents/CS476/GenTest/Team22-demo/src/modules/util/Util.h
+/home/iroh/Documents/CS476/GenTest/Team22/prototype-1/src/modules/util/Util.h
 
 include/modules/util/Util.h
 string
