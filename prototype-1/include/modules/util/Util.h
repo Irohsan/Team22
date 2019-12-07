@@ -14,7 +14,7 @@
 * Constant Definitions
 *******************************/
 
-const std::string S_ASSERT = "ASSERT";
+const std::string S_ASSERT = "ASSERT(";
 const std::string S_ASSERT_GT = "ASSERT_GT";
 const std::string S_ASSERT_LT = "ASSERT_LT";
 const std::string S_ASSERT_GE = "ASSERT_GE";
@@ -79,6 +79,7 @@ const std::string LT_SYMB = "<";
 const std::string GT_SYMB = ">";
 const std::string UNDERSCORE = "_";
 const std::string COMMA = ",";
+const std::string TWO_SPACES = "  ";
 
 
 /******************************

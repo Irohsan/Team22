@@ -34,6 +34,12 @@ class Parser
 {
     public:
 
+    void setBinaryFile( std::string binaryFilePath )
+    {
+        this->binaryFile = binaryFilePath;
+
+        this->symbolic_p.setBinaryFile( binaryFile );
+    }
 
     /**
       *   Function Name: setFile
@@ -128,6 +134,8 @@ class Parser
     private:
     CFGDictionary cfgd;
     std::vector< std::vector< Line > > fileVector;
+    SymbolicProcessor symbolic_p;
+    std::string binaryFile;
     int functionHandle = -1;
     fstream harnessFile;
 
@@ -190,6 +198,11 @@ class Parser
                     // Append data to line.
                     appendLine.initialize( header );
 
+                    if( line.find( "ASSERT(" ) != std::string::npos )
+                    {
+                        appendLine.initialize( header, OPEN_PARENTHESIS, EMPTY_STRING );
+                    }
+
                     if( line.find( SEMI_COLON ) != std::string::npos )
                     {
                         appendLine.addToBody( this->substr( line, index + 3, line.find( SEMI_COLON ) ) );
@@ -210,14 +223,16 @@ class Parser
                 {
                     // Append data to line.
                     appendLine.initialize( header );
-                    appendLine.addToBody( substr( strippedLine, strippedLine.find( SPACE ), (int) strippedLine.length() - 1 ) );
+                    appendLine.addToBody(  symbolic_p.appendData( header, 
+                                                                  substr( strippedLine, 
+                                                                  strippedLine.find( SPACE ), 
+                                                                  (int) strippedLine.length() - 1 ) )  );
                   
                     // Add to file vector.
                     this->fileVector.at( this->functionHandle ).push_back( appendLine ); 
                 }
             }
         }
-
         
         if( appendLine.getHeader().compare( EMPTY_STRING ) == 0 )
         {
@@ -304,7 +319,9 @@ class Parser
       *   Preconditions: A valid string with indicies within range.
       *   Postconditions: Substring returned.
       *
-      *   Notes: N/A
+      *   Notes: This function will not execute if you provide a
+      *          end position greater than or equal to the size of the
+      *          string.
     **/
     std::string substr( std::string str, int beginPos, int endPos )
     {
@@ -329,6 +346,17 @@ class Parser
         return returnStr;
     }
 
+    /**
+      *   Function Name: stripBeginWhiteSpace
+      *   -------------------------------------------------------
+      *   Algorithm: Takes a string and removes the trailing white space
+      *              before it. 
+      *   
+      *   Preconditions: A valid string.
+      *   Postconditions: String returned with no trailing white space. 
+      *
+      *   Notes: N/A
+    **/
     std::string stripBeginWhiteSpace( std::string str )
     {
         // Declare local variables.
@@ -483,14 +511,38 @@ class Parser
 
 void runTranslator( char * harnessFilePath )
 { 
+    // Declare classes.
     Parser harnessParser;
+    FileWriter writer;
+
+    // Declare data structures.
     std::vector< std::vector< Line > > outputVector;
 
+    // Declare other variables.
+    int pos = 0;
+
+    // Setup filename.
+    std::string filename( harnessFilePath );
+
+    // Search string for last occurance of /.
+    pos = filename.rfind( "/" );
+    
+    // Setup filename.
+    filename = filename.substr( pos + 1, (int) filename.length());
+    filename = "Standalone" + filename;
+
+    // Setup and run parser.
     harnessParser.setFile( harnessFilePath );
     harnessParser.runParser();
+    harnessParser.closeFile();
 
+    // Retrieve outputVector from parser.
     outputVector = harnessParser.getOutputVector();
 
-    outputVector.at( 1 ).at(1).toString();
+    // Initialize writer with outputVector.
+    writer.initialize( outputVector, filename );
+    writer.writeOutput();   
+
+    // Close writer.
 }
 
