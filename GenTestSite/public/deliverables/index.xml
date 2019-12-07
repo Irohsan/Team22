@@ -6,10 +6,37 @@
     <description>Recent content in Deliverables on GenTest</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 24 Sep 2019 00:00:00 -0700</lastBuildDate>
+    <lastBuildDate>Wed, 04 Dec 2019 00:00:00 -0700</lastBuildDate>
     
 	<atom:link href="https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/deliverables/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Requirements Specification Document</title>
+      <link>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/documents/rsd.pdf</link>
+      <pubDate>Wed, 04 Dec 2019 00:00:00 -0700</pubDate>
+      
+      <guid>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/documents/rsd.pdf</guid>
+      <description>The requirements specification document details the requirements for the product, as agreed upon by the team and our client.</description>
+    </item>
+    
+    <item>
+      <title>Design Review 1</title>
+      <link>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/documents/dr1.pdf</link>
+      <pubDate>Fri, 22 Nov 2019 00:00:00 -0700</pubDate>
+      
+      <guid>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/documents/dr1.pdf</guid>
+      <description>The first design review presented us with the opportunity to present our current progress and plans for development.</description>
+    </item>
+    
+    <item>
+      <title>Technical Feasibility Document</title>
+      <link>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/documents/tfd.pdf</link>
+      <pubDate>Tue, 29 Oct 2019 00:00:00 -0700</pubDate>
+      
+      <guid>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/documents/tfd.pdf</guid>
+      <description>The technical feasibility document provides an overview for the different technical challenges presented by our project, and our proposed solutions to these challenges.</description>
+    </item>
     
     <item>
       <title>Team Standards Document</title>

@@ -3,22 +3,43 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
   <url>
-    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/requirements/</loc>
-    <lastmod>2019-10-13T20:06:08-07:00</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  
-  <url>
     <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/</loc>
-    <lastmod>2019-09-24T00:00:00-07:00</lastmod>
+    <lastmod>2019-12-04T00:00:00-07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   
   <url>
     <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/deliverables/</loc>
-    <lastmod>2019-09-24T00:00:00-07:00</lastmod>
+    <lastmod>2019-12-04T00:00:00-07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/documents/rsd.pdf</loc>
+    <lastmod>2019-12-04T00:00:00-07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/documents/dr1.pdf</loc>
+    <lastmod>2019-11-22T00:00:00-07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/documents/tfd.pdf</loc>
+    <lastmod>2019-10-29T00:00:00-07:00</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/requirements/</loc>
+    <lastmod>2019-10-13T20:06:08-07:00</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -44,6 +65,12 @@
   
   <url>
     <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/post/</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  
+  <url>
+    <loc>https://www.ceias.nau.edu/capstone/projects/CS/2020/GenTest-S20/schedule/</loc>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
