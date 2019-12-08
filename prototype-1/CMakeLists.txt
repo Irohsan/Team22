@@ -27,6 +27,15 @@ add_library(gentest_util STATIC src/modules/util/Util.cpp
                                 src/modules/util/DataStructures.cpp
            )
 
+set( GENTEST_MODULES 
+     gentest_binaryparser
+	 gentest_fileassembler
+	 gentest_translationengine
+	 gentest_util 
+   )
+
+target_link_libraries( gentest_translationengine gentest_binaryparser )
+
 option( BUILD_TESTS "Determines whether to build tests." ON )
 if(BUILD_TESTS)
 
@@ -42,13 +51,12 @@ if(BUILD_TESTS)
 
   target_link_libraries(gentest_test PUBLIC
                         test_lib
-                        gentest_binaryparser
-                        gentest_fileassembler
-                        gentest_translationengine
-                        gentest_util
+						${GENTEST_MODULES}
                        )
 
   add_test( NAME test COMMAND gentest_test ) 
 endif()
 
-target_link_libraries(GenTest gentest_binaryparser gentest_fileassembler gentest_translationengine gentest_util)
+target_link_libraries(GenTest 
+					  ${GENTEST_MODULES}
+					 )
