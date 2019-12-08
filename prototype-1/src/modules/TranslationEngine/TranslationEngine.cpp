@@ -544,5 +544,11 @@ void runTranslator( char * harnessFilePath )
     writer.writeOutput();   
 
     // Close writer.
+    BinaryParser parser;
+    parser.parse( "~/Documents/CS476/GenTest/Team22/prototype-1/Binaries/Euler.fail" );
+
+    BinaryIterator iter = parser.getIterator();
 }
+
+
 
