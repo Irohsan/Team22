@@ -1015,15 +1015,15 @@ class SymbolicProcessor
 
             if( header == X_INT )
             {
-                appendString += elementVector.at( 0 ) + " = " + std::to_string( std::to_string( iter.netxtInt() ) );
+                appendString += elementVector.at( 0 ) + " = " + std::to_string( iter.nextInt() );
             }
             else if( header == X_CHAR )
             {
-                appendString += elementVector.at( 0 ) + " = '" + demoDummyCharArray[ 0 ] + "'";
+                appendString += elementVector.at( 0 ) + " = '" + iter.nextChar() + "'";
             }
             else if( header == X_UNSIGNED )
             {
-                appendString += elementVector.at( 0 ) + " = " + std::to_string( (unsigned) rand() );
+                appendString += elementVector.at( 0 ) + " = " + std::to_string( iter.nextUInt() );
             }
         }     
 
