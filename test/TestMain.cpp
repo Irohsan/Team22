@@ -68,7 +68,30 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 
     iter.rewind( 200 );
 
+
 }
+
+    TEST_CASE( "Test Parser and Iterator with deepstate values", "[binary_parser]" ) {
+    BinaryParser bp;
+
+    bp.parse("../test/test_data/test.new");
+
+    auto iter = bp.getIterator();
+
+    SECTION("Binary Iterator Get Value")
+    {
+        while (true) {
+            auto test = iter.nextInt();
+
+            std::cout << test << std::endl;
+
+            REQUIRE(test != -1406192183);
+        }
+
+        // end of the road, error should be thrown
+    }
+}
+
 // FileAssembler Tests
 
 // TranslationEngine Tests

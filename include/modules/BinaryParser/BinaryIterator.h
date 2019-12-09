@@ -92,10 +92,22 @@ class BinaryIterator
     int nextInt();
 
     /**
+     * Get the next unsigned integer fro mthe BinaryIterator
+     * @return an unsigned integer from the Iterator's data.
+     */
+    unsigned int nextUInt();
+
+    /**
      * Get the next unsigned char from the BinaryIterator
      * @returns an unsigned char from the Iterator's data.
      **/
     unsigned char nextUChar();
+
+    /**
+     * Get the next char from the BinaryIterator
+     * @return a char from the Iterator's data.
+     */
+    char nextChar();
 
  private:
     /**

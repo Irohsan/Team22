@@ -926,6 +926,8 @@ class SymbolicProcessor
     void setBinaryFile( std::string binaryFile )
     {
         binaryParser.parse( binaryFile );
+
+        iter = binaryParser.getIterator();
     }
 
     /**
@@ -942,9 +944,6 @@ class SymbolicProcessor
     **/
     std::string appendData( NTerminal header, std::string lineBody )
     {
-        // Declare srand.
-        srand( time( 0 ) );
-
         // Declare local variables.
         std::string appendString = EMPTY_STRING;
         std::vector< std::string > elementVector;
@@ -959,15 +958,15 @@ class SymbolicProcessor
             {
                 if( header == X_INT )
                 {
-                    appendString += elementVector.at( index ) + " = " + std::to_string( rand() );
+                    appendString += elementVector.at( index ) + " = " + std::to_string( iter.nextInt() );
                 }
                 else if( header == X_CHAR )
                 {
-                    appendString += elementVector.at( index ) + " = '" + std::to_string( demoDummyCharArray[ index ] ) + "'";
+                    appendString += elementVector.at( index ) + " = '" + std::to_string( iter.nextChar() ) + "'";
                 }
                 else if( header == X_UNSIGNED )
                 {
-                    appendString += elementVector.at( index ) + " = " + std::to_string( (unsigned) rand() );
+                    appendString += elementVector.at( index ) + " = " + std::to_string( iter.nextUInt() );
                 }
 
                 if( index != (int) elementVector.size() - 1 )
@@ -1001,6 +1000,7 @@ class SymbolicProcessor
 
     // Private field variables.
     BinaryParser binaryParser;
+    BinaryIterator iter = nullptr;
     std::string filename;
     
     // Constant field variables.
@@ -1096,6 +1096,6 @@ class SymbolicProcessor
     }
 };
 
-std::vector< std::vector< Line > > runTranslator( char * harnessFilePath );
+std::vector< std::vector< Line > > runTranslator( char * harnessFilePath, char * binaryFilePath, char * outputPath );
 
 #endif //GENTEST_TRANSLATIONENGINE_H

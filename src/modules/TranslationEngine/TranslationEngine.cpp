@@ -509,8 +509,8 @@ class Parser
     
 };
 
-std::vector< std::vector< Line > > runTranslator( char * harnessFilePath )
-{ 
+std::vector< std::vector< Line > > runTranslator( char * harnessFilePath, char * binaryFilePath, char * outputPath )
+{
     // Declare classes.
     Parser harnessParser;
     FileWriter writer;
@@ -521,18 +521,13 @@ std::vector< std::vector< Line > > runTranslator( char * harnessFilePath )
     // Declare other variables.
     int pos = 0;
 
-    // Setup filename.
-    std::string filename( harnessFilePath );
-
-    // Search string for last occurance of /.
-    pos = filename.rfind( "/" );
-    
-    // Setup filename.
-    filename = filename.substr( pos + 1, (int) filename.length());
-    filename = "Standalone" + filename;
 
     // Setup and run parser.
     harnessParser.setFile( harnessFilePath );
+
+    harnessParser.setBinaryFile( outputPath );
+
+    harnessParser.setBinaryFile( binaryFilePath );
     harnessParser.runParser();
     harnessParser.closeFile();
 
@@ -540,14 +535,8 @@ std::vector< std::vector< Line > > runTranslator( char * harnessFilePath )
     outputVector = harnessParser.getOutputVector();
 
     // Initialize writer with outputVector.
-    writer.initialize( outputVector, filename );
-    writer.writeOutput();   
-
-    // Close writer.
-    BinaryParser parser;
-    parser.parse( "~/Documents/CS476/GenTest/Team22/prototype-1/Binaries/Euler.fail" );
-
-    BinaryIterator iter = parser.getIterator();
+    writer.initialize( outputVector, outputPath );
+    writer.writeOutput();
 
     return outputVector;
 }

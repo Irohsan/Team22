@@ -25,10 +25,21 @@ int BinaryIterator::nextInt()
     return next<int>();
 }
 
+unsigned int BinaryIterator::nextUInt()
+{
+    return next <unsigned int>();
+}
+
 unsigned char BinaryIterator::nextUChar()
 {
     return next<unsigned char>();
 }
+
+char BinaryIterator::nextChar()
+{
+    return next<char>();
+}
+
 
 void BinaryIterator::rewind()
 {

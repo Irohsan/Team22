@@ -30,7 +30,7 @@ int main( int numArgs, char** args )
     //declare output from translator
     std::vector< std::vector< Line > > outputFromTranslator;
 
-    if( numArgs != NUM_ARGS )
+    if( numArgs - 1 != NUM_ARGS )
     {
         //probably want to create/utilize some sort of logger
 
@@ -42,7 +42,7 @@ int main( int numArgs, char** args )
     //pass into TranslationEngine with Vector pointer
 
     //auto keyword automatically gets the type
-    auto output = runTranslator( args[ 1 ] );
+    auto output = runTranslator( args[ 1 ], args[ 2 ], args[ 3 ] );
 
     //pass binary file into binary parser (this might be done in the translation engine)
 
