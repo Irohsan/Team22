@@ -27,7 +27,7 @@
 
 #include "TranslationEngine.h"
 
-using namespace std;
+
 
 
 class Parser
@@ -137,7 +137,7 @@ class Parser
     SymbolicProcessor symbolic_p;
     std::string binaryFile;
     int functionHandle = -1;
-    fstream harnessFile;
+    std::fstream harnessFile;
 
 
     /**
@@ -267,7 +267,7 @@ class Parser
       *
       *   Notes: N/A
     **/
-    vector< std::string > splitLine( std::string line, const std::string delimitor,
+    std::vector< std::string > splitLine( std::string line, const std::string delimitor,
                                      const std::string delimitor2 = EMPTY_STRING,
                                      bool keepEnd = false )
     {
@@ -509,13 +509,13 @@ class Parser
     
 };
 
-void runTranslator( char * harnessFilePath )
+std::vector< std::vector< Line > > runTranslator( char * harnessFilePath )
 { 
     // Declare classes.
     Parser harnessParser;
     FileWriter writer;
 
-    // Declare data structures.
+    // Declare Data Structures
     std::vector< std::vector< Line > > outputVector;
 
     // Declare other variables.
@@ -548,4 +548,6 @@ void runTranslator( char * harnessFilePath )
     parser.parse( "~/Documents/CS476/GenTest/Team22/prototype-1/Binaries/Euler.fail" );
 
     BinaryIterator iter = parser.getIterator();
+
+    return outputVector;
 }

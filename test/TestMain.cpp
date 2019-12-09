@@ -74,5 +74,3 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 // TranslationEngine Tests
 
 // Util Tests
-
-// Util Tests
