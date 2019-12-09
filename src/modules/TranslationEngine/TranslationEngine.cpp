@@ -542,12 +542,6 @@ void runTranslator( char * harnessFilePath )
     // Initialize writer with outputVector.
     writer.initialize( outputVector, filename );
     writer.writeOutput();   
-
-    // Close writer.
-    BinaryParser parser;
-    parser.parse( "~/Documents/CS476/GenTest/Team22/prototype-1/Binaries/Euler.fail" );
-
-    BinaryIterator iter = parser.getIterator();
 }
 
 
