@@ -55,7 +55,7 @@ class GoogleTestDictionary
     const std::string EQ = "==";
     const std::string NE = "!=";
 
-    const std::string GTEST_NOINLINE = "GTEST_NO_INLINE";
+    const std::string GTEST_NOINLINE = "GTEST_NO_INLINE_";
     const std::string GTEST = "TEST";
 
     /**
@@ -154,11 +154,11 @@ class GoogleTestDictionary
 
             case CHECK_EQ:
 
-                return NE;
+                return EQ;
 
             case CHECK_NE:
 
-                return EQ;
+                return NE;
 
 
             case DEEPSTATE_NOINLINE:
@@ -768,6 +768,9 @@ class FileWriter
             // Output a newline for formatting reasons.
             this->outputFile << std::endl;
         }
+
+	this->outputFile << "\n";
+	this->outputFile << "int main(int argc, char **argv) \n{\n testing::InitGoogleTest(&argc, argv); \n return RUN_ALL_TESTS(); \n}\n";
     }
 
 
@@ -794,17 +797,46 @@ class FileWriter
                 Line currentLine = fileVector.at( index ).at( funcIndex );       
 
                 // Non-Terminal line case.
-                if( currentLine.getHeaderNt() != NO_TRANSLATE   
+                if( index < (int) fileVector.at( index ).size() - 1 )
+		        {
+                    if( currentLine.getHeaderNt() != NO_TRANSLATE
                     && currentLine.getHeaderNt() != TEST
-                    && currentLine.getHeaderNt() != DEEPSTATE_NOINLINE )
-                {      
-                    // Ident the line.
-                    this->outputFile << indentLine();           
-                    this->outputFile << currentLine.getString( true ) << std::endl; 
+                    && currentLine.getHeaderNt() != DEEPSTATE_NOINLINE
+                    && fileVector.at( index ).at( funcIndex + 1 ).getBody().find( "<<" ) == std::string::npos )
+                    {
+                        // Ident the line.
+                        this->outputFile << indentLine();
+                        this->outputFile << currentLine.getString( true ) << std::endl;
+                    }
+                    else if( currentLine.getHeaderNt() != NO_TRANSLATE
+                         && currentLine.getHeaderNt() != TEST
+                         && currentLine.getHeaderNt() != DEEPSTATE_NOINLINE
+                         && fileVector.at( index ).at( funcIndex + 1 ).getBody().find( "<<" ) != std::string::npos )
+                    {
+                        // Ident the line.
+                        this->outputFile << indentLine();
+                        this->outputFile << currentLine.getString() << std::endl;
+                    }
+                    else
+                    {
+                        this->outputFile << currentLine.getString() << std::endl;
+                    }
+
                 }
                 else
                 {
-                    this->outputFile << currentLine.getString() << std::endl;
+                    if( currentLine.getHeaderNt() != NO_TRANSLATE
+                    && currentLine.getHeaderNt() != TEST
+                    && currentLine.getHeaderNt() != DEEPSTATE_NOINLINE )
+                    {
+                        // Ident the line.
+                        this->outputFile << indentLine();
+                        this->outputFile << currentLine.getString( true ) << std::endl;
+                    }
+                    else
+                    {
+                        this->outputFile << currentLine.getString() << std::endl;
+                    }
                 }
             }
         }
@@ -859,7 +891,8 @@ class FileWriter
         this->outputFile << "  *                                                " << "\n";
         this->outputFile << "  ************************************************/ " << "\n";
   
-        this->outputFile << "\n\n";
+        this->outputFile << "\n";
+	this->outputFile << "#include <gtest/gtest.h>\n\n";
     }
 
 
@@ -982,11 +1015,11 @@ class SymbolicProcessor
 
             if( header == X_INT )
             {
-                appendString += elementVector.at( 0 ) + " = " + std::to_string( rand() );
+                appendString += elementVector.at( 0 ) + " = " + std::to_string( std::to_string( iter.netxtInt() ) );
             }
             else if( header == X_CHAR )
             {
-                appendString += elementVector.at( 0 ) + " = '" + std::to_string( demoDummyCharArray[ 0 ] ) + "'";
+                appendString += elementVector.at( 0 ) + " = '" + demoDummyCharArray[ 0 ] + "'";
             }
             else if( header == X_UNSIGNED )
             {
@@ -1032,8 +1065,7 @@ class SymbolicProcessor
             std::string currentCharacter( 1, line.at( index ) );
 
             if( currentCharacter.compare( delimitor ) == 0 
-                || currentCharacter.compare( delimitor2 ) == 0 )
-            {
+                || currentCharacter.compare( delimitor2 ) == 0 )            {
                 // Get substring
                 substring = substr( line, partitionIndex, index );
 
