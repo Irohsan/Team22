@@ -9,322 +9,543 @@
   * @details This class will be deconstruct DeepStates behaviours into a context-free grammar
   *          and store these values into a vector class. This vector class will then be sent
   *          to the File assembler for reconstruction into a standalone test
+  *          For the Demo it shall be able to translate the following example test harnesses:
+  *
+  *          	o Crash.cpp
+  *		        o Euler.cpp
+  *		        o IntegerOverflow.cpp
+  *		        o Primes.cpp 
   *
   * @version 0.01
   *          Tristan Miller ( 5 November 2019 )
   *          Created skeleton for class layout
+  *
 
  (Legal terms of use/libraries used need to be added here once we get to that point)
 
 **/
 
 #include "TranslationEngine.h"
-#include <sstream>
+
+using namespace std;
 
 
-
-
-const std::string SAMPLE_VALUE1 = "5323232323232323";
-const std::string SAMPLE_VALUE2 = "531111332";
-
-
-
-//CFG Functions
-void CFG::add( NTerminal nonTerminal, std::string data )
+class Parser
 {
-    // Declare local variables.
-    Line newLine;
+    public:
 
-    newLine.nonTerminalCode = nonTerminal;
-    newLine.data = data;
-
-    // Add newLine to vector.
-
-    heldLine = newLine;
-}
-
-void CFG::toString()
-{
-    if( heldLine.nonTerminalCode == X_INT )
+    void setBinaryFile( std::string binaryFilePath )
     {
-        std::cout << "  int " << heldLine.data << " = " << SAMPLE_VALUE1 << ";\n";
-    }
-    else if( heldLine.nonTerminalCode == ASSERT_GE )
-    {
-        std::cout << "  ASSERT_GE" << heldLine.data << ";\n";
-    }
-    else
-    {
-        std::cout << heldLine.data << "\n";
-    }
-}
-//TODO: Fix getString
-std::string CFG::getString()
-{
-    if( heldLine.nonTerminalCode == X_INT )
-    {
-        return "   int " + heldLine.data + " = " + SAMPLE_VALUE1 + ";\n";
-    }
-    else
-    {
-        return heldLine.data + "\n";
-    }
-}
+        this->binaryFile = binaryFilePath;
 
-
-//FileParser Functions
-void FileParser::buildTranslateDictionary(const std::string &fileName)
-{
-    translateDictionary.openTranslateFile( fileName );
-
-    translateDictionary.buildFullTranslationDictionary();
-}
-
-void FileParser::openHarnessFile( const std::string& fileName )
-{
-    harnessFile.open( fileName );
-
-    //error handling for invalid file
-    if( harnessFile.fail() )
-    {
-        throw FileException(fileName, harnessFile.fail() );
-    }
-}
-
-void FileParser::scanFile()
-{
-    // Declare local variables.
-    int recordFlag = 0;
-    std::string line;
-
-    while( getline( harnessFile, line ) )
-    {
-        if( line.find( "{" ) != std::string::npos
-            && line.find( "(" ) != std::string::npos )
-        {
-            recordFlag = 1;
-        }
-
-        if( recordFlag )
-        {
-            scanLine( line );
-        }
-
-        if( line.find( "}" ) != std::string::npos )
-        {
-            recordFlag = 0;
-        }
-
+        this->symbolic_p.setBinaryFile( binaryFile );
     }
 
-}
-
-//TODO: Continue work on more robust scanLine
-/*
-void FileParser::scanLine( std::string line )
-{
-    std::string tempString;
-
-    CFG newLine;
-
-    TranslateEntry *foundEntry = translateDictionary.doesStringContainTranslation( line );
-
-    //if a translation is found
-    if( foundEntry != nullptr )
+    /**
+      *   Function Name: setFile
+      *   -------------------------------------------------------
+      *   Algorithm: Takes the file name of a harness file and
+      *              opens it for use by the parser.  
+      *   
+      *   Preconditions: A valid file name.
+      *   Postconditions: The file is opened and stored in the parser.
+      *
+      *   Notes: N/A
+    **/
+    void setFile( char * filePath )
     {
-
+        this->harnessFile.open( filePath );
     }
-}
-*/
 
-void FileParser::scanLine( std::string line )
-{
-    // Declare local variables.
-    std::string tempString;
-    CFG newLine;
 
-    if( line.find( "Symbolic" ) != std::string::npos
-        || line.find( "symbolic" ) != std::string::npos )
+    /**
+      *   Function Name: closeFile
+      *   -------------------------------------------------------
+      *   Algorithm: Closes the currently open file in the parser.  
+      *   
+      *   Preconditions: A file is open in the parser.
+      *   Postconditions: File is closed.
+      *
+      *   Notes: N/A
+    **/
+    void closeFile()
+    {   
+        this->harnessFile.close();
+    }
+
+
+    /**
+      *   Function Name: runParser
+      *   -------------------------------------------------------
+      *   Algorithm: Iterates over every line in the open harness file,
+      *              invoking parseLine to analyze, translate, and store
+      *              all code held within or relating to the declartion of a function.
+      *   
+      *   Preconditions: A file is open in the parser.
+      *   Postconditions: File is translated to a CFG representation vector.
+      *
+      *   Notes: N/A
+    **/
+    void runParser()
     {
-        // Strip whitespace
-        line = removeWhitespace( line );
+        // Declare local variables.
+        std::string line;
+        bool funcFlag = false;
 
-        // Find type
-        if( line.find( "int" ) != std::string::npos )
-        {
-            // Set subset of untranslated line into tempString
-            tempString = line.substr( line.find( "int" ) + 4, line.length() );
-            tempString = tempString.substr( 0, tempString.find( ";" ));
+        while( std::getline( this->harnessFile, line ) )
+        {   
+            if( this->isFunction( line ) )
+            {
+                funcFlag = true;
+                this->functionHandle++;                      
+            }
 
-            newLine.add( X_INT, tempString );
-        }
-        else if( line.find( "uint_8" ) != std::string::npos )
-        {
-            // Set subset of untranslated line into tempString
-            tempString = line.substr( line.find( "uint_8" ) + 6, line.length() );
-            tempString = tempString.substr( 0, tempString.find( ";" ));
+            if( funcFlag )
+            {
+                parseLine( line );
+            }
 
-            newLine.add( X_UINT8, tempString );
-        }
-        else if( line.find( "uint_16" ) != std::string::npos )
-        {
-            // Set subset of untranslated line into tempString
-            tempString = line.substr( line.find( "uint_16" ) + 7, line.length() );
-            tempString = tempString.substr( 0, tempString.find( ";" ));
 
-            newLine.add( X_UINT16, tempString );
-        }
-        else if( line.find( "uint_32" ) != std::string::npos )
-        {
-            // Set subset of untranslated line into tempString
-            tempString = line.substr( line.find( "uint_32" ) + 7, line.length() );
-            tempString = tempString.substr( 0, tempString.find( ";" ));
-
-            newLine.add( X_UINT32, tempString );
-        }
-        else if( line.find( "uint_64" ) != std::string::npos )
-        {
-            // Set subset of untranslated line into tempString
-            tempString = line.substr( line.find( "uint_64" ) + 7, line.length() );
-
-            newLine.add( X_UINT32, tempString );
-        }
-        else if( line.find( "short" ) != std::string::npos )
-        {
-            // Set subset of untranslated line into tempString
-            tempString = line.substr( line.find( "short" ) + 4, line.length() );
-            tempString = tempString.substr( 0, tempString.find( ";" ));
-
-            newLine.add( X_SHORT, tempString );
-        }
-        else if( line.find( "long" ) != std::string::npos )
-        {
-            // Set subset of untranslated line into tempString
-            tempString = line.substr( line.find( "long" ) + 4, line.length() );
-            tempString = tempString.substr( 0, tempString.find( ";" ));
-
-            newLine.add( X_LONG, tempString );
+            if( line.find( CLOSE_BRACKET ) != std::string::npos 
+                && line.find( SPACE ) == std::string::npos )
+            {
+                funcFlag = false;
+            }
         }
     }
-    else if( line.find( "DEEPSTATE_NOINLINE" ) != std::string::npos )
-    {
-        line = line.substr( line.find( "DEEPSTATE_NOINLINE" ) + 19,
-                            line.length() );
 
-        newLine.add( NO_TRANSLATE, line );
+
+    /**
+      *   Function Name: getOutputVector
+      *   -------------------------------------------------------
+      *   Algorithm: Returns the vector containing all lines (translated or untranslated)
+      *              in the file.
+      *   
+      *   Preconditions: N/A
+      *   Postconditions: FileVector is returned.
+      *
+      *   Notes: N/A
+    **/
+    std::vector< std::vector< Line > > getOutputVector()
+    {
+        return this->fileVector;
     }
-    else if( line.find( "ASSERT" ) != std::string::npos )
-    {
-        if( line.find( "ASSERT_GE" ) != std::string::npos )
-        {
-            line = line.substr( line.find( "(" ), line.length() );
 
-            newLine.add( ASSERT_GE, line );
+    private:
+    CFGDictionary cfgd;
+    std::vector< std::vector< Line > > fileVector;
+    SymbolicProcessor symbolic_p;
+    std::string binaryFile;
+    int functionHandle = -1;
+    fstream harnessFile;
+
+
+    /**
+      *   Function Name: parseLine
+      *   -------------------------------------------------------
+      *   Algorithm: Takes in a string line and iterates over it character
+      *              by character, translating found strings to their CFG
+      *              representations and adding the code to the fileVector.  
+      *   
+      *   Preconditions: A valid file line.
+      *   Postconditions: Line translated if appropriate and added to fileVector.
+      *
+      *   Notes: N/A
+    **/
+    void parseLine( std::string line )
+    {
+        // Declare local variables.
+        std::vector< Line > lineVector;
+        Line appendLine;
+        NTerminal header = NO_TRANSLATE;
+        std::string appendString = EMPTY_STRING, currentChar;
+        std::string strippedLine;
+
+        appendLine.setHeader( header );
+        strippedLine = stripBeginWhiteSpace( line );
+        
+        for( int index = 0; index < (int) strippedLine.length(); index++ )
+        {
+            // Get current character.
+            currentChar = strippedLine.at( index );
+
+            // Add it to append string.
+            appendString += currentChar;
+
+            // Check for translation phrase.
+            header = this->cfgd.getCFGAssoc( appendString );
+
+            if( header != NO_TRANSLATE )
+            {
+                // Initialize appendLine.
+                if( isFunction( line ) )
+                {
+                    // Append data to line.
+                    appendLine.initialize( header, EMPTY_STRING, OPEN_BRACKET );
+                    appendLine.addToBody( this->substr( line, index + 1, ( int ) line.length() - 1 ) );
+
+                    // Add to lineVector.
+                    lineVector.push_back( appendLine );
+
+                    // Add lineVector to fileVector.
+                    this->fileVector.push_back( lineVector );
+                    
+                    // Exit loop.
+                    index = (int) line.length();
+                }
+                else if( isAssert( line ) || isAssume( line ) || isCheck( line ) )
+                {
+                    // Append data to line.
+                    appendLine.initialize( header );
+
+                    if( line.find( "ASSERT(" ) != std::string::npos )
+                    {
+                        appendLine.initialize( header, OPEN_PARENTHESIS, EMPTY_STRING );
+                    }
+
+                    if( line.find( SEMI_COLON ) != std::string::npos )
+                    {
+                        appendLine.addToBody( this->substr( line, index + 3, line.find( SEMI_COLON ) ) );
+                    }
+                    else
+                    {
+                        line += SEMI_COLON;
+                        appendLine.addToBody( this->substr( line, index + 3, line.find( SEMI_COLON ) ) );
+                    }
+
+                    // Add to file vector.
+                    this->fileVector.at( this->functionHandle ).push_back( appendLine );
+
+                    // Reset string.
+                    appendString = EMPTY_STRING;
+                }
+                else if( isSymbolic( line ) )
+                {
+                    // Append data to line.
+                    appendLine.initialize( header );
+                    appendLine.addToBody(  symbolic_p.appendData( header, 
+                                                                  substr( strippedLine, 
+                                                                  strippedLine.find( SPACE ), 
+                                                                  (int) strippedLine.length() - 1 ) )  );
+                  
+                    // Add to file vector.
+                    this->fileVector.at( this->functionHandle ).push_back( appendLine ); 
+                }
+            }
+        }
+        
+        if( appendLine.getHeader().compare( EMPTY_STRING ) == 0 )
+        {
+            // Setup appendLine.
+            appendLine.initialize( header, EMPTY_STRING, EMPTY_STRING );
+            appendLine.addToBody( line );
+
+            if( (int) this->fileVector.size() != 0 )
+            {
+                this->fileVector.at( this->functionHandle ).push_back( appendLine );
+            }
+            else
+            {
+                // Place line in line vector.
+                lineVector.push_back( appendLine );
+
+                // Append the lineVector to the fileVector.
+                this->fileVector.push_back( lineVector );
+            }
         }
     }
-    else
+
+
+    /**
+      *   Function Name: splitLine
+      *   -------------------------------------------------------
+      *   Algorithm: Takes in a string value and splits it at the 
+      *              delimeters specified.  
+      *   
+      *   Preconditions: A valid string.
+      *   Postconditions: Vector returned with split string.
+      *
+      *   Notes: N/A
+    **/
+    vector< std::string > splitLine( std::string line, const std::string delimitor,
+                                     const std::string delimitor2 = EMPTY_STRING,
+                                     bool keepEnd = false )
     {
-        newLine.add( NO_TRANSLATE, line );
-    }
+        // Declare local variables.
+        std::vector< std::string > lineVector;
+        std::string substring = EMPTY_STRING;
+        int index = 0, partitionIndex = 0;
 
-    // Add to file vector.
-    fileVector.push_back( newLine );
-}
-
-std::string FileParser::removeWhitespace( std::string line )
-{
-    // Declare local variables.
-    int index = 0, newLineIndex = 0;
-    std::string newLine;
-    char charAtPos;
-
-    while( index < (int)line.length() )
-    {
-        charAtPos = line.at( index );
-
-        if( charAtPos != ' ' )
+        while( index < (int) line.length() )
         {
-            newLine.insert( newLineIndex, 1, charAtPos );
+            std::string currentCharacter( 1, line.at( index ) );
 
-            newLineIndex++;
+            if( currentCharacter.compare( delimitor ) == 0 
+                || currentCharacter.compare( delimitor2 ) == 0 )
+            {
+                // Get substring
+                substring = substr( line, partitionIndex, index );
+
+                // Add to vector
+                lineVector.push_back( substring );
+
+                // Set partition index.
+                partitionIndex = index + 1;
+            }           
+
+            // Increment index.
+            index++;
         }
 
-        index++;
+        if( keepEnd )
+        {
+            // Get end substring.
+            substring = substr( line, partitionIndex, index );
+            
+            // Add to vector.
+            lineVector.push_back( substring );                        
+        }
+
+        return lineVector;
     }
 
-    return newLine;
-}
 
-void FileParser::displayTranslatedFile()
-{
-    // Local variables.
-    int index = 0;
-
-    while( index < (int)fileVector.size() )
+    /**
+      *   Function Name: substr
+      *   -------------------------------------------------------
+      *   Algorithm: Takes in a string and returns the substring from
+      *              the start position until the end position - 1.  
+      *   
+      *   Preconditions: A valid string with indicies within range.
+      *   Postconditions: Substring returned.
+      *
+      *   Notes: This function will not execute if you provide a
+      *          end position greater than or equal to the size of the
+      *          string.
+    **/
+    std::string substr( std::string str, int beginPos, int endPos )
     {
-        fileVector[ index ].toString();
+        int index = beginPos;
+        std::string returnStr = EMPTY_STRING;
 
-        index++;
+        if( endPos < (int) str.length() )
+        {
+            while( index < endPos )
+            {
+                // Get character.
+                std::string character( 1, str.at( index ) );
+            
+                // Add to return string.
+                returnStr = returnStr + character;
+                
+                // Increment index.
+                index++;
+            }
+        }
+
+        return returnStr;
     }
-}
 
-//TODO: make translatedToString actually return a string of the function for testing purposes
-//this function will need work, the TranslateDictionary will make this substantially easier
-std::string FileParser::translatedToString()
-{
-    //local variables
-    std::stringstream stringStream;
-
-    int index = 0;
-
-    std::string output;
-
-    while( index < (int)fileVector.size() )
+    /**
+      *   Function Name: stripBeginWhiteSpace
+      *   -------------------------------------------------------
+      *   Algorithm: Takes a string and removes the trailing white space
+      *              before it. 
+      *   
+      *   Preconditions: A valid string.
+      *   Postconditions: String returned with no trailing white space. 
+      *
+      *   Notes: N/A
+    **/
+    std::string stripBeginWhiteSpace( std::string str )
     {
-        stringStream << fileVector[index].getString() << std::endl;
+        // Declare local variables.
+        std::string currentCharacter;
+        int index;
 
-        index++;
+        for( index = 0; index < (int) str.length(); index++ )
+        {
+            currentCharacter = str.at( index );
+
+            if( currentCharacter.compare( SPACE ) != 0 )
+            {
+                return str.substr( index, (int) str.length() - 1 ); 
+            }      
+        }
+
+        return str;
     }
 
-    output = stringStream.str();
 
-    std::cout<<output;
-
-    return "test";
-}
-
-void FileParser::writeToFile(std::string fileName)
-{
-    std::ofstream outputFile;
-
-    outputFile.open( fileName );
-
-    // Local variables.
-    int index = 0;
-
-    while( index < (int)fileVector.size() )
+    /**
+      *   Function Name: isFunction
+      *   -------------------------------------------------------
+      *   Algorithm: Checks the line to see if it is a function. 
+      *   
+      *   Preconditions: A valid file line.
+      *   Postconditions: True if function, false otherwise.
+      *
+      *   Notes: N/A
+    **/
+    bool isFunction( std::string line )
     {
-        outputFile << fileVector[ index ].getString();
-
-        index++;
+        return line.find( OPEN_PARENTHESIS ) != std::string::npos 
+                && line.find( CLOSE_PARENTHESIS ) != std::string::npos
+                && line.find( OPEN_BRACKET ) != std::string::npos
+                && line.find( "for" ) == std::string::npos
+                && line.find( "if" ) == std::string::npos;
     }
 
-    outputFile.close();
 
-}
+    /**
+      *   Function Name: isSymbolic
+      *   -------------------------------------------------------
+      *   Algorithm: Checks the line to see if it is a symbolic declaration.  
+      *   
+      *   Preconditions: A valid file line.
+      *   Postconditions: True if function, false otherwise.
+      *
+      *   Notes: N/A
+    **/
+    bool isSymbolic( std::string line )
+    {
+        return line.find( "Symbolic" ) != std::string::npos || 
+               line.find( "symbolic" ) != std::string::npos;
+    }
 
 
-void runTranslator( const std::string& fileName, const std::string& configFileName )
-{
-    //initialization of moduleParser
-    FileParser moduleParser;
+    /**
+      *   Function Name: isFor
+      *   -------------------------------------------------------
+      *   Algorithm: Checks the line to see if it contains a for loop.
+      *   
+      *   Preconditions: A valid file line.
+      *   Postconditions: True if function, false otherwise.
+      *
+      *   Notes: N/A
+    **/
+    bool isFor( std::string line )
+    {
+        return line.find( "for " ) != std::string::npos;
+    }
 
-    moduleParser.buildTranslateDictionary( configFileName );
 
-    //opens harness file
-    moduleParser.openHarnessFile( fileName );
+    /**
+      *   Function Name: isIf
+      *   -------------------------------------------------------
+      *   Algorithm: Checks the line to see if it contains a conditional. 
+      *   
+      *   Preconditions: A valid file line.
+      *   Postconditions: True if function, false otherwise.
+      *
+      *   Notes: N/A
+    **/
+    bool isIf( std::string line )
+    {
+        return line.find( "if" ) != std::string::npos;
+    }
 
-    moduleParser.scanFile();
+    /**
+      *   Function Name: isTest
+      *   -------------------------------------------------------
+      *   Algorithm: Checks the line to see if it is test.
+      *   
+      *   Preconditions: A valid file line.
+      *   Postconditions: True if function, false otherwise.
+      *
+      *   Notes: N/A
+    **/
+    bool isTest( std::string line )
+    {
+        return line.find( "TEST" ) != std::string::npos;
+    }
 
-    moduleParser.displayTranslatedFile();
+    /**
+      *   Function Name: isAssert
+      *   -------------------------------------------------------
+      *   Algorithm: Checks the line to see if it is an ASSERT clause. 
+      *   
+      *   Preconditions: A valid file line.
+      *   Postconditions: True if function, false otherwise.
+      *
+      *   Notes: N/A
+    **/
+    bool isAssert( std::string line )
+    {
+        return line.find( "ASSERT" ) != std::string::npos || line.find( "Assert" ) != std::string::npos;
+    }
+
+
+    /**
+      *   Function Name: isAssume
+      *   -------------------------------------------------------
+      *   Algorithm: Checks the line to see if it is an ASSUME clause. 
+      *   
+      *   Preconditions: A valid file line.
+      *   Postconditions: True if function, false otherwise.
+      *
+      *   Notes: N/A
+    **/
+    bool isAssume( std::string line )
+    {
+        return line.find( "ASSUME" ) != std::string::npos || line.find( "Assume" ) != std::string::npos;
+    }
+
+
+    /**
+      *   Function Name: isCheck
+      *   -------------------------------------------------------
+      *   Algorithm: Checks the line to see if it is an CHECK clause. 
+      *   
+      *   Preconditions: A valid file line.
+      *   Postconditions: True if function, false otherwise.
+      *
+      *   Notes: N/A
+    **/
+    bool isCheck( std::string line )
+    {
+        return line.find( "CHECK" ) != std::string::npos || line.find( "Check" ) != std::string::npos;
+    }
+    
+};
+
+void runTranslator( char * harnessFilePath )
+{ 
+    // Declare classes.
+    Parser harnessParser;
+    FileWriter writer;
+
+    // Declare data structures.
+    std::vector< std::vector< Line > > outputVector;
+
+    // Declare other variables.
+    int pos = 0;
+
+    // Setup filename.
+    std::string filename( harnessFilePath );
+
+    // Search string for last occurance of /.
+    pos = filename.rfind( "/" );
+    
+    // Setup filename.
+    filename = filename.substr( pos + 1, (int) filename.length());
+    filename = "Standalone" + filename;
+
+    // Setup and run parser.
+    harnessParser.setFile( harnessFilePath );
+    harnessParser.runParser();
+    harnessParser.closeFile();
+
+    // Retrieve outputVector from parser.
+    outputVector = harnessParser.getOutputVector();
+
+    // Initialize writer with outputVector.
+    writer.initialize( outputVector, filename );
+    writer.writeOutput();   
+
+    // Close writer.
+    BinaryParser parser;
+    parser.parse( "~/Documents/CS476/GenTest/Team22/prototype-1/Binaries/Euler.fail" );
+
+    BinaryIterator iter = parser.getIterator();
 }

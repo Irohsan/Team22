@@ -20,9 +20,10 @@
 #include <iostream>
 #include "TranslationEngine.h"
 
-//number of args (name of program(this is default and we dont pass this),
-// test, config, binary, output name)
-const static int NUM_ARGS = 5;
+//number of args (test, binary, output name)
+const static int NUM_ARGS = 3;
+
+using namespace std;
 
 int main( int numArgs, char** args )
 {
@@ -30,12 +31,10 @@ int main( int numArgs, char** args )
     {
         //probably want to create/utilize some sort of logger
 
-        std::cout << "Invalid number of args" << std::endl;
-
-        return 0;
+        cout << "Invalid number of args" << endl;
     }
 
-    //Detect if valid DeepState test file (args[0])
+    //Detect if valid DeepState test file (args[1])
 
     //pass into TranslationEngine with Vector pointer
 

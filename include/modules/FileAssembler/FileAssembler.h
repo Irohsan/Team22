@@ -12,21 +12,23 @@
  *          Tristan Miller (11/17/19)
  *          Initial development of the FileAssembler
  */
+//
+// Created by craps on 11/5/2019.
+//
+
 #ifndef GENTEST_FILEASSEMBLER_H
 #define GENTEST_FILEASSEMBLER_H
 
-
-/**
 class FileAssembler
 {
-public:
-    FileAssembler(char* outputFile );
+    public:
+        FileAssembler(char* outputFile );
 
-public:
-    void generateFile(std::vector* inputVector);
+    public:
+        void generateFile(vector* inputVector);
 
-public:
-    void output(Datastructure we create for file output );
+    public:
+        void output(/**Datastructure we create for file output**/ );
 };
-*/
-#endif //GENTEST_FILEASSEMBLER_H
+
+#endif // GENTEST_FILEASSEMBLER_H

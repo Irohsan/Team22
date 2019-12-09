@@ -10,7 +10,7 @@
   *          for insertion into the vector class. This could potentially be added into
   *          the TranslationEngine ( or the TranslationEngine calls this )
   *
-  * @version 1.00
+  * @version 0.01
   *          Tristan Miller ( 5 November 2019 )
   *          Created skeleton for class layout
 
