@@ -42,7 +42,7 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 
             iter.rewind();
             iter.nextInt();
-            REQUIRE( iter.nextUChar() == 0x01 );
+            REQUIRE( iter.nextUChar() == 0x04 );
         }
 
     iter.rewind();
@@ -53,15 +53,6 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 
             // reverse order of bytes because x86 is little-endian
             REQUIRE( a == 0x03020100 );
-
-            a = iter.nextInt();
-            REQUIRE( a == 0x04030201 );
-
-            a = iter.nextInt();
-            REQUIRE( a == 0x05040302 );
-
-            a = iter.nextInt();
-            REQUIRE( a == 0x06050403 );
         }
 
     iter.rewind( 200 );
