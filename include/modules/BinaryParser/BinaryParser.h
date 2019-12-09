@@ -1,6 +1,18 @@
-//
-// Created by craps on 11/5/2019.
-//
+// Program Header Information ///////////////////////////
+/**
+ * @file BinaryParser.h
+ *
+ * @team GenTest ( Team 22 )
+ *
+ * @brief Header File for the BinaryParser
+ *
+ * @details Contains function definitions for the BinaryParser
+ *
+ * @version 1.00
+ *          Zane Fink
+ *          Initial Development of the BinaryParser
+ *
+ */
 
 #ifndef BINARY_PARSER_HH_INCLUDED
 #define BINARY_PARSER_HH_INCLUDED

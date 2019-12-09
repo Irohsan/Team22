@@ -1,6 +1,18 @@
-//
-// Created by craps on 11/5/2019.
-//
+
+// Program Header Information ///////////////////////////
+/**
+ * @file TranslationEngine.h
+ *
+ * @team GenTest ( Team 22 )
+ *
+ * @brief Header file for the TranslationEngine system
+ *
+ * @details Contains NonTerminals and function definitions for the TranslationEngine
+ *
+ * @version 1.00
+ *          Joshua Johnson (11/16/19)
+ *          Initial development of the TranslationEngine
+ */
 
 #ifndef GENTEST_TRANSLATIONENGINE_H
 #define GENTEST_TRANSLATIONENGINE_H

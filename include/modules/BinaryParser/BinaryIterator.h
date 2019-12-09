@@ -1,3 +1,20 @@
+// Program Header Information ///////////////////////////
+/**
+ * @file BinaryIterator.h
+ *
+ * @team GenTest ( Team 22 )
+ *
+ * @brief Header file for BinaryIterator class
+ *
+ * @details Contains function definitions for the BinaryIterator
+ *
+ * @version 1.00
+ *          Zane Fink
+ *          Initial development of the BinaryIterator Class
+ *
+ */
+
+
 #ifndef BINARY_ITERATOR_HH_INCLUDED
 #define BINARY_ITERATOR_HH_INCLUDED
 #include <vector>

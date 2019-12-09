@@ -1,6 +1,6 @@
 // Program Information //////////////////////////////////////////////
 /**
-  * @file Driver.cpp
+  * @file main.cpp
   *
   * @team GenTest ( Team 22 )
   *

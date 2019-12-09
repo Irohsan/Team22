@@ -12,9 +12,6 @@
  *          Tristan Miller (11/17/19)
  *          Initial development of the FileAssembler
  */
-//
-// Created by craps on 11/5/2019.
-//
 
 #ifndef GENTEST_FILEASSEMBLER_H
 #define GENTEST_FILEASSEMBLER_H
