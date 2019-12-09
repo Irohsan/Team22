@@ -1,6 +1,17 @@
-//
-// Created by craps on 11/5/2019.
-//
+// Program Header Information ///////////////////////////
+/**
+ * @file TranslationEngine.h
+ *
+ * @team GenTest ( Team 22 )
+ *
+ * @brief Header file for the TranslationEngine system
+ *
+ * @details Contains NonTerminals and function definitions for the TranslationEngine
+ *
+ * @version 1.00
+ *          Joshua Johnson (11/16/19)
+ *          Initial development of the TranslationEngine
+ */
 
 #ifndef GENTEST_TRANSLATIONENGINE_H
 #define GENTEST_TRANSLATIONENGINE_H
@@ -282,154 +293,154 @@ class CFGDictionary
     **/
     NTerminal getCFGAssoc( std::string string )
     {
-        if( string.compare( S_ASSERT_GT ) == 0 )
+        if( string == S_ASSERT_GT )
         {
             return ASSERT_GT;
         }
-        else if( string.compare( S_ASSERT_LT ) == 0 )
+        else if( string == S_ASSERT_LT )
         {
             return ASSERT_LT;
         }
-        else if( string.compare( S_ASSERT_GE ) == 0 )
+        else if( string == S_ASSERT_GE )
         {
             return ASSERT_GE;
         }
-        else if( string.compare( S_ASSERT_LE ) == 0 )
+        else if( string == S_ASSERT_LE )
         {
             return ASSERT_LE;
         }
-        else if( string.compare( S_ASSERT_EQ ) == 0 )
+        else if( string == S_ASSERT_EQ )
         {
             return ASSERT_EQ;
         }
-        else if( string.compare( S_ASSERT_NE ) == 0 )
+        else if( string == S_ASSERT_NE )
         {
             return ASSERT_NE;
         }
-        else if( string.compare( S_ASSUME_GT ) == 0 )
+        else if( string == S_ASSUME_GT )
         {
             return ASSUME_GT;
         }
-        else if( string.compare( S_ASSUME_LT ) == 0 )
+        else if( string == S_ASSUME_LT )
         {
             return ASSUME_LT;
         }
-        else if( string.compare( S_ASSUME_GE ) == 0 )
+        else if( string == S_ASSUME_GE )
         {
             return ASSUME_GE;
         }
-        else if( string.compare( S_ASSUME_LE ) == 0 )
+        else if( string == S_ASSUME_LE )
         {
             return ASSUME_LE;
         }
-        else if( string.compare( S_ASSUME_EQ ) == 0 )
+        else if( string == S_ASSUME_EQ )
         {
             return ASSUME_EQ;
         }
-        else if( string.compare( S_ASSUME_NE ) == 0 )
+        else if( string == S_ASSUME_NE )
         {
             return ASSUME_NE;
         }
-        else if( string.compare( S_CHECK_GT ) == 0 )
+        else if( string == S_CHECK_GT )
         {
             return CHECK_GT;
         }
-        else if( string.compare( S_CHECK_LT ) == 0 )
+        else if( string == S_CHECK_LT )
         {
             return CHECK_LT;
         }
-        else if( string.compare( S_CHECK_GE ) == 0 )
+        else if( string == S_CHECK_GE )
         {
             return CHECK_GE;
         }
-        else if( string.compare( S_CHECK_LE ) == 0 )
+        else if( string == S_CHECK_LE )
         {
             return CHECK_LE;
         }
-        else if( string.compare( S_CHECK_EQ ) == 0 )
+        else if( string == S_CHECK_EQ )
         {
             return CHECK_EQ;
         }
-        else if( string.compare( S_CHECK_NE ) == 0 )
+        else if( string == S_CHECK_NE )
         {
             return CHECK_NE;
         }
-        else if( string.compare( S_DEEPSTATE_NOINLINE ) == 0 )
+        else if( string == S_DEEPSTATE_NOINLINE )
         {
             return DEEPSTATE_NOINLINE;
         }
-        else if( string.compare( S_TEST ) == 0 )
+        else if( string == S_TEST )
         {
             return TEST;
         }
-        else if( string.compare( S_ASSERT ) == 0 )
+        else if( string == S_ASSERT )
 	    {
 	        return ASSERT;
 	    }
-	    else if( string.compare( S_DEEPSTATE_ASSERT ) == 0 )
+	    else if( string == S_DEEPSTATE_ASSERT )
 	    {
             return DEEPSTATE_ASSERT;
 	    }
-	    else if( string.compare( S_DEEPSTATE_ASSUME ) == 0 )
+	    else if( string == S_DEEPSTATE_ASSUME )
 	    {
 	        return DEEPSTATE_ASSUME;
 	    }
-	    else if( string.compare( S_DEEPSTATE_CHECK ) == 0 )
+	    else if( string == S_DEEPSTATE_CHECK )
 	    {
             return DEEPSTATE_CHECK;
 	    }
-        else if( string.compare( SYMB_UNDER_INT ) == 0
-                 || string.compare( SYMB_BRACKET_INT ) == 0 )
+        else if( string == SYMB_UNDER_INT
+                 || string == SYMB_BRACKET_INT )
         {
             return X_INT;
         }
-        else if( string.compare( SYMB_UNDER_UINT8 ) == 0
-                 || string.compare( SYMB_BRACKET_UINT8 ) == 0 )
+        else if( string == SYMB_UNDER_UINT8
+                 || string == SYMB_BRACKET_UINT8 )
         {
             return UINT8;
         }
-        else if( string.compare( SYMB_UNDER_UINT16 ) == 0
-                 || string.compare( SYMB_BRACKET_UINT16 ) == 0 )
+        else if( string == SYMB_UNDER_UINT16
+                 || string == SYMB_BRACKET_UINT16 )
         {
             return X_UINT16;
         }
-        else if( string.compare( SYMB_UNDER_UINT32 ) == 0
-                 || string.compare( SYMB_BRACKET_UINT32 ) == 0 )
+        else if( string == SYMB_UNDER_UINT32
+                 || string == SYMB_BRACKET_UINT32 )
         {
             return X_UINT32;
         }
-        else if( string.compare( SYMB_UNDER_UINT64 ) == 0
-                 || string.compare( SYMB_BRACKET_UINT64 ) == 0 )
+        else if( string == SYMB_UNDER_UINT64
+                 || string == SYMB_BRACKET_UINT64 )
         {
             return X_UINT32;
         }
-        else if( string.compare( SYMB_UNDER_UNSIGNED ) == 0
-                 || string.compare( SYMB_BRACKET_UNSIGNED ) == 0 )
+        else if( string == SYMB_UNDER_UNSIGNED
+                 || string == SYMB_BRACKET_UNSIGNED )
         {
             return X_UNSIGNED;
         }
-        else if( string.compare( SYMB_UNDER_LONG ) == 0
-                 || string.compare( SYMB_BRACKET_LONG ) == 0 )
+        else if( string == SYMB_UNDER_LONG
+                 || string == SYMB_BRACKET_LONG )
         {
             return X_LONG;
         }
-        else if( string.compare( SYMB_UNDER_SHORT ) == 0
-                 || string.compare( SYMB_BRACKET_SHORT ) == 0 )
+        else if( string == SYMB_UNDER_SHORT
+                 || string == SYMB_BRACKET_SHORT )
         {
             return X_SHORT;
         }
-        else if( string.compare( SYMB_UNDER_CHAR ) == 0
-                 || string.compare( SYMB_BRACKET_CHAR ) == 0 )
+        else if( string == SYMB_UNDER_CHAR
+                 || string == SYMB_BRACKET_CHAR )
         {
             return X_CHAR;
         }
-        else if( string.compare( SYMB_UNDER_FLOAT ) == 0
-                 || string.compare( SYMB_BRACKET_FLOAT ) == 0 )
+        else if( string == SYMB_UNDER_FLOAT
+                 || string == SYMB_BRACKET_FLOAT )
         {
             return X_FLOAT;
         }
-        else if( string.compare( SYMB_UNDER_DOUBLE ) == 0
-                 || string.compare( SYMB_BRACKET_DOUBLE ) == 0 )
+        else if( string == SYMB_UNDER_DOUBLE
+                 || string == SYMB_BRACKET_DOUBLE )
         {
             return X_DOUBLE;
         }

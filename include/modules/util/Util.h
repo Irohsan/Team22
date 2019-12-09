@@ -161,9 +161,4 @@ typedef enum NonTerminals
 } NTerminal;
 
 
-class Util {
-
-};
-
-
 #endif //GENTEST_UTIL_H
