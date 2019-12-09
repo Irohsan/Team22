@@ -1,17 +1,6 @@
-// Program Header Information ///////////////////////////
-/**
- * @file TranslationEngine.h
- *
- * @team GenTest ( Team 22 )
- *
- * @brief Header file for the TranslationEngine system
- *
- * @details Contains NonTerminals and function definitions for the TranslationEngine
- *
- * @version 1.00
- *          Joshua Johnson (11/16/19)
- *          Initial development of the TranslationEngine
- */
+//
+// Created by craps on 11/5/2019.
+//
 
 #ifndef GENTEST_TRANSLATIONENGINE_H
 #define GENTEST_TRANSLATIONENGINE_H
@@ -55,7 +44,7 @@ class GoogleTestDictionary
     const std::string EQ = "==";
     const std::string NE = "!=";
 
-    const std::string GTEST_NOINLINE = "GTEST_NO_INLINE";
+    const std::string GTEST_NOINLINE = "GTEST_NO_INLINE_";
     const std::string GTEST = "TEST";
 
     /**
@@ -293,154 +282,154 @@ class CFGDictionary
     **/
     NTerminal getCFGAssoc( std::string string )
     {
-        if( string == S_ASSERT_GT )
+        if( string.compare( S_ASSERT_GT ) == 0 )
         {
             return ASSERT_GT;
         }
-        else if( string == S_ASSERT_LT )
+        else if( string.compare( S_ASSERT_LT ) == 0 )
         {
             return ASSERT_LT;
         }
-        else if( string == S_ASSERT_GE )
+        else if( string.compare( S_ASSERT_GE ) == 0 )
         {
             return ASSERT_GE;
         }
-        else if( string == S_ASSERT_LE )
+        else if( string.compare( S_ASSERT_LE ) == 0 )
         {
             return ASSERT_LE;
         }
-        else if( string == S_ASSERT_EQ )
+        else if( string.compare( S_ASSERT_EQ ) == 0 )
         {
             return ASSERT_EQ;
         }
-        else if( string == S_ASSERT_NE )
+        else if( string.compare( S_ASSERT_NE ) == 0 )
         {
             return ASSERT_NE;
         }
-        else if( string == S_ASSUME_GT )
+        else if( string.compare( S_ASSUME_GT ) == 0 )
         {
             return ASSUME_GT;
         }
-        else if( string == S_ASSUME_LT )
+        else if( string.compare( S_ASSUME_LT ) == 0 )
         {
             return ASSUME_LT;
         }
-        else if( string == S_ASSUME_GE )
+        else if( string.compare( S_ASSUME_GE ) == 0 )
         {
             return ASSUME_GE;
         }
-        else if( string == S_ASSUME_LE )
+        else if( string.compare( S_ASSUME_LE ) == 0 )
         {
             return ASSUME_LE;
         }
-        else if( string == S_ASSUME_EQ )
+        else if( string.compare( S_ASSUME_EQ ) == 0 )
         {
             return ASSUME_EQ;
         }
-        else if( string == S_ASSUME_NE )
+        else if( string.compare( S_ASSUME_NE ) == 0 )
         {
             return ASSUME_NE;
         }
-        else if( string == S_CHECK_GT )
+        else if( string.compare( S_CHECK_GT ) == 0 )
         {
             return CHECK_GT;
         }
-        else if( string == S_CHECK_LT )
+        else if( string.compare( S_CHECK_LT ) == 0 )
         {
             return CHECK_LT;
         }
-        else if( string == S_CHECK_GE )
+        else if( string.compare( S_CHECK_GE ) == 0 )
         {
             return CHECK_GE;
         }
-        else if( string == S_CHECK_LE )
+        else if( string.compare( S_CHECK_LE ) == 0 )
         {
             return CHECK_LE;
         }
-        else if( string == S_CHECK_EQ )
+        else if( string.compare( S_CHECK_EQ ) == 0 )
         {
             return CHECK_EQ;
         }
-        else if( string == S_CHECK_NE )
+        else if( string.compare( S_CHECK_NE ) == 0 )
         {
             return CHECK_NE;
         }
-        else if( string == S_DEEPSTATE_NOINLINE )
+        else if( string.compare( S_DEEPSTATE_NOINLINE ) == 0 )
         {
             return DEEPSTATE_NOINLINE;
         }
-        else if( string == S_TEST )
+        else if( string.compare( S_TEST ) == 0 )
         {
             return TEST;
         }
-        else if( string == S_ASSERT )
+        else if( string.compare( S_ASSERT ) == 0 )
 	    {
 	        return ASSERT;
 	    }
-	    else if( string == S_DEEPSTATE_ASSERT )
+	    else if( string.compare( S_DEEPSTATE_ASSERT ) == 0 )
 	    {
             return DEEPSTATE_ASSERT;
 	    }
-	    else if( string == S_DEEPSTATE_ASSUME )
+	    else if( string.compare( S_DEEPSTATE_ASSUME ) == 0 )
 	    {
 	        return DEEPSTATE_ASSUME;
 	    }
-	    else if( string == S_DEEPSTATE_CHECK )
+	    else if( string.compare( S_DEEPSTATE_CHECK ) == 0 )
 	    {
             return DEEPSTATE_CHECK;
 	    }
-        else if( string == SYMB_UNDER_INT
-                 || string == SYMB_BRACKET_INT )
+        else if( string.compare( SYMB_UNDER_INT ) == 0
+                 || string.compare( SYMB_BRACKET_INT ) == 0 )
         {
             return X_INT;
         }
-        else if( string == SYMB_UNDER_UINT8
-                 || string == SYMB_BRACKET_UINT8 )
+        else if( string.compare( SYMB_UNDER_UINT8 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT8 ) == 0 )
         {
             return UINT8;
         }
-        else if( string == SYMB_UNDER_UINT16
-                 || string == SYMB_BRACKET_UINT16 )
+        else if( string.compare( SYMB_UNDER_UINT16 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT16 ) == 0 )
         {
             return X_UINT16;
         }
-        else if( string == SYMB_UNDER_UINT32
-                 || string == SYMB_BRACKET_UINT32 )
+        else if( string.compare( SYMB_UNDER_UINT32 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT32 ) == 0 )
         {
             return X_UINT32;
         }
-        else if( string == SYMB_UNDER_UINT64
-                 || string == SYMB_BRACKET_UINT64 )
+        else if( string.compare( SYMB_UNDER_UINT64 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT64 ) == 0 )
         {
             return X_UINT32;
         }
-        else if( string == SYMB_UNDER_UNSIGNED
-                 || string == SYMB_BRACKET_UNSIGNED )
+        else if( string.compare( SYMB_UNDER_UNSIGNED ) == 0
+                 || string.compare( SYMB_BRACKET_UNSIGNED ) == 0 )
         {
             return X_UNSIGNED;
         }
-        else if( string == SYMB_UNDER_LONG
-                 || string == SYMB_BRACKET_LONG )
+        else if( string.compare( SYMB_UNDER_LONG ) == 0
+                 || string.compare( SYMB_BRACKET_LONG ) == 0 )
         {
             return X_LONG;
         }
-        else if( string == SYMB_UNDER_SHORT
-                 || string == SYMB_BRACKET_SHORT )
+        else if( string.compare( SYMB_UNDER_SHORT ) == 0
+                 || string.compare( SYMB_BRACKET_SHORT ) == 0 )
         {
             return X_SHORT;
         }
-        else if( string == SYMB_UNDER_CHAR
-                 || string == SYMB_BRACKET_CHAR )
+        else if( string.compare( SYMB_UNDER_CHAR ) == 0
+                 || string.compare( SYMB_BRACKET_CHAR ) == 0 )
         {
             return X_CHAR;
         }
-        else if( string == SYMB_UNDER_FLOAT
-                 || string == SYMB_BRACKET_FLOAT )
+        else if( string.compare( SYMB_UNDER_FLOAT ) == 0
+                 || string.compare( SYMB_BRACKET_FLOAT ) == 0 )
         {
             return X_FLOAT;
         }
-        else if( string == SYMB_UNDER_DOUBLE
-                 || string == SYMB_BRACKET_DOUBLE )
+        else if( string.compare( SYMB_UNDER_DOUBLE ) == 0
+                 || string.compare( SYMB_BRACKET_DOUBLE ) == 0 )
         {
             return X_DOUBLE;
         }
@@ -822,6 +811,9 @@ class FileWriter
             // Output a newline for formatting reasons.
             this->outputFile << std::endl;
         }
+
+	this->outputFile << "\n";
+	this->outputFile << "int main(int argc, char **argv) \n{\n testing::InitGoogleTest(&argc, argv); \n return RUN_ALL_TESTS(); \n}\n";
     }
 
 
@@ -848,17 +840,46 @@ class FileWriter
                 Line currentLine = fileVector.at( index ).at( funcIndex );       
 
                 // Non-Terminal line case.
-                if( currentLine.getHeaderNt() != NO_TRANSLATE   
+                if( index < (int) fileVector.at( index ).size() - 1 )
+		        { 
+                    if( currentLine.getHeaderNt() != NO_TRANSLATE   
                     && currentLine.getHeaderNt() != TEST
-                    && currentLine.getHeaderNt() != DEEPSTATE_NOINLINE )
-                {      
-                    // Ident the line.
-                    this->outputFile << indentLine();           
-                    this->outputFile << currentLine.getString( true ) << std::endl; 
+                    && currentLine.getHeaderNt() != DEEPSTATE_NOINLINE
+                    && fileVector.at( index ).at( funcIndex + 1 ).getBody().find( "<<" ) == std::string::npos )
+                    {      
+                        // Ident the line.
+                        this->outputFile << indentLine();           
+                        this->outputFile << currentLine.getString( true ) << std::endl; 
+                    }
+                    else if( currentLine.getHeaderNt() != NO_TRANSLATE   
+                         && currentLine.getHeaderNt() != TEST
+                         && currentLine.getHeaderNt() != DEEPSTATE_NOINLINE
+                         && fileVector.at( index ).at( funcIndex + 1 ).getBody().find( "<<" ) != std::string::npos )
+                    {
+                        // Ident the line.
+                        this->outputFile << indentLine();           
+                        this->outputFile << currentLine.getString() << std::endl; 
+                    }
+                    else
+                    {
+                        this->outputFile << currentLine.getString() << std::endl;
+                    }
+     
                 }
                 else
                 {
-                    this->outputFile << currentLine.getString() << std::endl;
+                    if( currentLine.getHeaderNt() != NO_TRANSLATE   
+                    && currentLine.getHeaderNt() != TEST
+                    && currentLine.getHeaderNt() != DEEPSTATE_NOINLINE )
+                    {      
+                        // Ident the line.
+                        this->outputFile << indentLine();           
+                        this->outputFile << currentLine.getString( true ) << std::endl; 
+                    }
+                    else
+                    {
+                        this->outputFile << currentLine.getString() << std::endl;
+                    }
                 }
             }
         }
@@ -913,7 +934,8 @@ class FileWriter
         this->outputFile << "  *                                                " << "\n";
         this->outputFile << "  ************************************************/ " << "\n";
   
-        this->outputFile << "\n\n";
+        this->outputFile << "\n";
+	this->outputFile << "#include <gtest/gtest.h>\n\n";
     }
 
 
@@ -1018,7 +1040,7 @@ class SymbolicProcessor
                 }
                 else if( header == X_CHAR )
                 {
-                    appendString += elementVector.at( index ) + " = '" + std::to_string( demoDummyCharArray[ index ] ) + "'";
+                    appendString += elementVector.at( index ) + " = '" + demoDummyCharArray[ index ] + "'";
                 }
                 else if( header == X_UNSIGNED )
                 {
@@ -1041,7 +1063,7 @@ class SymbolicProcessor
             }
             else if( header == X_CHAR )
             {
-                appendString += elementVector.at( 0 ) + " = '" + std::to_string( demoDummyCharArray[ 0 ] ) + "'";
+                appendString += elementVector.at( 0 ) + " = '" + demoDummyCharArray[ 0 ] + "'";
             }
             else if( header == X_UNSIGNED )
             {
@@ -1086,8 +1108,7 @@ class SymbolicProcessor
             std::string currentCharacter( 1, line.at( index ) );
 
             if( currentCharacter.compare( delimitor ) == 0 
-                || currentCharacter.compare( delimitor2 ) == 0 )
-            {
+                || currentCharacter.compare( delimitor2 ) == 0 )            {
                 // Get substring
                 substring = substr( line, partitionIndex, index );
 
