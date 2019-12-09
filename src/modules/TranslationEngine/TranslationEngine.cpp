@@ -205,12 +205,12 @@ class Parser
 
                     if( line.find( SEMI_COLON ) != std::string::npos )
                     {
-                        appendLine.addToBody( this->substr( line, index + 3, line.find( SEMI_COLON ) ) );
+                        appendLine.addToBody( this->substr( line, line.find( OPEN_PARENTHESIS ), line.find( SEMI_COLON ) ) );
                     }
                     else
                     {
                         line += SEMI_COLON;
-                        appendLine.addToBody( this->substr( line, index + 3, line.find( SEMI_COLON ) ) );
+                        appendLine.addToBody( this->substr( line, line.find( OPEN_PARENTHESIS ), line.find( SEMI_COLON ) ) );
                     }
 
                     // Add to file vector.
