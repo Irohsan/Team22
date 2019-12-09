@@ -42,7 +42,8 @@ void BinaryParser::parse( std::istream& inputStream )
 
 BinaryIterator BinaryParser::getIterator()
 {
-    if( !data.size() )
+    if( d
+    ata.empty() )
         {
             throw std::runtime_error( "Iterator cannot be "
                                       "returned for empty binary "

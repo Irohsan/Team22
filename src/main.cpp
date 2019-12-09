@@ -35,6 +35,8 @@ int main( int numArgs, char** args )
         //probably want to create/utilize some sort of logger
 
         cout << "Invalid number of args" << endl;
+
+        return 0;
     }
 
     //Detect if valid DeepState test file (args[1])

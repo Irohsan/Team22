@@ -527,16 +527,24 @@ std::vector< std::vector< Line > > runTranslator( char * harnessFilePath, char *
 
     harnessParser.setBinaryFile( outputPath );
 
-    harnessParser.setBinaryFile( binaryFilePath );
-    harnessParser.runParser();
-    harnessParser.closeFile();
+    try {
+        harnessParser.setBinaryFile( binaryFilePath );
+        harnessParser.runParser();
+        harnessParser.closeFile();
 
-    // Retrieve outputVector from parser.
-    outputVector = harnessParser.getOutputVector();
+        // Retrieve outputVector from parser.
+        outputVector = harnessParser.getOutputVector();
 
-    // Initialize writer with outputVector.
-    writer.initialize( outputVector, outputPath );
-    writer.writeOutput();
+        // Initialize writer with outputVector.
+        writer.initialize( outputVector, outputPath );
+        writer.writeOutput();
+    }
+    catch (std::length_error e)
+    {
+
+    }
+
+
 
     return outputVector;
 }
