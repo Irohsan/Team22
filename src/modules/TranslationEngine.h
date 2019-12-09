@@ -1,17 +1,6 @@
-// Program Header Information ///////////////////////////
-/**
- * @file TranslationEngine.h
- *
- * @team GenTest ( Team 22 )
- *
- * @brief Header file for the TranslationEngine system
- *
- * @details Contains NonTerminals and function definitions for the TranslationEngine
- *
- * @version 1.00
- *          Joshua Johnson (11/16/19)
- *          Initial development of the TranslationEngine
- */
+//
+// Created by craps on 11/5/2019.
+//
 
 #ifndef GENTEST_TRANSLATIONENGINE_H
 #define GENTEST_TRANSLATIONENGINE_H
@@ -78,145 +67,199 @@ class GoogleTestDictionary
             
                 return "ASSERT_GT";
 
+            break;
+
             case ASSERT_LT:
     
                 return "ASSERT_LT";
+
+            break;
 
             case ASSERT_GE:
 
                 return "ASSERT_GE";
 
+            break;
 
             case ASSERT_LE:
 
-                return "ASSERT_LE";;
+                return "ASSERT_LE";
+
+            break;
 
             case ASSERT_EQ:
 
                 return "ASSERT_EQ";
 
+            break;
+
             case ASSERT_NE:
 
                 return "ASSERT_NE";
+
+            break;
 
             case DEEPSTATE_ASSERT:
     
                 return "ASSERT_TRUE";
 
+            break;
+
             case ASSERT:
             
                 return "ASSERT_TRUE";
+
+            break;
 
             case ASSUME_GT:
 
                 return EXPECT_GT;
 
+            break;
+
             case ASSUME_LT:
         
                 return EXPECT_LT;
+
+            break;
 
             case ASSUME_GE:
 
                 return EXPECT_GE;
 
+            break;
+
             case ASSUME_LE:
                 
                 return EXPECT_LE;
+
+            break;
 
             case ASSUME_EQ:
 
                 return EXPECT_EQ;
 
+            break;
+
             case ASSUME_NE:
 
                 return EXPECT_NE;
+
+            break;
 
             case DEEPSTATE_ASSUME:
         
                 return EXPECT_TRUE;
 
+            break;
+
             case CHECK_GT:
 
                 return GT;
+
+            break;
 
             case CHECK_LT:
 
                 return LT;
 
+            break;
 
             case CHECK_GE:
 
                 return GE;
 
+            break;
+
             case CHECK_LE:
 
                 return LE;
 
+            break;
+
             case CHECK_EQ:
 
-                return NE;
+                return EQ;
+
+            break;
 
             case CHECK_NE:
 
                 return EQ;
 
+            break;
 
             case DEEPSTATE_NOINLINE:
             
                 return GTEST_NOINLINE;
 
+            break;
 
             case TEST:
                 
                 return GTEST;
 
+            break;
 
             case X_INT:
     
                 return "int";
-
+    
+            break;
 
             case X_UINT8:
         
                 return "uint8_t";
 
+            break;
 
             case X_UINT16:
         
                 return "uint16_t";
 
+            break;
+
             case X_UINT32:
 
                 return "uint32_t";
+
+            break;
 
             case X_UINT64:
 
                 return "uint64_t";
 
+            break;
 
             case X_UNSIGNED:
                 
                 return "unsigned";
 
+            break;
 
             case X_CHAR:
 
                 return "char";
 
+            break;
 
             case X_FLOAT:
 
                 return "float";
 
+            break;
 
             case X_DOUBLE:
 
                 return "double";
 
+            break;
 
             default:
 
                 return EMPTY_STRING;
+
+            break;
         }    
     }
 };
@@ -239,154 +282,154 @@ class CFGDictionary
     **/
     NTerminal getCFGAssoc( std::string string )
     {
-        if( string == S_ASSERT_GT )
+        if( string.compare( S_ASSERT_GT ) == 0 )
         {
             return ASSERT_GT;
         }
-        else if( string == S_ASSERT_LT )
+        else if( string.compare( S_ASSERT_LT ) == 0 )
         {
             return ASSERT_LT;
         }
-        else if( string == S_ASSERT_GE )
+        else if( string.compare( S_ASSERT_GE ) == 0 )
         {
             return ASSERT_GE;
         }
-        else if( string == S_ASSERT_LE )
+        else if( string.compare( S_ASSERT_LE ) == 0 )
         {
             return ASSERT_LE;
         }
-        else if( string == S_ASSERT_EQ )
+        else if( string.compare( S_ASSERT_EQ ) == 0 )
         {
             return ASSERT_EQ;
         }
-        else if( string == S_ASSERT_NE )
+        else if( string.compare( S_ASSERT_NE ) == 0 )
         {
             return ASSERT_NE;
         }
-        else if( string == S_ASSUME_GT )
+        else if( string.compare( S_ASSUME_GT ) == 0 )
         {
             return ASSUME_GT;
         }
-        else if( string == S_ASSUME_LT )
+        else if( string.compare( S_ASSUME_LT ) == 0 )
         {
             return ASSUME_LT;
         }
-        else if( string == S_ASSUME_GE )
+        else if( string.compare( S_ASSUME_GE ) == 0 )
         {
             return ASSUME_GE;
         }
-        else if( string == S_ASSUME_LE )
+        else if( string.compare( S_ASSUME_LE ) == 0 )
         {
             return ASSUME_LE;
         }
-        else if( string == S_ASSUME_EQ )
+        else if( string.compare( S_ASSUME_EQ ) == 0 )
         {
             return ASSUME_EQ;
         }
-        else if( string == S_ASSUME_NE )
+        else if( string.compare( S_ASSUME_NE ) == 0 )
         {
             return ASSUME_NE;
         }
-        else if( string == S_CHECK_GT )
+        else if( string.compare( S_CHECK_GT ) == 0 )
         {
             return CHECK_GT;
         }
-        else if( string == S_CHECK_LT )
+        else if( string.compare( S_CHECK_LT ) == 0 )
         {
             return CHECK_LT;
         }
-        else if( string == S_CHECK_GE )
+        else if( string.compare( S_CHECK_GE ) == 0 )
         {
             return CHECK_GE;
         }
-        else if( string == S_CHECK_LE )
+        else if( string.compare( S_CHECK_LE ) == 0 )
         {
             return CHECK_LE;
         }
-        else if( string == S_CHECK_EQ )
+        else if( string.compare( S_CHECK_EQ ) == 0 )
         {
             return CHECK_EQ;
         }
-        else if( string == S_CHECK_NE )
+        else if( string.compare( S_CHECK_NE ) == 0 )
         {
             return CHECK_NE;
         }
-        else if( string == S_DEEPSTATE_NOINLINE )
+        else if( string.compare( S_DEEPSTATE_NOINLINE ) == 0 )
         {
             return DEEPSTATE_NOINLINE;
         }
-        else if( string == S_TEST )
+        else if( string.compare( S_TEST ) == 0 )
         {
             return TEST;
         }
-        else if( string == S_ASSERT )
-        {
+        else if( string.compare( S_ASSERT ) == 0 )
+	    {
 	        return ASSERT;
 	    }
-        else if( string == S_DEEPSTATE_ASSERT )
+	    else if( string.compare( S_DEEPSTATE_ASSERT ) == 0 )
 	    {
             return DEEPSTATE_ASSERT;
 	    }
-        else if( string == S_DEEPSTATE_ASSUME )
+	    else if( string.compare( S_DEEPSTATE_ASSUME ) == 0 )
 	    {
 	        return DEEPSTATE_ASSUME;
 	    }
-        else if( string == S_DEEPSTATE_CHECK )
+	    else if( string.compare( S_DEEPSTATE_CHECK ) == 0 )
 	    {
             return DEEPSTATE_CHECK;
 	    }
-        else if( string == SYMB_UNDER_INT
-                 || string == SYMB_BRACKET_INT )
+        else if( string.compare( SYMB_UNDER_INT ) == 0
+                 || string.compare( SYMB_BRACKET_INT ) == 0 )
         {
             return X_INT;
         }
-        else if( string == SYMB_UNDER_UINT8
-                 || string == SYMB_BRACKET_UINT8 )
+        else if( string.compare( SYMB_UNDER_UINT8 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT8 ) == 0 )
         {
             return UINT8;
         }
-        else if( string == SYMB_UNDER_UINT16
-                 || string == SYMB_BRACKET_UINT16 )
+        else if( string.compare( SYMB_UNDER_UINT16 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT16 ) == 0 )
         {
             return X_UINT16;
         }
-        else if( string == SYMB_UNDER_UINT32
-                 || string == SYMB_BRACKET_UINT32 )
+        else if( string.compare( SYMB_UNDER_UINT32 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT32 ) == 0 )
         {
             return X_UINT32;
         }
-        else if( string == SYMB_UNDER_UINT64
-                 || string == SYMB_BRACKET_UINT64 )
+        else if( string.compare( SYMB_UNDER_UINT64 ) == 0
+                 || string.compare( SYMB_BRACKET_UINT64 ) == 0 )
         {
             return X_UINT32;
         }
-        else if( string == SYMB_UNDER_UNSIGNED
-                 || string == SYMB_BRACKET_UNSIGNED )
+        else if( string.compare( SYMB_UNDER_UNSIGNED ) == 0
+                 || string.compare( SYMB_BRACKET_UNSIGNED ) == 0 )
         {
             return X_UNSIGNED;
         }
-        else if( string == SYMB_UNDER_LONG
-                 || string == SYMB_BRACKET_LONG )
+        else if( string.compare( SYMB_UNDER_LONG ) == 0
+                 || string.compare( SYMB_BRACKET_LONG ) == 0 )
         {
             return X_LONG;
         }
-        else if( string == SYMB_UNDER_SHORT
-                 || string == SYMB_BRACKET_SHORT )
+        else if( string.compare( SYMB_UNDER_SHORT ) == 0
+                 || string.compare( SYMB_BRACKET_SHORT ) == 0 )
         {
             return X_SHORT;
         }
-        else if( string == SYMB_UNDER_CHAR
-                 || string == SYMB_BRACKET_CHAR )
+        else if( string.compare( SYMB_UNDER_CHAR ) == 0
+                 || string.compare( SYMB_BRACKET_CHAR ) == 0 )
         {
             return X_CHAR;
         }
-        else if( string == SYMB_UNDER_FLOAT
-                 || string == SYMB_BRACKET_FLOAT )
+        else if( string.compare( SYMB_UNDER_FLOAT ) == 0
+                 || string.compare( SYMB_BRACKET_FLOAT ) == 0 )
         {
             return X_FLOAT;
         }
-        else if( string == SYMB_UNDER_DOUBLE
-                 || string == SYMB_BRACKET_DOUBLE )
+        else if( string.compare( SYMB_UNDER_DOUBLE ) == 0
+                 || string.compare( SYMB_BRACKET_DOUBLE ) == 0 )
         {
             return X_DOUBLE;
         }
@@ -591,11 +634,11 @@ class Line
             if( addSpaces && ( index < (int) this->body.size() - 2 ) ) 
             {
                 std::cout << index << "\n";
-                bodyString += this->body.at( index ) + SPACE;
+                bodyString = bodyString + this->body.at( index ) + SPACE;
             }
             else
             {
-                bodyString += this->body.at( index );
+                bodyString = bodyString + this->body.at( index );
             }
 
             // Increment index
@@ -641,7 +684,7 @@ class Line
         // Declare local variables.
         std::string outputString = this->getHeader();
     
-        outputString += this->getBeginSymb() + this->getBody();
+        outputString = outputString + this->getBeginSymb() + this->getBody();
         
         if( includeSemiColon )
         {
@@ -927,8 +970,6 @@ class SymbolicProcessor
     void setBinaryFile( std::string binaryFile )
     {
         binaryParser.parse( binaryFile );
-
-        iter = binaryParser.getIterator();
     }
 
     /**
@@ -945,6 +986,9 @@ class SymbolicProcessor
     **/
     std::string appendData( NTerminal header, std::string lineBody )
     {
+        // Declare srand.
+        srand( time( 0 ) );
+
         // Declare local variables.
         std::string appendString = EMPTY_STRING;
         std::vector< std::string > elementVector;
@@ -959,15 +1003,15 @@ class SymbolicProcessor
             {
                 if( header == X_INT )
                 {
-                    appendString += elementVector.at( index ) + " = " + std::to_string( iter.nextInt() );
+                    appendString += elementVector.at( index ) + " = " + std::to_string( rand() );
                 }
                 else if( header == X_CHAR )
                 {
-                    appendString += elementVector.at( index ) + " = '" + std::to_string( iter.nextChar() ) + "'";
+                    appendString += elementVector.at( index ) + " = '" + std::to_string( demoDummyCharArray[ index ] ) + "'";
                 }
                 else if( header == X_UNSIGNED )
                 {
-                    appendString += elementVector.at( index ) + " = " + std::to_string( iter.nextUInt() );
+                    appendString += elementVector.at( index ) + " = " + std::to_string( (unsigned) rand() );
                 }
 
                 if( index != (int) elementVector.size() - 1 )
@@ -1001,7 +1045,6 @@ class SymbolicProcessor
 
     // Private field variables.
     BinaryParser binaryParser;
-    BinaryIterator iter = nullptr;
     std::string filename;
     
     // Constant field variables.
@@ -1032,8 +1075,7 @@ class SymbolicProcessor
             std::string currentCharacter( 1, line.at( index ) );
 
             if( currentCharacter.compare( delimitor ) == 0 
-                || currentCharacter.compare( delimitor2 ) == 0 )
-            {
+                || currentCharacter.compare( delimitor2 ) == 0 )            {
                 // Get substring
                 substring = substr( line, partitionIndex, index );
 
@@ -1097,6 +1139,6 @@ class SymbolicProcessor
     }
 };
 
-std::vector< std::vector< Line > > runTranslator( char * harnessFilePath, char * binaryFilePath, char * outputPath );
+void runTranslator( char * harnessFilePath );
 
 #endif //GENTEST_TRANSLATIONENGINE_H

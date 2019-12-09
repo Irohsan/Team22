@@ -515,7 +515,7 @@ std::vector< std::vector< Line > > runTranslator( char * harnessFilePath, char *
     Parser harnessParser;
     FileWriter writer;
 
-    // Declare Data Structures
+    // Declare data structures.
     std::vector< std::vector< Line > > outputVector;
 
     // Declare other variables.
@@ -541,3 +541,6 @@ std::vector< std::vector< Line > > runTranslator( char * harnessFilePath, char *
 
     return outputVector;
 }
+
+
+

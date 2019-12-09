@@ -1,3 +1,4 @@
+
 // Program Header Information ///////////////////////////
 /**
  * @file BinaryParser.h
@@ -47,7 +48,7 @@ class BinaryParser
      * @post this->data will contain the binary data present in
      *       inputStream
      **/
-    void parse( std::fstream& inputStream );
+    void parse( std::istream& inputStream );
 
     /**
      * Open a file with name 'fileName', and parse

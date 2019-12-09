@@ -20,22 +20,21 @@
 using namespace deepstate;
 
 static unsigned pow5(unsigned v) {
-  return v * v * v * v * v;
+    return v * v * v * v * v;
 }
 
 TEST(Euler, SumsOfLikePowers) {
-  symbolic_unsigned a, b, c, d, e;
-  ASSERT_GT(a, 1);
-  ASSERT_GT(b, 1);
-  ASSERT_GT(c, 1);
-  ASSERT_GT(d, 1);
-  ASSERT_GT(e, 1);
-  ASSERT_NE(a, b); ASSERT_NE(a, c); ASSERT_NE(a, d); ASSERT_NE(a, e);
-  ASSERT_NE(b, c); ASSERT_NE(b, d); ASSERT_NE(b, e);
-  ASSERT_NE(c, d); ASSERT_NE(c, e);
-  ASSERT_NE(d, e);
-  ASSERT_NE(pow5(a) + pow5(b) + pow5(c) + pow5(d), pow5(e))
-      << a << "^5 + " << b << "^5" << " + " << c
-      << "^5 + " << d << "^5 = " << e << "^5";
+symbolic_unsigned a, b, c, d, e;
+ASSERT_GT(a, 1);
+ASSERT_GT(b, 1);
+ASSERT_GT(c, 1);
+ASSERT_GT(d, 1);
+ASSERT_GT(e, 1);
+ASSERT_NE(a, b); ASSERT_NE(a, c); ASSERT_NE(a, d); ASSERT_NE(a, e);
+ASSERT_NE(b, c); ASSERT_NE(b, d); ASSERT_NE(b, e);
+ASSERT_NE(c, d); ASSERT_NE(c, e);
+ASSERT_NE(d, e);
+ASSERT_NE(pow5(a) + pow5(b) + pow5(c) + pow5(d), pow5(e))
+<< a << "^5 + " << b << "^5" << " + " << c
+<< "^5 + " << d << "^5 = " << e << "^5";
 }
-

@@ -1,3 +1,4 @@
+
 // Program Header Information ///////////////////////////
 /**
  * @file FileAssembler.h
@@ -28,4 +29,4 @@ class FileAssembler
         void output(/**Datastructure we create for file output**/ );
 };
 
-#endif // GENTEST_FILEASSEMBLER_H
+#endif GENTEST_FILEASSEMBLER_H

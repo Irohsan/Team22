@@ -19,36 +19,36 @@
 using namespace deepstate;
 
 bool IsPrime(const unsigned p) {
-  for (unsigned i = 2; i <= (p/2); ++i) {
-    if (!(p % i)) {
-      return i;
+    for (unsigned i = 2; i <= (p/2); ++i) {
+        if (!(p % i)) {
+            return i;
+        }
     }
-  }
-  return true;
+    return true;
 }
 
 TEST(PrimePolynomial, OnlyGeneratesPrimes) {
-  symbolic_unsigned x, y, z;
-  ASSUME_GT(x, 0);
-  unsigned poly = (x * x) + x + 41;
-  ASSUME_GT(y, 1);
-  ASSUME_GT(z, 1);
-  ASSUME_LT(y, poly);
-  ASSUME_LT(z, poly);
-  ASSERT(poly != y * z)
-      << x << "^2 + " << x << " + 41 is not prime";
-  ASSERT(IsPrime(Pump(poly)))
-      << x << "^2 + " << x << " + 41 is not prime";
+symbolic_unsigned x, y, z;
+ASSUME_GT(x, 0);
+unsigned poly = (x * x) + x + 41;
+ASSUME_GT(y, 1);
+ASSUME_GT(z, 1);
+ASSUME_LT(y, poly);
+ASSUME_LT(z, poly);
+ASSERT(poly != y * z)
+<< x << "^2 + " << x << " + 41 is not prime";
+ASSERT(IsPrime(Pump(poly)))
+<< x << "^2 + " << x << " + 41 is not prime";
 }
 
 TEST(PrimePolynomial, OnlyGeneratesPrimes_NoStreaming) {
-  symbolic_unsigned x, y, z;
-  DeepState_Assume(x > 0);
-  unsigned poly = (x * x) + x + 41;
-  DeepState_Assume(y > 1);
-  DeepState_Assume(z > 1);
-  DeepState_Assume(y < poly);
-  DeepState_Assume(z < poly);
-  DeepState_Assert(poly != (y * z));
-  DeepState_Assert(IsPrime(Pump(poly)));
+symbolic_unsigned x, y, z;
+DeepState_Assume(x > 0);
+unsigned poly = (x * x) + x + 41;
+DeepState_Assume(y > 1);
+DeepState_Assume(z > 1);
+DeepState_Assume(y < poly);
+DeepState_Assume(z < poly);
+DeepState_Assert(poly != (y * z));
+DeepState_Assert(IsPrime(Pump(poly)));
 }

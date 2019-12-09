@@ -14,7 +14,6 @@
  *
  */
 
-
 #ifndef BINARY_ITERATOR_HH_INCLUDED
 #define BINARY_ITERATOR_HH_INCLUDED
 #include <vector>
@@ -44,9 +43,9 @@ class BinaryIterator
      * Template type allows for the retrieval of 
      * different types from the same data.     
      * @note this method advances the iterator
-     * @throws std::runtime_error if there is not enough 
+     * @throws std::runtime_error if there is not enough
      *         space for another member of type T.
-     * @returns T initialized from the unstructured 
+     * @returns T initialized from the unstructured
      *          binary data
      **/
     template <typename T>
@@ -59,7 +58,7 @@ class BinaryIterator
               )
                 {
                     // TODO: endianness?
-                    return T( *(T*) &( dataPtr->at( index++ ) ) );
+                    return T( (T*) &( dataPtr->at( index++ ) ) );
                 }
             throw std::runtime_error( "Specified type requested is larger than "
                                       "the remaining memory."
@@ -74,11 +73,11 @@ class BinaryIterator
     void rewind();
 
     /**
-     * Rewind the iterator's pointer back 
+     * Rewind the iterator's pointer back
      * step bytes.
-     * @param step the number of bytes to rewind the 
+     * @param step the number of bytes to rewind the
      *        iterator.
-     * @note If step > index, the iterator 
+     * @note If step > index, the iterator
      *       points to the 0'th position.
      **/
     void rewind( std::size_t step );
