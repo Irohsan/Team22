@@ -47,7 +47,7 @@ class BinaryParser
      * @post this->data will contain the binary data present in
      *       inputStream
      **/
-    void parse( std::istream& inputStream );
+    void parse( std::fstream& inputStream );
 
     /**
      * Open a file with name 'fileName', and parse
@@ -96,8 +96,6 @@ class BinaryParser
      *      are defined.
      **/
     void fromStream( std::istream& inputStream );
-    
-
 };
 
 #endif // BINARY_PARSER_HH_INCLUDED

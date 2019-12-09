@@ -35,15 +35,14 @@ void BinaryParser::parse( const std::string& fileName )
     fromStream( file );
 }
 
-void BinaryParser::parse( std::istream& inputStream )
+void BinaryParser::parse( std::fstream& inputStream )
 {
     fromStream( inputStream ); 
 }
 
 BinaryIterator BinaryParser::getIterator()
 {
-    if( d
-    ata.empty() )
+    if( data.empty() )
         {
             throw std::runtime_error( "Iterator cannot be "
                                       "returned for empty binary "
@@ -57,12 +56,16 @@ void BinaryParser::fromStream( std::istream& inputStream )
 {
     std::string contents;
     inputStream.seekg( 0, std::ios::end );
+
     contents.resize( inputStream.tellg() );
+
     inputStream.seekg( 0, std::ios::beg );
     inputStream.read( &contents[ 0 ], contents.size() );
 
     data.resize( contents.size() );
     stringToData( contents );
+
+
 }
 
 void BinaryParser::stringToData( const std::string& string )

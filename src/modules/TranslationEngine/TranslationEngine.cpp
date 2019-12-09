@@ -470,7 +470,7 @@ class Parser
       *
       *   Notes: N/A
     **/
-    bool isAssert( std::string line )
+    bool isAssert( const std::string& line )
     {
         return line.find( "ASSERT" ) != std::string::npos || line.find( "Assert" ) != std::string::npos;
     }
@@ -486,7 +486,7 @@ class Parser
       *
       *   Notes: N/A
     **/
-    bool isAssume( std::string line )
+    bool isAssume( const std::string& line )
     {
         return line.find( "ASSUME" ) != std::string::npos || line.find( "Assume" ) != std::string::npos;
     }
@@ -502,7 +502,7 @@ class Parser
       *
       *   Notes: N/A
     **/
-    bool isCheck( std::string line )
+    bool isCheck( const std::string& line )
     {
         return line.find( "CHECK" ) != std::string::npos || line.find( "Check" ) != std::string::npos;
     }
@@ -525,26 +525,19 @@ std::vector< std::vector< Line > > runTranslator( char * harnessFilePath, char *
     // Setup and run parser.
     harnessParser.setFile( harnessFilePath );
 
-    harnessParser.setBinaryFile( outputPath );
-
-    try {
-        harnessParser.setBinaryFile( binaryFilePath );
-        harnessParser.runParser();
-        harnessParser.closeFile();
-
-        // Retrieve outputVector from parser.
-        outputVector = harnessParser.getOutputVector();
-
-        // Initialize writer with outputVector.
-        writer.initialize( outputVector, outputPath );
-        writer.writeOutput();
-    }
-    catch (std::length_error e)
-    {
-
-    }
+    harnessParser.setBinaryFile( binaryFilePath );
 
 
+    harnessParser.setBinaryFile( binaryFilePath );
+    harnessParser.runParser();
+    harnessParser.closeFile();
+
+    // Retrieve outputVector from parser.
+    outputVector = harnessParser.getOutputVector();
+
+    // Initialize writer with outputVector.
+    writer.initialize( outputVector, outputPath );
+    writer.writeOutput();
 
     return outputVector;
 }

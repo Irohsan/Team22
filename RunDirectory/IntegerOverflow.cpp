@@ -13,14 +13,12 @@ DEEPSTATE_NOINLINE int ident2(int x) {
 TEST(SignedInteger, AdditionOverflow) {
     Symbolic<int> x;
     int y = ident1(x) + ident2(x);  // Can overflow!
-    ASSERT_GE(y, 0)
-            << "Found y=" << y << " was not always positive.";
+    ASSERT_GE(y, 0) << "Found y=" << y << " was not always positive.";
 }
 
 TEST(SignedInteger, MultiplicationOverflow) {
     Symbolic<int> x;
     int y = ident1(x) * ident2(x);  // Can overflow!
-    ASSERT_GE(y, 0)
-            << x << " squared overflowed.";
+    ASSERT_GE(y, 0) << x << " squared overflowed.";
 }
 

@@ -13,7 +13,6 @@ DEEPSTATE_NOINLINE int ident2(int x) {
 TEST(GenerateValue, ValueGenerate) {
     Symbolic<int> x;
 
-    ASSERT_GE( ident1(x), 0)
-            << "The value " + std::to_string(x) + " was generated";
+    ASSERT_GE( ident1(x), 0) << "The value " + std::to_string(x) + " was generated";
 }
 

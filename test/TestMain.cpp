@@ -20,8 +20,6 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 
     SECTION( "Binary Iterator UChar" )
         {
-
-
             for( int index = 0; index < 20; ++index )
                 {
                     // i know the layout of the file
