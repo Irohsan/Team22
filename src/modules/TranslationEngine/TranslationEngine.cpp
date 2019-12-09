@@ -234,7 +234,7 @@ class Parser
             }
         }
         
-        if( appendLine.getHeader().compare( EMPTY_STRING ) == 0 )
+        if( appendLine.getHeader() == EMPTY_STRING )
         {
             // Setup appendLine.
             appendLine.initialize( header, EMPTY_STRING, EMPTY_STRING );

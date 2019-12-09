@@ -35,7 +35,7 @@ void BinaryParser::parse( const std::string& fileName )
     fromStream( file );
 }
 
-void BinaryParser::parse( std::fstream& inputStream )
+void BinaryParser::parse( std::istream& inputStream )
 {
     fromStream( inputStream ); 
 }

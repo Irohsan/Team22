@@ -58,7 +58,7 @@ class BinaryIterator
               )
                 {
                     // TODO: endianness?
-                    return T( (T*) &( dataPtr->at( index++ ) ) );
+                    return T( dataPtr->at( index++ ) );
                 }
             throw std::runtime_error( "Specified type requested is larger than "
                                       "the remaining memory."
