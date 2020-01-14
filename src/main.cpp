@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include "TranslationEngine.h"
+#include "FileAssembler.h"
 
 //number of args (test, binary, output name)
 const static int NUM_ARGS = 3;
@@ -27,9 +28,7 @@ using namespace std;
 
 int main( int numArgs, char** args )
 {
-    //declare output from translator
-    std::vector< std::vector< Line > > outputFromTranslator;
-
+    //numArgs - 1 because args[0] is the name of the program
     if( numArgs - 1 != NUM_ARGS )
     {
         //probably want to create/utilize some sort of logger
@@ -39,14 +38,26 @@ int main( int numArgs, char** args )
         return 0;
     }
 
-    //Detect if valid DeepState test file (args[1])
+    //setting up some local variables to make code more readable
+    char * fileToTranslate = args[ 1 ],
 
-    //pass into TranslationEngine with Vector pointer
+    * binaryFile = args[ 2 ],
 
-    //auto keyword automatically gets the type
-    auto output = runTranslator( args[ 1 ], args[ 2 ], args[ 3 ] );
+    * outputPath = args[ 3 ];
+
+    FileWriter writer;
+
+    //TODO: Detect if valid DeepState test file ( args[ 1 ] ) stretch goal maybe?
+
+    //auto keyword automatically gets the type at compile time
+    //for now I am passing the binaryFile into the TranslationEngine as some functions in it use the binary parser
+    auto output = runTranslator( fileToTranslate, binaryFile );
 
     //pass binary file into binary parser (this might be done in the translation engine)
+
+    writer.initialize( output, outputPath, binaryFile );
+
+    writer.writeOutput();
 
     //take vector and pass into FileAssembler
 
