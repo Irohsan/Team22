@@ -110,6 +110,67 @@ class BinaryIterator
      */
     char nextChar();
 
+    /**
+     * Get the next size_t from the BinaryIterator
+     * @returns a size_t from the Iterator's data.
+     **/
+    std::size_t nextSize_t();
+
+    /**
+     * Get the next uint64_t from the BinaryIterator
+     * @returns a uint64_t from the Iterator's data.
+     **/
+    std::uint64_t nextUInt64();
+
+    /**
+     * Get the next int64_t from the BinaryIterator
+     * @returns a int64_t from the Iterator's data.
+     **/
+    std::int64_t nextInt64();
+
+    /**
+     * Get the next uint16_t from the BinaryIterator
+     * @returns a uint16_t from the Iterator's data.
+     **/
+    std::uint16_t nextUInt16();
+
+    /**
+     * Get the next int16_t from the BinaryIterator
+     * @returns a int16_t from the Iterator's data.
+     **/
+    std::int16_t nextInt16();
+
+    /**
+     * Get the next long from the BinaryIterator
+     * @returns a long from the Iterator's data.
+     **/
+    long nextLong();
+
+    /**
+     * Get the next float from the BinaryIterator
+     * @returns a float from the Iterator's data.
+     **/
+    float nextFloat();
+
+    /**
+     * Get the next double from the BinaryIterator
+     * @returns a double from the Iterator's data.
+     **/
+    double nextDouble();
+
+    /**
+     * Return the next random int from the BinaryIterator.
+     * @returns a random integer from the Iterator's data.
+     **/
+    int nextRandInt();
+
+    /**
+     * Return the next boolean value from the BinaryIterator.
+     * @returns a boolean value from the Iterator's data.
+     **/
+    bool nextBool();
+
+
  private:
     /**
      * A pointer to unstructured binary data.
