@@ -21,7 +21,7 @@ The purpose of GenTest is to utilize [DeepState](https://github.com/trailofbits/
 ## Build Instructions
 This will need to be updated as development continues
 
-##Team Website
+## Team Website
 A website has been setup for this project. It can be found at this link:
 https://www.cefns.nau.edu/capstone/projects/CS/2020/GenTest-S20/index.html
 
