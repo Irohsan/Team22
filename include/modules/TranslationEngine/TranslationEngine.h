@@ -6,10 +6,15 @@
  *
  * @brief Header file for the TranslationEngine system
  *
- * @details Contains NonTerminals and function definitions for the TranslationEngine
+ * @details Contains the interface for the TranslationEngine class, which is used to 
+ *          provide interpretation features to the GenTest code base. 
  *
- * @version 1.00
- *          Joshua Johnson (11/16/19)
+ * @version 0.15 
+ *          Joshua Johnson ( 31 January 2020 )
+ *          Removed demo functions, modified includes, and added TranslationEngine class.
+ *          
+ *          0.10
+ *          Joshua Johnson ( 16 November 2019 )
  *          Initial development of the TranslationEngine
  */
 
@@ -21,97 +26,32 @@
 * Included Files
 *******************************/
 
-
-#include "Util.h"
+#include "antlr4-runtime.h"
+#include "GenTestLexer.h"
+#include "GenTestParser.h"
+#include "GenTestListener.h"
 #include "DataStructures.h"
-#include "BinaryParser.h"
 #include <fstream>
 #include <iostream>
-#include <vector>
-#include <ctime>
-#include <chrono>
 
 
 /******************************
 * Class Definitions
 *******************************/
 
+using namespace antlr4;
 
-class SymbolicProcessor
-{
+class TranslationEngine {
+
+    antlr4::tree::ParseTree * tree;
+
     public:
 
-    void setBinaryFile( std::string binaryFile );
-
-    std::string appendData( NTerminal header, std::string lineBody );
-
-    private:
-
-    // Private field variables.
-    BinaryParser binaryParser;
-    BinaryIterator iter = nullptr;
-    std::string filename;
-    
-    // Constant field variables.
-    const char demoDummyCharArray[ 10 ] = { 'a', 'z', 'b', 't', 'l', 'm', 'o', 'p', 'j', 'k' };
-
-
-    std::vector< std::string > splitLine( std::string line, const std::string delimitor,
-                                          const std::string delimitor2 = EMPTY_STRING,
-                                          bool keepEnd = false );
-
-    std::string substr( std::string str, int beginPos, int endPos );
+    antlr4::tree::ParseTree * getCST();
+    antlr4::tree::ParseTree * getAST();
+    std::vector<node> getCrudeList( std::string fileName );
 };
 
-class Parser
-{
-public:
-    void setFile( char * filePath );
 
-    void closeFile();
-
-    void runParser();
-
-    std::vector< std::vector< Line > > getOutputVector();
-
-    void setBinaryFile( std::string binaryFilePath );
-
-
-private:
-    CFGDictionary cfgd;
-    std::vector< std::vector< Line > > fileVector;
-    SymbolicProcessor symbolic_p;
-    std::string binaryFile;
-    int functionHandle = -1;
-    std::fstream harnessFile;
-
-    void parseLine( std::string line );
-
-    std::vector< std::string > splitLine( std::string line, const std::string delimitor,
-                                          const std::string delimitor2 = EMPTY_STRING,
-                                          bool keepEnd = false );
-
-    std::string substr( std::string str, int beginPos, int endPos );
-
-    std::string stripBeginWhiteSpace( std::string str );
-
-    bool isFunction( std::string line );
-
-    bool isSymbolic( std::string line );
-
-    bool isFor( std::string line );
-
-    bool isIf( std::string line );
-
-    bool isTest( std::string line );
-
-    bool isAssert( const std::string& line );
-
-    bool isAssume( const std::string& line );
-
-    bool isCheck( const std::string& line );
-};
-
-std::vector< std::vector< Line > > runTranslator( char * harnessFilePath, char * binaryFile );
 
 #endif //GENTEST_TRANSLATIONENGINE_H

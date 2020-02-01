@@ -28,6 +28,7 @@
 //TranslationEngine structures
 typedef enum NonTerminals
 {
+    ROOT,
     FUNC,                     // Basic non-terminals.
     EXP,
     ADD,
@@ -98,6 +99,17 @@ typedef enum NonTerminals
     NO_TRANSLATE
 
 } NTerminal;
+
+
+typedef struct node{
+	
+    NTerminal type;
+    node * parent;
+    std::vector<node> childList;
+    int lineNum;
+    int colNum;
+
+} Node;
 
 class GoogleTestDictionary
 {
@@ -183,5 +195,55 @@ public:
 
     void toString( bool includeSemiColon = false );
 };
+
+class AST{
+    
+    node currentNode, rootNode;
+
+    public:
+
+        AST()
+        {
+            node rootNode;
+            rootNode.type = ROOT;
+            rootNode.parent = NULL;
+            rootNode.lineNum = 0;
+            rootNode.colNum = 0;
+
+            currentNode = rootNode;
+            this->rootNode = rootNode;
+        }
+
+        void addNode( NTerminal type, int lineNum, int colNum )
+        {
+            // Declare new node.
+            node newNode;
+
+            // Configure new node.
+            newNode.type = type;
+            newNode.lineNum = lineNum;
+            newNode.colNum = colNum
+            newNode.parent = &this->currentNode;
+
+            // Add node to parent's list.
+            this->currentNode.childList.push_back( newNode );
+            
+            // Set newNode as current.
+            this->currentNode = newNode;
+        }
+
+        void goBack()
+        {
+            this->currentNode = *(this->currentNode.parent);
+        }
+
+        void getChild()
+        
+        
+        
+};
+
+
+
 
 #endif //GENTEST_DATASTRUCTURES_H
