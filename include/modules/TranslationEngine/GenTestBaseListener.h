@@ -1,19 +1,3 @@
-// Program Header Information ///////////////////////////
-/**
- * @file GenTestBaseListener.h
- *
- * @team GenTest ( Team 22 )
- *
- * @brief Header file for GenTestBaseListener
- *
- * @details Contains the base for all Listeners implementing the GenTestListener
- *          interface. This file must exist for Listeners (i.e. CrudeListener) to
- *          function.
- *
- * @version 0.15
- *          Joshua Johnson ( 31 January 2020 )
- *          Initial incorporation of ANTLR library into GenTest codebase. 
- */
 
 // Generated from GenTest.g4 by ANTLR 4.8
 
@@ -41,6 +25,9 @@ public:
   virtual void enterInclude(GenTestParser::IncludeContext * /*ctx*/) override { }
   virtual void exitInclude(GenTestParser::IncludeContext * /*ctx*/) override { }
 
+  virtual void enterGlobal(GenTestParser::GlobalContext * /*ctx*/) override { }
+  virtual void exitGlobal(GenTestParser::GlobalContext * /*ctx*/) override { }
+
   virtual void enterFunction(GenTestParser::FunctionContext * /*ctx*/) override { }
   virtual void exitFunction(GenTestParser::FunctionContext * /*ctx*/) override { }
 
@@ -58,6 +45,9 @@ public:
 
   virtual void enterAssignment(GenTestParser::AssignmentContext * /*ctx*/) override { }
   virtual void exitAssignment(GenTestParser::AssignmentContext * /*ctx*/) override { }
+
+  virtual void enterExpression(GenTestParser::ExpressionContext * /*ctx*/) override { }
+  virtual void exitExpression(GenTestParser::ExpressionContext * /*ctx*/) override { }
 
   virtual void enterOperation(GenTestParser::OperationContext * /*ctx*/) override { }
   virtual void exitOperation(GenTestParser::OperationContext * /*ctx*/) override { }
@@ -94,6 +84,9 @@ public:
 
   virtual void enterLe(GenTestParser::LeContext * /*ctx*/) override { }
   virtual void exitLe(GenTestParser::LeContext * /*ctx*/) override { }
+
+  virtual void enterNo(GenTestParser::NoContext * /*ctx*/) override { }
+  virtual void exitNo(GenTestParser::NoContext * /*ctx*/) override { }
 
   virtual void enterConditional(GenTestParser::ConditionalContext * /*ctx*/) override { }
   virtual void exitConditional(GenTestParser::ConditionalContext * /*ctx*/) override { }
@@ -146,11 +139,20 @@ public:
   virtual void enterTest_header(GenTestParser::Test_headerContext * /*ctx*/) override { }
   virtual void exitTest_header(GenTestParser::Test_headerContext * /*ctx*/) override { }
 
+  virtual void enterDs_assert_type(GenTestParser::Ds_assert_typeContext * /*ctx*/) override { }
+  virtual void exitDs_assert_type(GenTestParser::Ds_assert_typeContext * /*ctx*/) override { }
+
   virtual void enterDs_assert(GenTestParser::Ds_assertContext * /*ctx*/) override { }
   virtual void exitDs_assert(GenTestParser::Ds_assertContext * /*ctx*/) override { }
 
+  virtual void enterDs_assume_type(GenTestParser::Ds_assume_typeContext * /*ctx*/) override { }
+  virtual void exitDs_assume_type(GenTestParser::Ds_assume_typeContext * /*ctx*/) override { }
+
   virtual void enterDs_assume(GenTestParser::Ds_assumeContext * /*ctx*/) override { }
   virtual void exitDs_assume(GenTestParser::Ds_assumeContext * /*ctx*/) override { }
+
+  virtual void enterDs_check_type(GenTestParser::Ds_check_typeContext * /*ctx*/) override { }
+  virtual void exitDs_check_type(GenTestParser::Ds_check_typeContext * /*ctx*/) override { }
 
   virtual void enterDs_check(GenTestParser::Ds_checkContext * /*ctx*/) override { }
   virtual void exitDs_check(GenTestParser::Ds_checkContext * /*ctx*/) override { }

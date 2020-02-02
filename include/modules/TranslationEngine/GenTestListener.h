@@ -23,6 +23,9 @@ public:
   virtual void enterInclude(GenTestParser::IncludeContext *ctx) = 0;
   virtual void exitInclude(GenTestParser::IncludeContext *ctx) = 0;
 
+  virtual void enterGlobal(GenTestParser::GlobalContext *ctx) = 0;
+  virtual void exitGlobal(GenTestParser::GlobalContext *ctx) = 0;
+
   virtual void enterFunction(GenTestParser::FunctionContext *ctx) = 0;
   virtual void exitFunction(GenTestParser::FunctionContext *ctx) = 0;
 
@@ -40,6 +43,9 @@ public:
 
   virtual void enterAssignment(GenTestParser::AssignmentContext *ctx) = 0;
   virtual void exitAssignment(GenTestParser::AssignmentContext *ctx) = 0;
+
+  virtual void enterExpression(GenTestParser::ExpressionContext *ctx) = 0;
+  virtual void exitExpression(GenTestParser::ExpressionContext *ctx) = 0;
 
   virtual void enterOperation(GenTestParser::OperationContext *ctx) = 0;
   virtual void exitOperation(GenTestParser::OperationContext *ctx) = 0;
@@ -76,6 +82,9 @@ public:
 
   virtual void enterLe(GenTestParser::LeContext *ctx) = 0;
   virtual void exitLe(GenTestParser::LeContext *ctx) = 0;
+
+  virtual void enterNo(GenTestParser::NoContext *ctx) = 0;
+  virtual void exitNo(GenTestParser::NoContext *ctx) = 0;
 
   virtual void enterConditional(GenTestParser::ConditionalContext *ctx) = 0;
   virtual void exitConditional(GenTestParser::ConditionalContext *ctx) = 0;
@@ -128,11 +137,20 @@ public:
   virtual void enterTest_header(GenTestParser::Test_headerContext *ctx) = 0;
   virtual void exitTest_header(GenTestParser::Test_headerContext *ctx) = 0;
 
+  virtual void enterDs_assert_type(GenTestParser::Ds_assert_typeContext *ctx) = 0;
+  virtual void exitDs_assert_type(GenTestParser::Ds_assert_typeContext *ctx) = 0;
+
   virtual void enterDs_assert(GenTestParser::Ds_assertContext *ctx) = 0;
   virtual void exitDs_assert(GenTestParser::Ds_assertContext *ctx) = 0;
 
+  virtual void enterDs_assume_type(GenTestParser::Ds_assume_typeContext *ctx) = 0;
+  virtual void exitDs_assume_type(GenTestParser::Ds_assume_typeContext *ctx) = 0;
+
   virtual void enterDs_assume(GenTestParser::Ds_assumeContext *ctx) = 0;
   virtual void exitDs_assume(GenTestParser::Ds_assumeContext *ctx) = 0;
+
+  virtual void enterDs_check_type(GenTestParser::Ds_check_typeContext *ctx) = 0;
+  virtual void exitDs_check_type(GenTestParser::Ds_check_typeContext *ctx) = 0;
 
   virtual void enterDs_check(GenTestParser::Ds_checkContext *ctx) = 0;
   virtual void exitDs_check(GenTestParser::Ds_checkContext *ctx) = 0;
