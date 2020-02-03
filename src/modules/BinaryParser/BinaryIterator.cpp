@@ -45,6 +45,10 @@ std::size_t BinaryIterator::nextSize_t()
     return static_cast<std::size_t>( 0 );
 }
 
+short BinaryIterator::nextShort()
+{
+    return static_cast<short>( 0 );
+}
 
 void BinaryIterator::rewind()
 {
@@ -108,4 +112,10 @@ int BinaryIterator::nextRandInt()
 bool BinaryIterator::nextBool()
 {
     return false;
+}
+
+std::string BinaryIterator::nextString( std::size_t len, const std::string *allowed )
+{
+
+    return "";
 }

@@ -17,6 +17,7 @@
 #ifndef BINARY_ITERATOR_HH_INCLUDED
 #define BINARY_ITERATOR_HH_INCLUDED
 #include <vector>
+#include <string>
 #include <cstddef>
 #include <stdexcept>
 
@@ -159,6 +160,12 @@ class BinaryIterator
     double nextDouble();
 
     /**
+     * Get the next short from the BinaryIterator
+     * @returns a short from the Iterator's data.
+     **/
+    short nextShort();
+
+    /**
      * Return the next random int from the BinaryIterator.
      * @returns a random integer from the Iterator's data.
      **/
@@ -170,6 +177,17 @@ class BinaryIterator
      **/
     bool nextBool();
 
+
+    /**
+     * Return the next string value from the BinaryIterator.
+     * @param len The length of the string to return
+     * @param allowed An optional pointer to string containing characters 
+     *        that are allowed in the output string. 
+     *        If any characters are to be allowed, 
+     *        pass a pointer to null. 
+     * @returns a string value from the Iterator's data.
+     **/
+    std::string nextString( std::size_t len, const std::string *allowed );
 
  private:
     /**
