@@ -36,41 +36,42 @@
 **/
 
 #include "TranslationEngine.h"
-#include "CrudeListener.h"
+#include "ASTListener.h"
 
 using namespace std;
 using namespace antlr4;
 
 
-std::vector<node> TranslationEngine::getCrudeList( std::string fileName )
+std::vector<Node> TranslationEngine::getAST( std::string fileName )
 {
-    // Open input file.
-    std::ifstream stream;
-    stream.open( fileName );
+   // Open input file.
+   std::ifstream stream;
+   stream.open( fileName );
 
-    // Open stream in ANTLR.
-    ANTLRInputStream input( stream );
+   // Open stream in ANTLR
+   ANTLRInputStream input( stream );
 
-    // Create lexer.
-    GenTestLexer lexer( &input );
-    
-    // Create Tokens.
-    CommonTokenStream tokens( &lexer );
-    tokens.fill();
+   // Create lexer.
+   GenTestLexer lexer( &input );
 
-    // Create parser.
-    GenTestParser parser( &tokens );
+   // Create common tokens.
+   CommonTokenStream tokens( &lexer );
+   tokens.fill();
 
-    CrudeListener listener;
+   // Create parser.
+   GenTestParser parser( &tokens );
 
-    antlr4::tree::ParseTree * tree = parser.file();
+   // Create listener.
+   ASTListener listener;
 
-    antlr4::tree::ParseTreeWalker::DEFAULT.walk(&listener, tree); 
+   antlr4::tree::ParseTree * tree = parser.file();
+ 
+   antlr4::tree::ParseTreeWalker::DEFAULT.walk( &listener, tree );
 
-    stream.close();
+   stream.close();
 
-    return listener.getList();
+   return listener.getAST();
+
 }
-
 
 

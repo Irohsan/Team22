@@ -33,6 +33,7 @@
 #include "DataStructures.h"
 #include <fstream>
 #include <iostream>
+#include <string>
 
 
 /******************************
@@ -40,16 +41,14 @@
 *******************************/
 
 using namespace antlr4;
+using namespace std;
 
 class TranslationEngine {
 
     antlr4::tree::ParseTree * tree;
 
     public:
-
-    antlr4::tree::ParseTree * getCST();
-    antlr4::tree::ParseTree * getAST();
-    std::vector<node> getCrudeList( std::string fileName );
+    std::vector<Node> getAST( std::string fileName );
 };
 
 

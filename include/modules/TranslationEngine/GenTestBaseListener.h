@@ -19,6 +19,9 @@ public:
   virtual void enterFile(GenTestParser::FileContext * /*ctx*/) override { }
   virtual void exitFile(GenTestParser::FileContext * /*ctx*/) override { }
 
+  virtual void enterSpace(GenTestParser::SpaceContext * /*ctx*/) override { }
+  virtual void exitSpace(GenTestParser::SpaceContext * /*ctx*/) override { }
+
   virtual void enterInclude(GenTestParser::IncludeContext * /*ctx*/) override { }
   virtual void exitInclude(GenTestParser::IncludeContext * /*ctx*/) override { }
 
@@ -30,9 +33,6 @@ public:
 
   virtual void enterMacro_define(GenTestParser::Macro_defineContext * /*ctx*/) override { }
   virtual void exitMacro_define(GenTestParser::Macro_defineContext * /*ctx*/) override { }
-
-  virtual void enterSpace(GenTestParser::SpaceContext * /*ctx*/) override { }
-  virtual void exitSpace(GenTestParser::SpaceContext * /*ctx*/) override { }
 
   virtual void enterComment(GenTestParser::CommentContext * /*ctx*/) override { }
   virtual void exitComment(GenTestParser::CommentContext * /*ctx*/) override { }
@@ -61,9 +61,6 @@ public:
   virtual void enterElement(GenTestParser::ElementContext * /*ctx*/) override { }
   virtual void exitElement(GenTestParser::ElementContext * /*ctx*/) override { }
 
-  virtual void enterRtrn(GenTestParser::RtrnContext * /*ctx*/) override { }
-  virtual void exitRtrn(GenTestParser::RtrnContext * /*ctx*/) override { }
-
   virtual void enterDefine(GenTestParser::DefineContext * /*ctx*/) override { }
   virtual void exitDefine(GenTestParser::DefineContext * /*ctx*/) override { }
 
@@ -88,8 +85,8 @@ public:
   virtual void enterConditional(GenTestParser::ConditionalContext * /*ctx*/) override { }
   virtual void exitConditional(GenTestParser::ConditionalContext * /*ctx*/) override { }
 
-  virtual void enterMain_statement(GenTestParser::Main_statementContext * /*ctx*/) override { }
-  virtual void exitMain_statement(GenTestParser::Main_statementContext * /*ctx*/) override { }
+  virtual void enterCond_header(GenTestParser::Cond_headerContext * /*ctx*/) override { }
+  virtual void exitCond_header(GenTestParser::Cond_headerContext * /*ctx*/) override { }
 
   virtual void enterCond_body(GenTestParser::Cond_bodyContext * /*ctx*/) override { }
   virtual void exitCond_body(GenTestParser::Cond_bodyContext * /*ctx*/) override { }
@@ -214,6 +211,9 @@ public:
   virtual void enterTest(GenTestParser::TestContext * /*ctx*/) override { }
   virtual void exitTest(GenTestParser::TestContext * /*ctx*/) override { }
 
+  virtual void enterTest_header(GenTestParser::Test_headerContext * /*ctx*/) override { }
+  virtual void exitTest_header(GenTestParser::Test_headerContext * /*ctx*/) override { }
+
   virtual void enterTest_body(GenTestParser::Test_bodyContext * /*ctx*/) override { }
   virtual void exitTest_body(GenTestParser::Test_bodyContext * /*ctx*/) override { }
 
@@ -222,6 +222,9 @@ public:
 
   virtual void enterBracket_symbolic(GenTestParser::Bracket_symbolicContext * /*ctx*/) override { }
   virtual void exitBracket_symbolic(GenTestParser::Bracket_symbolicContext * /*ctx*/) override { }
+
+  virtual void enterUnderscore_symbolic(GenTestParser::Underscore_symbolicContext * /*ctx*/) override { }
+  virtual void exitUnderscore_symbolic(GenTestParser::Underscore_symbolicContext * /*ctx*/) override { }
 
   virtual void enterVerification(GenTestParser::VerificationContext * /*ctx*/) override { }
   virtual void exitVerification(GenTestParser::VerificationContext * /*ctx*/) override { }

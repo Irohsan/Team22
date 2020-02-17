@@ -22,7 +22,7 @@
 #include "FileAssembler.h"
 
 //number of args (test, binary, output name)
-const static int NUM_ARGS = 3;
+const static int NUM_ARGS = 2;
 
 using namespace std;
 
@@ -38,28 +38,17 @@ int main( int numArgs, char** args )
         return 0;
     }
 
-    //setting up some local variables to make code more readable
-    char * fileToTranslate = args[ 1 ],
+    // Setting up some local variables to make code more readable
+    char * binaryFile = args[ 2 ], 
+	 * outputPath = args[ 3 ];
 
-    * binaryFile = args[ 2 ],
+    // Create parser object.
+    TranslationEngine parser;
 
-    * outputPath = args[ 3 ];
+    // Store fileToTranslate
+    std::string fileToTranslate = args[ 1 ];
 
-    FileWriter writer;
+    // Get output.
+    std::vector<Node> output = parser.getAST( fileToTranslate );
 
-    //TODO: Detect if valid DeepState test file ( args[ 1 ] ) stretch goal maybe?
-
-    //auto keyword automatically gets the type at compile time
-    //for now I am passing the binaryFile into the TranslationEngine as some functions in it use the binary parser
-    auto output = runTranslator( fileToTranslate, binaryFile );
-
-    //pass binary file into binary parser (this might be done in the translation engine)
-
-    writer.initialize( output, outputPath, binaryFile );
-
-    writer.writeOutput();
-
-    //take vector and pass into FileAssembler
-
-    //take output of FileAssembler and write to output file (args[2])
 }
