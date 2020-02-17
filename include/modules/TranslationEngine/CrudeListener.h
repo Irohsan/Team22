@@ -19,20 +19,20 @@
 #include "stdlib.h"
 #include "DataStructures.h"
 
-class CrudeListener : public GenTestBaseListener
-{
+/*class CrudeListener : public GenTestBaseListener*/
+/*{*/
 
-    std::vector<node> transList;
-    bool typeFlag = false;
+/*    std::vector<node> transList;*/
+/*    bool typeFlag = false;*/
 
-    public: 
+/*    public: */
 
-    void enterDeepstate_noinline(GenTestParser::Deepstate_noinlineContext * ctx ) override;
-	void enterDs_assert(GenTestParser::Ds_assertContext * ctx ) override;
-	void enterDs_assume(GenTestParser::Ds_assumeContext * ctx ) override;
-	void enterDs_check(GenTestParser::Ds_checkContext * ctx ) override;
-	void enterSymbolic(GenTestParser::SymbolicContext * ctx ) override;
-    void enterType(GenTestParser::TypeContext * ctx ) override;
-    std::vector<node> getList();
-	      
-};
+/*    void enterDeepstate_noinline(GenTestParser::Deepstate_noinlineContext * ctx ) override;*/
+/*	void enterDs_assert(GenTestParser::Ds_assertContext * ctx ) override;*/
+/*	void enterDs_assume(GenTestParser::Ds_assumeContext * ctx ) override;*/
+/*	void enterDs_check(GenTestParser::Ds_checkContext * ctx ) override;*/
+/*	void enterSymbolic(GenTestParser::SymbolicContext * ctx ) override;*/
+/*    void enterType(GenTestParser::TypeContext * ctx ) override;*/
+/*    std::vector<node> getList();*/
+/*	      */
+/*};*/
