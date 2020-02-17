@@ -17,6 +17,9 @@ public:
   virtual void enterFile(GenTestParser::FileContext *ctx) = 0;
   virtual void exitFile(GenTestParser::FileContext *ctx) = 0;
 
+  virtual void enterSpace(GenTestParser::SpaceContext *ctx) = 0;
+  virtual void exitSpace(GenTestParser::SpaceContext *ctx) = 0;
+
   virtual void enterInclude(GenTestParser::IncludeContext *ctx) = 0;
   virtual void exitInclude(GenTestParser::IncludeContext *ctx) = 0;
 
@@ -28,9 +31,6 @@ public:
 
   virtual void enterMacro_define(GenTestParser::Macro_defineContext *ctx) = 0;
   virtual void exitMacro_define(GenTestParser::Macro_defineContext *ctx) = 0;
-
-  virtual void enterSpace(GenTestParser::SpaceContext *ctx) = 0;
-  virtual void exitSpace(GenTestParser::SpaceContext *ctx) = 0;
 
   virtual void enterComment(GenTestParser::CommentContext *ctx) = 0;
   virtual void exitComment(GenTestParser::CommentContext *ctx) = 0;
@@ -59,9 +59,6 @@ public:
   virtual void enterElement(GenTestParser::ElementContext *ctx) = 0;
   virtual void exitElement(GenTestParser::ElementContext *ctx) = 0;
 
-  virtual void enterRtrn(GenTestParser::RtrnContext *ctx) = 0;
-  virtual void exitRtrn(GenTestParser::RtrnContext *ctx) = 0;
-
   virtual void enterDefine(GenTestParser::DefineContext *ctx) = 0;
   virtual void exitDefine(GenTestParser::DefineContext *ctx) = 0;
 
@@ -86,8 +83,8 @@ public:
   virtual void enterConditional(GenTestParser::ConditionalContext *ctx) = 0;
   virtual void exitConditional(GenTestParser::ConditionalContext *ctx) = 0;
 
-  virtual void enterMain_statement(GenTestParser::Main_statementContext *ctx) = 0;
-  virtual void exitMain_statement(GenTestParser::Main_statementContext *ctx) = 0;
+  virtual void enterCond_header(GenTestParser::Cond_headerContext *ctx) = 0;
+  virtual void exitCond_header(GenTestParser::Cond_headerContext *ctx) = 0;
 
   virtual void enterCond_body(GenTestParser::Cond_bodyContext *ctx) = 0;
   virtual void exitCond_body(GenTestParser::Cond_bodyContext *ctx) = 0;
@@ -212,6 +209,9 @@ public:
   virtual void enterTest(GenTestParser::TestContext *ctx) = 0;
   virtual void exitTest(GenTestParser::TestContext *ctx) = 0;
 
+  virtual void enterTest_header(GenTestParser::Test_headerContext *ctx) = 0;
+  virtual void exitTest_header(GenTestParser::Test_headerContext *ctx) = 0;
+
   virtual void enterTest_body(GenTestParser::Test_bodyContext *ctx) = 0;
   virtual void exitTest_body(GenTestParser::Test_bodyContext *ctx) = 0;
 
@@ -220,6 +220,9 @@ public:
 
   virtual void enterBracket_symbolic(GenTestParser::Bracket_symbolicContext *ctx) = 0;
   virtual void exitBracket_symbolic(GenTestParser::Bracket_symbolicContext *ctx) = 0;
+
+  virtual void enterUnderscore_symbolic(GenTestParser::Underscore_symbolicContext *ctx) = 0;
+  virtual void exitUnderscore_symbolic(GenTestParser::Underscore_symbolicContext *ctx) = 0;
 
   virtual void enterVerification(GenTestParser::VerificationContext *ctx) = 0;
   virtual void exitVerification(GenTestParser::VerificationContext *ctx) = 0;
