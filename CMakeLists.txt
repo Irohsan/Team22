@@ -7,6 +7,7 @@ include_directories(include/modules/BinaryParser)
 include_directories(include/modules/FileAssembler)
 include_directories(include/modules/TranslationEngine)
 include_directories(include/modules/util)
+include_directories(include/modules/antlr4-runtime)
 
 add_executable(GenTest src/main.cpp)
 
@@ -22,7 +23,13 @@ add_library(gentest_binaryparser STATIC src/modules/BinaryParser/BinaryParser.cp
         src/modules/BinaryParser/BinaryIterator.cpp
   )
 add_library(gentest_fileassembler STATIC src/modules/FileAssembler/FileAssembler.cpp)
-add_library(gentest_translationengine STATIC src/modules/TranslationEngine/TranslationEngine.cpp)
+add_library(gentest_translationengine STATIC src/modules/TranslationEngine/TranslationEngine.cpp
+	    src/modules/TranslationEngine/GenTestParser.cpp
+	    src/modules/TranslationEngine/GenTestListener.cpp
+	    src/modules/TranslationEngine/GenTestLexer.cpp
+	    src/modules/TranslationEngine/GenTestBaseListener.cpp
+	    src/modules/TranslationEngine/CrudeListener.cpp
+	    src/modules/TranslationEngine/ASTListener.cpp)
 add_library(gentest_util STATIC src/modules/util/Util.cpp
         src/modules/util/DataStructures.cpp
            )
@@ -34,7 +41,9 @@ set( GENTEST_MODULES
 	 gentest_util 
    )
 
+
 target_link_libraries( gentest_translationengine gentest_binaryparser )
+target_link_libraries( gentest_translationengine ${CMAKE_CURRENT_SOURCE_DIR}/lib/libantlr4-runtime.a )
 
 option( BUILD_TESTS "Determines whether to build tests." ON )
 if(BUILD_TESTS)

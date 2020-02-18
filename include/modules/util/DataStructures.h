@@ -28,76 +28,23 @@
 //TranslationEngine structures
 typedef enum NonTerminals
 {
+    ROOT = 0,
     FUNC,                     // Basic non-terminals.
-    EXP,
-    ADD,
-    SUB,
-    MUL,
-    DIV,
-    EQUALS_TO,
-    EQUAL,
-    GT,
-    LT,
-    ST_PARETHESIS,
-    END_PARETHESIS,
-    CONDITIONAL,
-    CONDITIONAL_BRANCH,
-    INT,                        // Type Non-Terminals
-    LONG,
-    SHORT,
-    DOUBLE,
-    FLOAT,
-    UINT8,
-    UINT16,
-    UINT32,
-    UINT64,
-    UNSIGNED_INT,
-    UNSIGNED_LONG,
-    UNSIGNED_SHORT,
-    X_INT,                      // Symbloic Type Non-Terminals.
-    X_LONG,
-    X_SHORT,
-    X_DOUBLE,
-    X_FLOAT,
-    X_UINT8,
-    X_UINT16,
-    X_UINT32,
-    X_UINT64,
-    X_USIGNED_INT,
-    X_UNSIGNED_LONG,
-    X_UNSIGNED_SHORT,
-    X_UNSIGNED,
-    X_CHAR,
-    LEFT_SHIFT,                 // Shift Operators >>/<<
-    RIGHT_SHIFT,
-    ASSERT,
-    ASSERT_GT,                  // Assertion operators.
-    ASSERT_GE,
-    ASSERT_LT,
-    ASSERT_LE,
-    ASSERT_NE,
-    ASSERT_EQ,
-    CHECK_EQ,                   // Check operators
-    CHECK_NE,
-    CHECK_LT,
-    CHECK_LE,
-    CHECK_GT,
-    CHECK_GE,
-    ASSUME_EQ,                  // Assume operators.
-    ASSUME_NE,
-    ASSUME_LT,
-    ASSUME_LE,
-    ASSUME_GT,
-    ASSUME_GE,
-    DEEPSTATE_ASSERT,		// DeepState assertion operators.
-    DEEPSTATE_ASSUME,
-    DEEPSTATE_CHECK,
+    TEST,
+    STATEMENT,
+    FOR_LOOP,
+    WHILE_LOOP,
+    COMMENT,
     DEEPSTATE_NOINLINE,
-    TEST,                  //function for a test
-    ONE_OF,
-    NO_TRANSLATE
+    NO_TRANSLATE,
+    NAMESPACE,
+    INCLUDE,
+    DEFINE,
+    IF
+    
 
 } NTerminal;
+
 
 class GoogleTestDictionary
 {
@@ -143,45 +90,16 @@ public:
     NTerminal getCFGAssoc( std::string string );
 };
 
-class Line
-{
-private:
 
-    // Dictionaries
-    GoogleTestDictionary googtd;
+class Node {
+	
+    public:
 
-    NTerminal header;
-    std::string beginSymb;
-    std::string endSymb;
-    std::vector< std::string > body;
-
-public:
-    void initialize( NTerminal header, std::string beginSymb = EMPTY_STRING,
-                     std::string endSymb = EMPTY_STRING );
-
-    void addToBody( std::string item );
-
-    void setHeader( NTerminal newHeader );
-
-    void setBeginSymb( std::string newBeginSymb );
-
-    void setEndSymb( std::string newEndSymb );
-
-    std::string getHeader();
-
-    NTerminal getHeaderNt();
-
-    std::string getBeginSymb();
-
-    std::string getEndSymb();
-
-    std::string getBody( bool addSpaces = false );
-
-    std::vector< std::string > getBodyVector();
-
-    std::string getString( bool includeSemiColon = false );
-
-    void toString( bool includeSemiColon = false );
+    NTerminal type;
+    std::string text;
 };
+
+
+
 
 #endif //GENTEST_DATASTRUCTURES_H
