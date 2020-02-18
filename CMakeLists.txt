@@ -41,9 +41,9 @@ set( GENTEST_MODULES
 	 gentest_util 
    )
 
+
 target_link_libraries( gentest_translationengine gentest_binaryparser )
-link_directories( lib/libantrl4-runtime.a )
-target_link_libraries( gentest_translationengine libantlr4-runtime.a )
+target_link_libraries( gentest_translationengine ${CMAKE_CURRENT_SOURCE_DIR}/lib/libantlr4-runtime.a )
 
 option( BUILD_TESTS "Determines whether to build tests." ON )
 if(BUILD_TESTS)

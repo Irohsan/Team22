@@ -22,7 +22,7 @@
 #include "FileAssembler.h"
 
 //number of args (test, binary, output name)
-const static int NUM_ARGS = 2;
+const static int NUM_ARGS = 3;
 
 using namespace std;
 
