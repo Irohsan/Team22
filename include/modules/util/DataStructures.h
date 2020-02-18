@@ -143,29 +143,6 @@ private:
     bool populateNTerminals();
 };
 
-//map containing the references for NTerminals that are vital for runtime
-//this might be expanded on or reduced in the future
-const std::map < std::string, NonTerminals > vitalTranslations =
-        {{ "LEFT_SHIFT", LEFT_SHIFT },
-        { "RIGHT_SHIFT", RIGHT_SHIFT },
-        { "ASSERT_GT", ASSERT_GT },
-        { "ASSERT_GE", ASSERT_GE },
-        { "ASSERT_LT", ASSERT_LT },
-        { "ASSERT_LE", ASSERT_LE },
-        { "ASSERT_NE", ASSERT_NE },
-        { "ASSERT_EQ", ASSERT_EQ },
-        { "CHECK_EQ", CHECK_EQ },
-        { "CHECK_NE", CHECK_NE },
-        { "CHECK_LT", CHECK_LT },
-        { "CHECK_LE", CHECK_LE },
-        { "CHECK_GT", CHECK_GT },
-        { "CHECK_GE", CHECK_GE },
-        { "ASSUME_EQ", ASSUME_EQ },
-        { "ASSUME_NE", ASSUME_NE },
-        { "ASSUME_LT", ASSUME_LT },
-        { "ASSUME_LE", ASSUME_LE },
-        { "ASSUME_GT", ASSUME_GT },
-        { "ASSUME_GE", ASSUME_GE }};
 
 
 
