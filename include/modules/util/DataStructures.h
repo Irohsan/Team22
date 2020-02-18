@@ -102,4 +102,71 @@ class Node {
 
 
 
+/**
+ * Helper class for TranslationDictionary, stores the desired translation
+ */
+class TranslationEntry
+{
+public:
+    std::string nTerminalVal;
+
+    NonTerminals nTerminal;
+
+    std::string translateTo;
+
+    TranslationEntry * nextEntry = nullptr;
+
+    void appendToEnd( std::string nTerminalVal, std::string translateTo );
+
+    bool assignTranslation(std::string translation, NonTerminals toAssign );
+
+    TranslationEntry* findTranslationFromNTerminal( NonTerminals NTerminalToFind );
+};
+
+/**
+ * Class for storing translations loaded from a configuration file.
+ */
+class TranslationDictionary
+{
+public:
+    void setFile( const std::string& filePath );
+
+    bool loadFile();
+
+    TranslationEntry * findTranslationFromNTerminal( NonTerminals NTerminalToFind );
+
+private:
+    std::fstream configFile;
+
+    TranslationEntry * translations = nullptr;
+
+    bool populateNTerminals();
+};
+
+//map containing the references for NTerminals that are vital for runtime
+//this might be expanded on or reduced in the future
+const std::map < std::string, NonTerminals > vitalTranslations =
+        {{ "LEFT_SHIFT", LEFT_SHIFT },
+        { "RIGHT_SHIFT", RIGHT_SHIFT },
+        { "ASSERT_GT", ASSERT_GT },
+        { "ASSERT_GE", ASSERT_GE },
+        { "ASSERT_LT", ASSERT_LT },
+        { "ASSERT_LE", ASSERT_LE },
+        { "ASSERT_NE", ASSERT_NE },
+        { "ASSERT_EQ", ASSERT_EQ },
+        { "CHECK_EQ", CHECK_EQ },
+        { "CHECK_NE", CHECK_NE },
+        { "CHECK_LT", CHECK_LT },
+        { "CHECK_LE", CHECK_LE },
+        { "CHECK_GT", CHECK_GT },
+        { "CHECK_GE", CHECK_GE },
+        { "ASSUME_EQ", ASSUME_EQ },
+        { "ASSUME_NE", ASSUME_NE },
+        { "ASSUME_LT", ASSUME_LT },
+        { "ASSUME_LE", ASSUME_LE },
+        { "ASSUME_GT", ASSUME_GT },
+        { "ASSUME_GE", ASSUME_GE }};
+
+
+
 #endif //GENTEST_DATASTRUCTURES_H
