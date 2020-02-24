@@ -22,8 +22,6 @@
 #include "DataStructures.h"
 
 
-
-
 //Translation Entry Methods
 
 void TranslationEntry::appendToEnd( std::string nTerminalVal, std::string translateTo )
@@ -137,7 +135,6 @@ bool TranslationDictionary::populateNTerminals()
 {
     //TODO: Refactor this for NonTerminal Changes
 
-    /*
     auto it = vitalTranslations.begin();
 
     while( it != vitalTranslations.end() )
@@ -159,7 +156,6 @@ bool TranslationDictionary::populateNTerminals()
         it++;
 
     }
-     */
 
     return true;
 }

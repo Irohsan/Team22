@@ -22,7 +22,7 @@
 #include "FileAssembler.h"
 
 //number of args (test, binary, output name)
-const static int NUM_ARGS = 3;
+int NUM_ARGS = 4;
 
 using namespace std;
 
@@ -40,7 +40,8 @@ int main( int numArgs, char** args )
 
     // Setting up some local variables to make code more readable
     char * binaryFile = args[ 2 ], 
-	 * outputPath = args[ 3 ];
+	 * outputPath = args[ 3 ],
+	 * translateCFG = args[ 4 ];
 
     // Create parser object.
     TranslationEngine parser;
@@ -50,5 +51,7 @@ int main( int numArgs, char** args )
 
     // Get output.
     std::vector<Node> output = parser.getAST( fileToTranslate );
+
+    buildFile( output, binaryFile, outputPath, translateCFG );
 
 }

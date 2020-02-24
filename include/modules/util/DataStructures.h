@@ -92,25 +92,6 @@ public:
     std::string decodeNonTerminal( NTerminal nt );
 };
 
-class CFGDictionary
-{
-public:
-
-    /**
-      *   Function Name: getCFGAssoc
-      *   -------------------------------------------------------
-      *   Algorithm: Takes in a string and returns its non-terminal
-      *              representation if it exists.
-      *
-      *   Preconditions: A valid string supplied to the function.
-      *   Postconditions: The appropriate non-terminal code returned.
-      *
-      *   Notes: N/A
-    **/
-    NTerminal getCFGAssoc( std::string string );
-};
-
-
 class Node {
 	
     public:
@@ -163,6 +144,29 @@ private:
 
     bool populateNTerminals();
 };
+
+//map containing the references for NTerminals that are vital for runtime
+//this might be expanded on or reduced in the future
+const std::map < std::string, NonTerminals > vitalTranslations =
+        {{ "ASSERT_GT", ASSERT_GT },
+         { "ASSERT_GE", ASSERT_GE },
+         { "ASSERT_LT", ASSERT_LT },
+         { "ASSERT_LE", ASSERT_LE },
+         { "ASSERT_NE", ASSERT_NE },
+         { "ASSERT_EQ", ASSERT_EQ },
+         { "CHECK_EQ", CHECK_EQ },
+         { "CHECK_NE", CHECK_NE },
+         { "CHECK_LT", CHECK_LT },
+         { "CHECK_LE", CHECK_LE },
+         { "CHECK_GT", CHECK_GT },
+         { "CHECK_GE", CHECK_GE },
+         { "ASSUME_EQ", ASSUME_EQ },
+         { "ASSUME_NE", ASSUME_NE },
+         { "ASSUME_LT", ASSUME_LT },
+         { "ASSUME_LE", ASSUME_LE },
+         { "ASSUME_GT", ASSUME_GT },
+         { "ASSUME_GE", ASSUME_GE },
+         {"INCLUDE", INCLUDE}};
 
 
 
