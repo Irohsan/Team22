@@ -34,6 +34,30 @@ public:
   virtual void enterMacro_define(GenTestParser::Macro_defineContext * /*ctx*/) override { }
   virtual void exitMacro_define(GenTestParser::Macro_defineContext * /*ctx*/) override { }
 
+  virtual void enterStructure(GenTestParser::StructureContext * /*ctx*/) override { }
+  virtual void exitStructure(GenTestParser::StructureContext * /*ctx*/) override { }
+
+  virtual void enterSingle_var(GenTestParser::Single_varContext * /*ctx*/) override { }
+  virtual void exitSingle_var(GenTestParser::Single_varContext * /*ctx*/) override { }
+
+  virtual void enterMulti_var(GenTestParser::Multi_varContext * /*ctx*/) override { }
+  virtual void exitMulti_var(GenTestParser::Multi_varContext * /*ctx*/) override { }
+
+  virtual void enterNumeration(GenTestParser::NumerationContext * /*ctx*/) override { }
+  virtual void exitNumeration(GenTestParser::NumerationContext * /*ctx*/) override { }
+
+  virtual void enterTypdef(GenTestParser::TypdefContext * /*ctx*/) override { }
+  virtual void exitTypdef(GenTestParser::TypdefContext * /*ctx*/) override { }
+
+  virtual void enterBase_def(GenTestParser::Base_defContext * /*ctx*/) override { }
+  virtual void exitBase_def(GenTestParser::Base_defContext * /*ctx*/) override { }
+
+  virtual void enterIfdef(GenTestParser::IfdefContext * /*ctx*/) override { }
+  virtual void exitIfdef(GenTestParser::IfdefContext * /*ctx*/) override { }
+
+  virtual void enterUndefine(GenTestParser::UndefineContext * /*ctx*/) override { }
+  virtual void exitUndefine(GenTestParser::UndefineContext * /*ctx*/) override { }
+
   virtual void enterComment(GenTestParser::CommentContext * /*ctx*/) override { }
   virtual void exitComment(GenTestParser::CommentContext * /*ctx*/) override { }
 
@@ -232,17 +256,80 @@ public:
   virtual void enterAssrt(GenTestParser::AssrtContext * /*ctx*/) override { }
   virtual void exitAssrt(GenTestParser::AssrtContext * /*ctx*/) override { }
 
+  virtual void enterAssrt_gt(GenTestParser::Assrt_gtContext * /*ctx*/) override { }
+  virtual void exitAssrt_gt(GenTestParser::Assrt_gtContext * /*ctx*/) override { }
+
+  virtual void enterAssrt_lt(GenTestParser::Assrt_ltContext * /*ctx*/) override { }
+  virtual void exitAssrt_lt(GenTestParser::Assrt_ltContext * /*ctx*/) override { }
+
+  virtual void enterAssrt_ge(GenTestParser::Assrt_geContext * /*ctx*/) override { }
+  virtual void exitAssrt_ge(GenTestParser::Assrt_geContext * /*ctx*/) override { }
+
+  virtual void enterAssrt_le(GenTestParser::Assrt_leContext * /*ctx*/) override { }
+  virtual void exitAssrt_le(GenTestParser::Assrt_leContext * /*ctx*/) override { }
+
+  virtual void enterAssrt_ne(GenTestParser::Assrt_neContext * /*ctx*/) override { }
+  virtual void exitAssrt_ne(GenTestParser::Assrt_neContext * /*ctx*/) override { }
+
+  virtual void enterAssrt_eq(GenTestParser::Assrt_eqContext * /*ctx*/) override { }
+  virtual void exitAssrt_eq(GenTestParser::Assrt_eqContext * /*ctx*/) override { }
+
+  virtual void enterOnly_assrt(GenTestParser::Only_assrtContext * /*ctx*/) override { }
+  virtual void exitOnly_assrt(GenTestParser::Only_assrtContext * /*ctx*/) override { }
+
   virtual void enterAssume(GenTestParser::AssumeContext * /*ctx*/) override { }
   virtual void exitAssume(GenTestParser::AssumeContext * /*ctx*/) override { }
+
+  virtual void enterAssume_gt(GenTestParser::Assume_gtContext * /*ctx*/) override { }
+  virtual void exitAssume_gt(GenTestParser::Assume_gtContext * /*ctx*/) override { }
+
+  virtual void enterAssume_lt(GenTestParser::Assume_ltContext * /*ctx*/) override { }
+  virtual void exitAssume_lt(GenTestParser::Assume_ltContext * /*ctx*/) override { }
+
+  virtual void enterAssume_ge(GenTestParser::Assume_geContext * /*ctx*/) override { }
+  virtual void exitAssume_ge(GenTestParser::Assume_geContext * /*ctx*/) override { }
+
+  virtual void enterAssume_le(GenTestParser::Assume_leContext * /*ctx*/) override { }
+  virtual void exitAssume_le(GenTestParser::Assume_leContext * /*ctx*/) override { }
+
+  virtual void enterAssume_ne(GenTestParser::Assume_neContext * /*ctx*/) override { }
+  virtual void exitAssume_ne(GenTestParser::Assume_neContext * /*ctx*/) override { }
+
+  virtual void enterAssume_eq(GenTestParser::Assume_eqContext * /*ctx*/) override { }
+  virtual void exitAssume_eq(GenTestParser::Assume_eqContext * /*ctx*/) override { }
 
   virtual void enterCheck(GenTestParser::CheckContext * /*ctx*/) override { }
   virtual void exitCheck(GenTestParser::CheckContext * /*ctx*/) override { }
 
-  virtual void enterVerification_type(GenTestParser::Verification_typeContext * /*ctx*/) override { }
-  virtual void exitVerification_type(GenTestParser::Verification_typeContext * /*ctx*/) override { }
+  virtual void enterCheck_gt(GenTestParser::Check_gtContext * /*ctx*/) override { }
+  virtual void exitCheck_gt(GenTestParser::Check_gtContext * /*ctx*/) override { }
+
+  virtual void enterCheck_lt(GenTestParser::Check_ltContext * /*ctx*/) override { }
+  virtual void exitCheck_lt(GenTestParser::Check_ltContext * /*ctx*/) override { }
+
+  virtual void enterCheck_ge(GenTestParser::Check_geContext * /*ctx*/) override { }
+  virtual void exitCheck_ge(GenTestParser::Check_geContext * /*ctx*/) override { }
+
+  virtual void enterCheck_le(GenTestParser::Check_leContext * /*ctx*/) override { }
+  virtual void exitCheck_le(GenTestParser::Check_leContext * /*ctx*/) override { }
+
+  virtual void enterCheck_ne(GenTestParser::Check_neContext * /*ctx*/) override { }
+  virtual void exitCheck_ne(GenTestParser::Check_neContext * /*ctx*/) override { }
+
+  virtual void enterCheck_eq(GenTestParser::Check_eqContext * /*ctx*/) override { }
+  virtual void exitCheck_eq(GenTestParser::Check_eqContext * /*ctx*/) override { }
 
   virtual void enterMsg(GenTestParser::MsgContext * /*ctx*/) override { }
   virtual void exitMsg(GenTestParser::MsgContext * /*ctx*/) override { }
+
+  virtual void enterMatch_lexer(GenTestParser::Match_lexerContext * /*ctx*/) override { }
+  virtual void exitMatch_lexer(GenTestParser::Match_lexerContext * /*ctx*/) override { }
+
+  virtual void enterOpen_bracket(GenTestParser::Open_bracketContext * /*ctx*/) override { }
+  virtual void exitOpen_bracket(GenTestParser::Open_bracketContext * /*ctx*/) override { }
+
+  virtual void enterClose_bracket(GenTestParser::Close_bracketContext * /*ctx*/) override { }
+  virtual void exitClose_bracket(GenTestParser::Close_bracketContext * /*ctx*/) override { }
 
 
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }

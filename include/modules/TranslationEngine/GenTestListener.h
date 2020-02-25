@@ -32,6 +32,30 @@ public:
   virtual void enterMacro_define(GenTestParser::Macro_defineContext *ctx) = 0;
   virtual void exitMacro_define(GenTestParser::Macro_defineContext *ctx) = 0;
 
+  virtual void enterStructure(GenTestParser::StructureContext *ctx) = 0;
+  virtual void exitStructure(GenTestParser::StructureContext *ctx) = 0;
+
+  virtual void enterSingle_var(GenTestParser::Single_varContext *ctx) = 0;
+  virtual void exitSingle_var(GenTestParser::Single_varContext *ctx) = 0;
+
+  virtual void enterMulti_var(GenTestParser::Multi_varContext *ctx) = 0;
+  virtual void exitMulti_var(GenTestParser::Multi_varContext *ctx) = 0;
+
+  virtual void enterNumeration(GenTestParser::NumerationContext *ctx) = 0;
+  virtual void exitNumeration(GenTestParser::NumerationContext *ctx) = 0;
+
+  virtual void enterTypdef(GenTestParser::TypdefContext *ctx) = 0;
+  virtual void exitTypdef(GenTestParser::TypdefContext *ctx) = 0;
+
+  virtual void enterBase_def(GenTestParser::Base_defContext *ctx) = 0;
+  virtual void exitBase_def(GenTestParser::Base_defContext *ctx) = 0;
+
+  virtual void enterIfdef(GenTestParser::IfdefContext *ctx) = 0;
+  virtual void exitIfdef(GenTestParser::IfdefContext *ctx) = 0;
+
+  virtual void enterUndefine(GenTestParser::UndefineContext *ctx) = 0;
+  virtual void exitUndefine(GenTestParser::UndefineContext *ctx) = 0;
+
   virtual void enterComment(GenTestParser::CommentContext *ctx) = 0;
   virtual void exitComment(GenTestParser::CommentContext *ctx) = 0;
 
@@ -230,17 +254,80 @@ public:
   virtual void enterAssrt(GenTestParser::AssrtContext *ctx) = 0;
   virtual void exitAssrt(GenTestParser::AssrtContext *ctx) = 0;
 
+  virtual void enterAssrt_gt(GenTestParser::Assrt_gtContext *ctx) = 0;
+  virtual void exitAssrt_gt(GenTestParser::Assrt_gtContext *ctx) = 0;
+
+  virtual void enterAssrt_lt(GenTestParser::Assrt_ltContext *ctx) = 0;
+  virtual void exitAssrt_lt(GenTestParser::Assrt_ltContext *ctx) = 0;
+
+  virtual void enterAssrt_ge(GenTestParser::Assrt_geContext *ctx) = 0;
+  virtual void exitAssrt_ge(GenTestParser::Assrt_geContext *ctx) = 0;
+
+  virtual void enterAssrt_le(GenTestParser::Assrt_leContext *ctx) = 0;
+  virtual void exitAssrt_le(GenTestParser::Assrt_leContext *ctx) = 0;
+
+  virtual void enterAssrt_ne(GenTestParser::Assrt_neContext *ctx) = 0;
+  virtual void exitAssrt_ne(GenTestParser::Assrt_neContext *ctx) = 0;
+
+  virtual void enterAssrt_eq(GenTestParser::Assrt_eqContext *ctx) = 0;
+  virtual void exitAssrt_eq(GenTestParser::Assrt_eqContext *ctx) = 0;
+
+  virtual void enterOnly_assrt(GenTestParser::Only_assrtContext *ctx) = 0;
+  virtual void exitOnly_assrt(GenTestParser::Only_assrtContext *ctx) = 0;
+
   virtual void enterAssume(GenTestParser::AssumeContext *ctx) = 0;
   virtual void exitAssume(GenTestParser::AssumeContext *ctx) = 0;
+
+  virtual void enterAssume_gt(GenTestParser::Assume_gtContext *ctx) = 0;
+  virtual void exitAssume_gt(GenTestParser::Assume_gtContext *ctx) = 0;
+
+  virtual void enterAssume_lt(GenTestParser::Assume_ltContext *ctx) = 0;
+  virtual void exitAssume_lt(GenTestParser::Assume_ltContext *ctx) = 0;
+
+  virtual void enterAssume_ge(GenTestParser::Assume_geContext *ctx) = 0;
+  virtual void exitAssume_ge(GenTestParser::Assume_geContext *ctx) = 0;
+
+  virtual void enterAssume_le(GenTestParser::Assume_leContext *ctx) = 0;
+  virtual void exitAssume_le(GenTestParser::Assume_leContext *ctx) = 0;
+
+  virtual void enterAssume_ne(GenTestParser::Assume_neContext *ctx) = 0;
+  virtual void exitAssume_ne(GenTestParser::Assume_neContext *ctx) = 0;
+
+  virtual void enterAssume_eq(GenTestParser::Assume_eqContext *ctx) = 0;
+  virtual void exitAssume_eq(GenTestParser::Assume_eqContext *ctx) = 0;
 
   virtual void enterCheck(GenTestParser::CheckContext *ctx) = 0;
   virtual void exitCheck(GenTestParser::CheckContext *ctx) = 0;
 
-  virtual void enterVerification_type(GenTestParser::Verification_typeContext *ctx) = 0;
-  virtual void exitVerification_type(GenTestParser::Verification_typeContext *ctx) = 0;
+  virtual void enterCheck_gt(GenTestParser::Check_gtContext *ctx) = 0;
+  virtual void exitCheck_gt(GenTestParser::Check_gtContext *ctx) = 0;
+
+  virtual void enterCheck_lt(GenTestParser::Check_ltContext *ctx) = 0;
+  virtual void exitCheck_lt(GenTestParser::Check_ltContext *ctx) = 0;
+
+  virtual void enterCheck_ge(GenTestParser::Check_geContext *ctx) = 0;
+  virtual void exitCheck_ge(GenTestParser::Check_geContext *ctx) = 0;
+
+  virtual void enterCheck_le(GenTestParser::Check_leContext *ctx) = 0;
+  virtual void exitCheck_le(GenTestParser::Check_leContext *ctx) = 0;
+
+  virtual void enterCheck_ne(GenTestParser::Check_neContext *ctx) = 0;
+  virtual void exitCheck_ne(GenTestParser::Check_neContext *ctx) = 0;
+
+  virtual void enterCheck_eq(GenTestParser::Check_eqContext *ctx) = 0;
+  virtual void exitCheck_eq(GenTestParser::Check_eqContext *ctx) = 0;
 
   virtual void enterMsg(GenTestParser::MsgContext *ctx) = 0;
   virtual void exitMsg(GenTestParser::MsgContext *ctx) = 0;
+
+  virtual void enterMatch_lexer(GenTestParser::Match_lexerContext *ctx) = 0;
+  virtual void exitMatch_lexer(GenTestParser::Match_lexerContext *ctx) = 0;
+
+  virtual void enterOpen_bracket(GenTestParser::Open_bracketContext *ctx) = 0;
+  virtual void exitOpen_bracket(GenTestParser::Open_bracketContext *ctx) = 0;
+
+  virtual void enterClose_bracket(GenTestParser::Close_bracketContext *ctx) = 0;
+  virtual void exitClose_bracket(GenTestParser::Close_bracketContext *ctx) = 0;
 
 
 };

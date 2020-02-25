@@ -40,7 +40,29 @@ typedef enum NonTerminals
     NAMESPACE,
     INCLUDE,
     DEFINE,
-    IF
+    IF,
+    ASSERT_GT,
+    ASSERT_LT,
+    ASSERT_GE,
+    ASSERT_LE,
+    ASSERT_NE,
+    ASSERT_EQ,
+    ASSERT,
+    ASSUME_GT,
+    ASSUME_LT,
+    ASSUME_GE,
+    ASSUME_LE,
+    ASSUME_NE,
+    ASSUME_EQ,
+    CHECK_GT,
+    CHECK_LT,
+    CHECK_GE,
+    CHECK_LE,
+    CHECK_NE,
+    CHECK_EQ,
+    SYMBOLIC,
+    CLOSE_BRK,
+    OPEN_BRK
     
 
 } NTerminal;
@@ -97,6 +119,7 @@ class Node {
 
     NTerminal type;
     std::string text;
+    std::string datatype;
 };
 
 
