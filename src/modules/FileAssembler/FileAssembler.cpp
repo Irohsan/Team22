@@ -15,6 +15,7 @@
   (Legal terms of use/libraries used need to be added here once we get to that point)
 
 **/
+#include <BinaryParser.h>
 #include "FileAssembler.h"
 #include "DataStructures.h"
 
@@ -24,6 +25,12 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     auto current = transEngineOutput.begin();
 
     auto size = transEngineOutput.size();
+
+    std::string output = "";
+
+    BinaryParser bp;
+
+    bp.parse( binaryFile );
 
     TranslationDictionary translate;
 
@@ -38,9 +45,12 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     for( int currentTranslation = 0; currentTranslation < (int) size; currentTranslation++ )
     {
-
-
-        std::cout << "Text: " << current->text << std::endl;
+        //maybe move individual translations to a seperate class/function that the translation is passed into
+        //convert testing library to correct library
+        if( current->type == INCLUDE && current->text.find(INCLUDE_STATEMENT) != std::string::npos )
+        {
+            std::cout<<"Text: "<< current->text <<std::endl;
+        }
 
         current++;
     }
