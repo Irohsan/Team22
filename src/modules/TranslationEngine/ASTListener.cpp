@@ -236,6 +236,38 @@ void ASTListener::enterType(GenTestParser::TypeContext *ctx) {
     ASTListener::list.at( ASTListener::list.size() - 1 ).datatype = ctx->getText();
 }
 
+void ASTListener::enterClose_bracket(GenTestParser::Close_bracketContext *ctx)
+{
+    // Create node.
+    Node newNode;
+
+    // Configure info.
+    newNode.type = CLOSE_BRK;
+    newNode.text = ctx->getText();
+
+    // Add to list.
+    ASTListener::list.push_back( newNode );
+}
+
+void ASTListener::enterOpen_bracket(GenTestParser::Open_bracketContext *ctx)
+{
+
+    // Create node.
+    Node newNode;
+
+    // Configure info.
+    newNode.type = OPEN_BRK;
+    newNode.text = ctx->getText();
+
+    // Add to list.
+    if( list.at( list.size() - 1 ).type == FOR_LOOP
+	|| list.at( list.size() - 1 ).type == WHILE_LOOP
+ 	|| list.at( list.size() - 1 ).type == FUNC
+	|| list.at( list.size() - 1 ).type == TEST )
+    {
+    	ASTListener::list.push_back( newNode );
+    }
+}
 
 vector<Node> ASTListener::getAST(){
 

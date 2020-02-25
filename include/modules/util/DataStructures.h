@@ -60,7 +60,9 @@ typedef enum NonTerminals
     CHECK_LE,
     CHECK_NE,
     CHECK_EQ,
-    SYMBOLIC
+    SYMBOLIC,
+    CLOSE_BRK,
+    OPEN_BRK
     
 
 } NTerminal;

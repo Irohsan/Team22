@@ -40,5 +40,7 @@ class ASTListener : public GenTestBaseListener
 	  void enterCheck_eq(GenTestParser::Check_eqContext *ctx);
           void enterSymbolic(GenTestParser::SymbolicContext *ctx);
 	  void enterType(GenTestParser::TypeContext *ctx);
+	  void enterClose_bracket(GenTestParser::Close_bracketContext *ctx);
+	  void enterOpen_bracket(GenTestParser::Open_bracketContext *ctx);
           std::vector<Node> getAST();
 };
