@@ -323,6 +323,12 @@ public:
   virtual void enterMatch_lexer(GenTestParser::Match_lexerContext *ctx) = 0;
   virtual void exitMatch_lexer(GenTestParser::Match_lexerContext *ctx) = 0;
 
+  virtual void enterOpen_bracket(GenTestParser::Open_bracketContext *ctx) = 0;
+  virtual void exitOpen_bracket(GenTestParser::Open_bracketContext *ctx) = 0;
+
+  virtual void enterClose_bracket(GenTestParser::Close_bracketContext *ctx) = 0;
+  virtual void exitClose_bracket(GenTestParser::Close_bracketContext *ctx) = 0;
+
 
 };
 

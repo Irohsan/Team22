@@ -325,6 +325,13 @@ public:
   virtual void enterMatch_lexer(GenTestParser::Match_lexerContext * /*ctx*/) override { }
   virtual void exitMatch_lexer(GenTestParser::Match_lexerContext * /*ctx*/) override { }
 
+  virtual void enterOpen_bracket(GenTestParser::Open_bracketContext * /*ctx*/) override { }
+  virtual void exitOpen_bracket(GenTestParser::Open_bracketContext * /*ctx*/) override { }
+
+  virtual void enterClose_bracket(GenTestParser::Close_bracketContext * /*ctx*/) override { }
+  virtual void exitClose_bracket(GenTestParser::Close_bracketContext * /*ctx*/) override { }
+
+
   virtual void enterEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
   virtual void exitEveryRule(antlr4::ParserRuleContext * /*ctx*/) override { }
   virtual void visitTerminal(antlr4::tree::TerminalNode * /*node*/) override { }
