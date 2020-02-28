@@ -18,3 +18,5 @@
 
 void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         char * outputPath, char * translateCFG );
+
+std::string stripNewLine( std::string stringToStrip );

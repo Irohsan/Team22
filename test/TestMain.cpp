@@ -2,6 +2,7 @@
 #include "catch.hpp"
 #include "BinaryParser.h"
 #include "TranslationEngine.h"
+#include "FileAssembler.h"
 #include "Util.h"
 #include "DataStructures.h"
 
@@ -119,4 +120,13 @@ TEST_CASE( "TranslationDictionary Tests", "[translation_dictionary]")
         REQUIRE( td.findTranslationFromNTerminal( ASSERT_EQ )->translateTo == "ASSERT_EQ" );
     }
 
+}
+
+TEST_CASE( "Strip New Line Test", "[file_assembler]")
+{
+    std::string testString = "Hello\n I\n contain\n new\n lines\n";
+
+    std::string desiredOutput = "Hello I contain new lines";
+
+    assert( stripNewLine(testString) == desiredOutput );
 }

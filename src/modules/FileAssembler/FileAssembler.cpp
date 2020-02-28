@@ -41,17 +41,48 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         //TODO: Log if loading the file is bad
     }
 
-
-
     for( int currentTranslation = 0; currentTranslation < (int) size; currentTranslation++ )
     {
         //maybe move individual translations to a seperate class/function that the translation is passed into
         //convert testing library to correct library
+
+        std::string currentString = current->text;
+
+        //strip the \n on everything but comments to make it consistent
+        //comments do not have a \n at the end of their statement
+        if( current->type != COMMENT )
+        {
+            currentString = stripNewLine( currentString );
+        }
+
+        //translate the deepstate include statement
         if( current->type == INCLUDE && current->text.find(INCLUDE_STATEMENT) != std::string::npos )
         {
-            std::cout<<"Text: "<< current->text <<std::endl;
+            currentString = translate.findTranslationFromNTerminal(INCLUDE)->translateTo;
         }
+
+        if( current->type == SYMBOLIC )
+        {
+            //TODO: Insertion of values
+        }
+
+        output+=currentString + "\n\n";
 
         current++;
     }
+
+    //TODO: Save to file instead of just printing
+    std::cout<<output;
+}
+
+std::string stripNewLine( std::string stringToStrip )
+{
+    while( stringToStrip.find('\n') != std::string::npos )
+    {
+        auto location = stringToStrip.find('\n');
+
+        stringToStrip.erase( location, 1 );
+    }
+
+    return stringToStrip;
 }

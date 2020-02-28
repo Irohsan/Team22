@@ -52,6 +52,6 @@ int main( int numArgs, char** args )
     // Get output.
     std::vector<Node> output = parser.getAST( fileToTranslate );
 
-    buildFile( output, binaryFile, outputPath, translateCFG );
+    buildFile(output, binaryFile, outputPath, translateCFG);
 
 }

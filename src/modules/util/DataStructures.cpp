@@ -33,7 +33,7 @@ void TranslationEntry::appendToEnd( std::string nTerminalVal, std::string transl
 
         this->nextEntry->nTerminalVal = nTerminalVal;
 
-        this->nextEntry->translateTo = translateTo;
+        this->nextEntry->translateTo = translateTo.substr( 0, translateTo.size() - 1 );
     } else
     {
         this->nextEntry->appendToEnd( nTerminalVal, translateTo );
