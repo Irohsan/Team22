@@ -24,4 +24,10 @@ std::string stripNewLine( std::string stringToStrip );
 
 std::string symbolicLine( std::string variableName, BinaryIterator * iterator, std::string type );
 
+std::string questionConversion( std::string previousText, NTerminal currentNTerminal );
+
+std::string questionWhichCheck( std::string toCheck, std::string baseCase );
+
+NTerminal findBaseCase( NTerminal currentCase );
+
 void writeToFile( std::string fileLocation, std::string fileContents );
