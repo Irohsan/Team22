@@ -63,7 +63,8 @@ typedef enum NonTerminals
     SYMBOLIC,
     CLOSE_BRK,
     OPEN_BRK,
-    NO_INLINE
+    NO_INLINE,
+    MAIN_FUNC
     
 
 } NTerminal;
@@ -172,7 +173,8 @@ const std::map < std::string, NonTerminals > vitalTranslations =
          {"INCLUDE", INCLUDE}};
 
 const std::map < std::string, NonTerminals > nonVital =
-        {{"NO_INLINE", NO_INLINE}};
+        {{"NO_INLINE", NO_INLINE},
+         {"MAIN_FUNC", MAIN_FUNC}};
 
 
 

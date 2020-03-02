@@ -22,6 +22,6 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
 std::string stripNewLine( std::string stringToStrip );
 
-std::string symbolicLine( std::string variableName, BinaryParser bp, std::string type );
+std::string symbolicLine( std::string variableName, BinaryIterator * iterator, std::string type );
 
 void writeToFile( std::string fileLocation, std::string fileContents );

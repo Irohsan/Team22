@@ -104,6 +104,15 @@ bool TranslationDictionary::loadFile()
 
         translateTo = currentTrans.substr( location + 1 );
 
+        //replaces all "unnatural new lines" mainly for MAIN_FUNC
+        while( translateTo.find("\\") != std::string::npos )
+        {
+            auto location = translateTo.find_first_of("\\");
+
+            translateTo = translateTo.substr(0,location) + '\n'
+                    + translateTo.substr(location+2, translateTo.length());
+        }
+
         //if first entry
         if( translations == nullptr )
         {

@@ -32,6 +32,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     bp.parse( binaryFile );
 
+    auto it = bp.getIterator();
+
     TranslationDictionary translate;
 
     translate.setFile(translateCFG);
@@ -62,6 +64,30 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         }
         else if( current->type == SYMBOLIC )
         {
+            //if multi variable line
+            while( currentString.find(',') != std::string::npos )
+            {
+                auto startOfVar = currentString.find_first_of(' ') + 1;
+
+                auto location = currentString.find(',');
+
+                std::string variableName = currentString.substr( startOfVar, location - startOfVar );
+
+                output += symbolicLine( variableName, &it, current->datatype ) + '\n';
+
+                auto firstPart = currentString.substr( 0, startOfVar );
+
+                auto secondPart = currentString.substr(location + 1, currentString.length() - location );
+
+                //strip additional spaces
+                while( secondPart.substr(0,1).find(' ') != std::string::npos )
+                {
+                    secondPart = secondPart.substr(1, secondPart.length() - 1 );
+                }
+
+                currentString = firstPart + secondPart;
+            }
+
             //locate the variable name
             auto startOfVar = currentString.find_last_of(' ') + 1;
 
@@ -69,7 +95,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             std::string variableName = currentString.substr(startOfVar, endOfVar - startOfVar );
 
-            output += symbolicLine( variableName, bp, current->datatype ) + '\n';
+            output += symbolicLine( variableName, &it, current->datatype ) + '\n';
         }
 
         //get rid of namespace
@@ -77,10 +103,10 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         {
             currentString = "";
         }
+        //if a function has a NO_INLINE
         else if( current->type == FUNC && currentString.find(S_DEEPSTATE_NOINLINE) != std::string::npos )
         {
-            size_t found = currentString.find(S_DEEPSTATE_NOINLINE);
-
+            //TODO: Gracefully crash if no translation for NO_INLINE in the cfg
             output += translate.findTranslationFromNTerminal(NO_INLINE)->translateTo +
                     currentString.substr(S_DEEPSTATE_NOINLINE.length());
         }
@@ -90,6 +116,14 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         }
 
         current++;
+    }
+
+    //will insert a main function from the .cfg if it exists.
+    auto mainTrans = translate.findTranslationFromNTerminal(MAIN_FUNC);
+
+    if( mainTrans != nullptr )
+    {
+        output += mainTrans->translateTo;
     }
 
     writeToFile( outputPath, output);
@@ -107,35 +141,39 @@ std::string stripNewLine( std::string stringToStrip )
     return stringToStrip;
 }
 
-std::string symbolicLine( std::string variableName, BinaryParser bp, std::string type )
+std::string symbolicLine( std::string variableName, BinaryIterator * iterator, std::string type )
 {
     std::string outputString;
 
-    auto iterator = bp.getIterator();
-
     if( type == "int" )
     {
-        outputString = "int " + variableName + " = " + std::to_string( iterator.nextInt() );
+        outputString = "int " + variableName + " = " + std::to_string( iterator->nextInt() );
     }
     else if( type == "char" )
     {
-        outputString = "char " + variableName + " = " + std::to_string( iterator.nextChar() );
+        outputString = "char " + variableName + " = " + std::to_string( iterator->nextChar() );
     }
     else if( type == "long" )
     {
-        outputString = "long " + variableName + " = " + std::to_string( iterator.nextLong() );
+        outputString = "long " + variableName + " = " + std::to_string( iterator->nextLong() );
     }
     else if( type == "double" )
     {
-        outputString = "double " + variableName + " = " + std::to_string( iterator.nextDouble() );
+        outputString = "double " + variableName + " = " + std::to_string( iterator->nextDouble() );
     }
     else if( type == "float" )
     {
-        outputString = "float " + variableName + " = " + std::to_string( iterator.nextFloat() );
+        outputString = "float " + variableName + " = " + std::to_string( iterator->nextFloat() );
     }
     else if( type == "short" )
     {
-        outputString = "short " + variableName + " = " + std::to_string( iterator.nextShort() );
+        outputString = "short " + variableName + " = " + std::to_string( iterator->nextShort() );
+    }
+    else if( type == "unsigned" )
+    {
+        //TODO: Figure out what type actually needs to be inserted
+
+        outputString = "unsigned " + variableName + " = " + std::to_string( iterator->nextUInt() );
     }
     //TODO: Support all data types
 
