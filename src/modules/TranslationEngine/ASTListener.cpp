@@ -15,6 +15,19 @@ void ASTListener::enterMulti_line(GenTestParser::Multi_lineContext *ctx)
     ASTListener::list.push_back( newNode );
 }
 
+void ASTListener::enterSingle_line(GenTestParser::Single_lineContext *ctx )
+{
+    // Create node.
+    Node newNode;
+
+    // Configure info.
+    newNode.type = COMMENT;
+    newNode.text = ctx->getText();
+
+    // Add to list.
+    ASTListener::list.push_back( newNode );
+}
+
 void ASTListener::enterSpace(GenTestParser::SpaceContext *ctx)
 {
     // Create node.

@@ -11,6 +11,7 @@ class ASTListener : public GenTestBaseListener
     public: 
 
           void enterMulti_line(GenTestParser::Multi_lineContext *ctx);
+	  void enterSingle_line(GenTestParser::Single_lineContext *ctx);
           void enterSpace(GenTestParser::SpaceContext *ctx);
           void enterInclude(GenTestParser::IncludeContext *ctx);
           void enterMacro_define(GenTestParser::Macro_defineContext *ctx);

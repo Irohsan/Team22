@@ -319,6 +319,12 @@ public:
   virtual void enterCheck_eq(GenTestParser::Check_eqContext * /*ctx*/) override { }
   virtual void exitCheck_eq(GenTestParser::Check_eqContext * /*ctx*/) override { }
 
+  virtual void enterFor_all(GenTestParser::For_allContext * /*ctx*/) override { }
+  virtual void exitFor_all(GenTestParser::For_allContext * /*ctx*/) override { }
+
+  virtual void enterFor_all_body(GenTestParser::For_all_bodyContext * /*ctx*/) override { }
+  virtual void exitFor_all_body(GenTestParser::For_all_bodyContext * /*ctx*/) override { }
+
   virtual void enterMsg(GenTestParser::MsgContext * /*ctx*/) override { }
   virtual void exitMsg(GenTestParser::MsgContext * /*ctx*/) override { }
 
