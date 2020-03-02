@@ -142,8 +142,6 @@ TranslationEntry * TranslationDictionary::findTranslationFromNTerminal( NonTermi
  */
 bool TranslationDictionary::populateNTerminals()
 {
-    //TODO: Refactor this for NonTerminal Changes
-
     auto it = vitalTranslations.begin();
 
     while( it != vitalTranslations.end() )
@@ -166,23 +164,22 @@ bool TranslationDictionary::populateNTerminals()
 
     }
 
-    it = nonVital.begin();
+    auto nonVitalIt = nonVital.begin();
 
-    while( it != vitalTranslations.end() )
+    while( nonVitalIt != nonVital.end() )
     {
-        std::string currentNTerminalVal = it->first;
+        std::string currentNTerminalVal = nonVitalIt->first;
 
-        NTerminal currentNTerminal = it->second;
+        NTerminal currentNTerminal = nonVitalIt->second;
 
         bool populated = translations->assignTranslation( currentNTerminalVal, currentNTerminal );
 
         if( !populated )
         {
-            //TODO: Log vital translation not being populated
-
-            return false;
+            //TODO: Log if a non vital translation is missing
         }
-        it++;
+
+        nonVitalIt++;
     }
 
     return true;

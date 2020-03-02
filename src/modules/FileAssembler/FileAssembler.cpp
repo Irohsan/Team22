@@ -98,6 +98,14 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             output += symbolicLine( variableName, &it, current->datatype ) + '\n';
         }
 
+        /*
+        //handle ASSERT/CHECK/ASSUME statements
+        if( current->type >= ASSERT_GT && current->type <= CHECK )
+        {
+
+        }
+         */
+
         //get rid of namespace
         else if( currentString.find("using namespace deepstate;") != std::string::npos )
         {
@@ -123,7 +131,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     if( mainTrans != nullptr )
     {
-        output += mainTrans->translateTo;
+        output +=  '\n' + mainTrans->translateTo;
     }
 
     writeToFile( outputPath, output);
@@ -171,8 +179,6 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
     }
     else if( type == "unsigned" )
     {
-        //TODO: Figure out what type actually needs to be inserted
-
         outputString = "unsigned " + variableName + " = " + std::to_string( iterator->nextUInt() );
     }
     //TODO: Support all data types

@@ -54,12 +54,14 @@ typedef enum NonTerminals
     ASSUME_LE,
     ASSUME_NE,
     ASSUME_EQ,
+    ASSUME,
     CHECK_GT,
     CHECK_LT,
     CHECK_GE,
     CHECK_LE,
     CHECK_NE,
     CHECK_EQ,
+    CHECK,
     SYMBOLIC,
     CLOSE_BRK,
     OPEN_BRK,
@@ -154,7 +156,15 @@ private:
 //map containing the references for NTerminals that are vital for runtime
 //this might be expanded on or reduced in the future
 const std::map < std::string, NonTerminals > vitalTranslations =
-        {{ "ASSERT_GT", ASSERT_GT },
+        {{"ASSERT", ASSERT},
+         {"CHECK", CHECK},
+         {"ASSUME", ASSUME},
+         {"INCLUDE", INCLUDE}};
+
+const std::map < std::string, NonTerminals > nonVital =
+        {{"NO_INLINE", NO_INLINE},
+         {"MAIN_FUNC", MAIN_FUNC},
+         { "ASSERT_GT", ASSERT_GT },
          { "ASSERT_GE", ASSERT_GE },
          { "ASSERT_LT", ASSERT_LT },
          { "ASSERT_LE", ASSERT_LE },
@@ -171,12 +181,7 @@ const std::map < std::string, NonTerminals > vitalTranslations =
          { "ASSUME_LT", ASSUME_LT },
          { "ASSUME_LE", ASSUME_LE },
          { "ASSUME_GT", ASSUME_GT },
-         { "ASSUME_GE", ASSUME_GE },
-         {"INCLUDE", INCLUDE}};
-
-const std::map < std::string, NonTerminals > nonVital =
-        {{"NO_INLINE", NO_INLINE},
-         {"MAIN_FUNC", MAIN_FUNC}};
+         { "ASSUME_GE", ASSUME_GE }};
 
 
 
