@@ -33,7 +33,7 @@ void TranslationEntry::appendToEnd( std::string nTerminalVal, std::string transl
 
         this->nextEntry->nTerminalVal = nTerminalVal;
 
-        this->nextEntry->translateTo = translateTo.substr( 0, translateTo.size() - 1 );
+        this->nextEntry->translateTo = translateTo;
     } else
     {
         this->nextEntry->appendToEnd( nTerminalVal, translateTo );
@@ -155,6 +155,25 @@ bool TranslationDictionary::populateNTerminals()
         //increment the iterator for the next vital translation
         it++;
 
+    }
+
+    it = nonVital.begin();
+
+    while( it != vitalTranslations.end() )
+    {
+        std::string currentNTerminalVal = it->first;
+
+        NTerminal currentNTerminal = it->second;
+
+        bool populated = translations->assignTranslation( currentNTerminalVal, currentNTerminal );
+
+        if( !populated )
+        {
+            //TODO: Log vital translation not being populated
+
+            return false;
+        }
+        it++;
     }
 
     return true;

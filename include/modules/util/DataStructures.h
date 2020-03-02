@@ -62,7 +62,8 @@ typedef enum NonTerminals
     CHECK_EQ,
     SYMBOLIC,
     CLOSE_BRK,
-    OPEN_BRK
+    OPEN_BRK,
+    NO_INLINE
     
 
 } NTerminal;
@@ -169,6 +170,9 @@ const std::map < std::string, NonTerminals > vitalTranslations =
          { "ASSUME_GT", ASSUME_GT },
          { "ASSUME_GE", ASSUME_GE },
          {"INCLUDE", INCLUDE}};
+
+const std::map < std::string, NonTerminals > nonVital =
+        {{"NO_INLINE", NO_INLINE}};
 
 
 

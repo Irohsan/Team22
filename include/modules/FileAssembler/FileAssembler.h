@@ -15,8 +15,13 @@
 **/
 
 #include "DataStructures.h"
+#include "BinaryParser.h"
 
 void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         char * outputPath, char * translateCFG );
 
 std::string stripNewLine( std::string stringToStrip );
+
+std::string symbolicLine( std::string variableName, BinaryParser bp, std::string type );
+
+void writeToFile( std::string fileLocation, std::string fileContents );

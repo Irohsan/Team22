@@ -15,13 +15,13 @@
   (Legal terms of use/libraries used need to be added here once we get to that point)
 
 **/
-#include <BinaryParser.h>
 #include "FileAssembler.h"
-#include "DataStructures.h"
 
 void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         char * outputPath, char * translateCFG )
 {
+    std::map<std::string, std::string> varMap;
+
     auto current = transEngineOutput.begin();
 
     auto size = transEngineOutput.size();
@@ -58,21 +58,41 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         //translate the deepstate include statement
         if( current->type == INCLUDE && current->text.find(INCLUDE_STATEMENT) != std::string::npos )
         {
-            currentString = translate.findTranslationFromNTerminal(INCLUDE)->translateTo;
+            output += translate.findTranslationFromNTerminal(INCLUDE)->translateTo + '\n';
         }
-
-        if( current->type == SYMBOLIC )
+        else if( current->type == SYMBOLIC )
         {
-            //TODO: Insertion of values
+            //locate the variable name
+            auto startOfVar = currentString.find_last_of(' ') + 1;
+
+            auto endOfVar = currentString.find(';');
+
+            std::string variableName = currentString.substr(startOfVar, endOfVar - startOfVar );
+
+            output += symbolicLine( variableName, bp, current->datatype ) + '\n';
         }
 
-        output+=currentString + "\n\n";
+        //get rid of namespace
+        else if( currentString.find("using namespace deepstate;") != std::string::npos )
+        {
+            currentString = "";
+        }
+        else if( current->type == FUNC && currentString.find(S_DEEPSTATE_NOINLINE) != std::string::npos )
+        {
+            size_t found = currentString.find(S_DEEPSTATE_NOINLINE);
+
+            output += translate.findTranslationFromNTerminal(NO_INLINE)->translateTo +
+                    currentString.substr(S_DEEPSTATE_NOINLINE.length());
+        }
+        else
+        {
+            output+=currentString + "\n";
+        }
 
         current++;
     }
 
-    //TODO: Save to file instead of just printing
-    std::cout<<output;
+    writeToFile( outputPath, output);
 }
 
 std::string stripNewLine( std::string stringToStrip )
@@ -85,4 +105,50 @@ std::string stripNewLine( std::string stringToStrip )
     }
 
     return stringToStrip;
+}
+
+std::string symbolicLine( std::string variableName, BinaryParser bp, std::string type )
+{
+    std::string outputString;
+
+    auto iterator = bp.getIterator();
+
+    if( type == "int" )
+    {
+        outputString = "int " + variableName + " = " + std::to_string( iterator.nextInt() );
+    }
+    else if( type == "char" )
+    {
+        outputString = "char " + variableName + " = " + std::to_string( iterator.nextChar() );
+    }
+    else if( type == "long" )
+    {
+        outputString = "long " + variableName + " = " + std::to_string( iterator.nextLong() );
+    }
+    else if( type == "double" )
+    {
+        outputString = "double " + variableName + " = " + std::to_string( iterator.nextDouble() );
+    }
+    else if( type == "float" )
+    {
+        outputString = "float " + variableName + " = " + std::to_string( iterator.nextFloat() );
+    }
+    else if( type == "short" )
+    {
+        outputString = "short " + variableName + " = " + std::to_string( iterator.nextShort() );
+    }
+    //TODO: Support all data types
+
+    return outputString + ';';
+}
+
+void writeToFile( std::string fileLocation, std::string fileContents )
+{
+    std::ofstream outputFile;
+
+    outputFile.open( fileLocation );
+
+    outputFile<<fileContents<<std::endl;
+
+    outputFile.close();
 }
