@@ -35,11 +35,14 @@ public:
   virtual void enterStructure(GenTestParser::StructureContext *ctx) = 0;
   virtual void exitStructure(GenTestParser::StructureContext *ctx) = 0;
 
-  virtual void enterSingle_var(GenTestParser::Single_varContext *ctx) = 0;
-  virtual void exitSingle_var(GenTestParser::Single_varContext *ctx) = 0;
+  virtual void enterStructure_header(GenTestParser::Structure_headerContext *ctx) = 0;
+  virtual void exitStructure_header(GenTestParser::Structure_headerContext *ctx) = 0;
 
   virtual void enterMulti_var(GenTestParser::Multi_varContext *ctx) = 0;
   virtual void exitMulti_var(GenTestParser::Multi_varContext *ctx) = 0;
+
+  virtual void enterMulti_var_body(GenTestParser::Multi_var_bodyContext *ctx) = 0;
+  virtual void exitMulti_var_body(GenTestParser::Multi_var_bodyContext *ctx) = 0;
 
   virtual void enterNumeration(GenTestParser::NumerationContext *ctx) = 0;
   virtual void exitNumeration(GenTestParser::NumerationContext *ctx) = 0;
@@ -47,8 +50,8 @@ public:
   virtual void enterTypdef(GenTestParser::TypdefContext *ctx) = 0;
   virtual void exitTypdef(GenTestParser::TypdefContext *ctx) = 0;
 
-  virtual void enterBase_def(GenTestParser::Base_defContext *ctx) = 0;
-  virtual void exitBase_def(GenTestParser::Base_defContext *ctx) = 0;
+  virtual void enterTypedef_header(GenTestParser::Typedef_headerContext *ctx) = 0;
+  virtual void exitTypedef_header(GenTestParser::Typedef_headerContext *ctx) = 0;
 
   virtual void enterIfdef(GenTestParser::IfdefContext *ctx) = 0;
   virtual void exitIfdef(GenTestParser::IfdefContext *ctx) = 0;

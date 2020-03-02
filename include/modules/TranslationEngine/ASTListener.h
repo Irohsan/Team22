@@ -7,6 +7,7 @@
 class ASTListener : public GenTestBaseListener
 {
     std::vector<Node> list;
+    bool semiFlag;
 
     public: 
 
@@ -15,7 +16,9 @@ class ASTListener : public GenTestBaseListener
           void enterSpace(GenTestParser::SpaceContext *ctx);
           void enterInclude(GenTestParser::IncludeContext *ctx);
           void enterMacro_define(GenTestParser::Macro_defineContext *ctx);
+	  void enterStructure_header(GenTestParser::Structure_headerContext *ctx);
           void enterFunction_header(GenTestParser::Function_headerContext *ctx);
+	  void enterTypedef_header(GenTestParser::Typedef_headerContext *ctx);
           void enterStatement(GenTestParser::StatementContext *ctx);
           void enterTest_header(GenTestParser::Test_headerContext *ctx );
           void enterWhile_loop(GenTestParser::While_loopContext *ctx );
@@ -41,6 +44,7 @@ class ASTListener : public GenTestBaseListener
 	  void enterCheck_eq(GenTestParser::Check_eqContext *ctx);
           void enterSymbolic(GenTestParser::SymbolicContext *ctx);
 	  void enterType(GenTestParser::TypeContext *ctx);
+	  void enterDefine(GenTestParser::DefineContext *ctx);
 	  void enterClose_bracket(GenTestParser::Close_bracketContext *ctx);
 	  void enterOpen_bracket(GenTestParser::Open_bracketContext *ctx);
           std::vector<Node> getAST();

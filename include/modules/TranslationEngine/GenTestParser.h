@@ -36,32 +36,33 @@ public:
 
   enum {
     RuleFile = 0, RuleSpace = 1, RuleInclude = 2, RuleInclude_bracket = 3, 
-    RuleInclude_quote = 4, RuleMacro_define = 5, RuleStructure = 6, RuleSingle_var = 7, 
-    RuleMulti_var = 8, RuleNumeration = 9, RuleTypdef = 10, RuleBase_def = 11, 
-    RuleIfdef = 12, RuleUndefine = 13, RuleComment = 14, RuleSingle_line = 15, 
-    RuleMulti_line = 16, RuleFunction = 17, RuleFunction_header = 18, RuleFunction_body = 19, 
-    RuleFunction_param = 20, RuleStatement = 21, RuleElement = 22, RuleDefine = 23, 
-    RuleType_def = 24, RuleLib_def = 25, RulePointer_def = 26, RuleClass_def = 27, 
-    RuleBrackets = 28, RuleAssignment = 29, RuleConditional = 30, RuleCond_header = 31, 
-    RuleCond_body = 32, RuleElif = 33, RuleEls = 34, RuleArithmetic = 35, 
-    RuleOperation = 36, RuleIncrement = 37, RuleDecrement = 38, RuleEvaluation = 39, 
-    RuleComparison = 40, RuleBoolean_ = 41, RuleEq = 42, RuleNe = 43, RuleInverse = 44, 
-    RuleBool_op = 45, RuleLoop = 46, RuleLoop_body = 47, RuleWhile_loop = 48, 
-    RuleFor_loop = 49, RuleReference = 50, RuleFunction_call = 51, RulePeriod_call = 52, 
-    RuleArrow_call = 53, RuleLib_call = 54, RuleParam_list = 55, RuleLib = 56, 
-    RuleArray = 57, RulePointer_cast = 58, RuleAddress_cast = 59, RuleType_cast = 60, 
-    RuleDisplay = 61, RuleDisplay_f = 62, RuleVariable_no_ws = 63, RuleInput = 64, 
-    RuleText = 65, RuleSymbol = 66, RuleType = 67, RuleString = 68, RuleKeyword = 69, 
-    RuleIdentifier = 70, RuleNum = 71, RuleTest = 72, RuleTest_header = 73, 
-    RuleTest_body = 74, RuleSymbolic = 75, RuleBracket_symbolic = 76, RuleUnderscore_symbolic = 77, 
-    RuleVerification = 78, RuleAssrt = 79, RuleAssrt_gt = 80, RuleAssrt_lt = 81, 
-    RuleAssrt_ge = 82, RuleAssrt_le = 83, RuleAssrt_ne = 84, RuleAssrt_eq = 85, 
-    RuleOnly_assrt = 86, RuleAssume = 87, RuleAssume_gt = 88, RuleAssume_lt = 89, 
-    RuleAssume_ge = 90, RuleAssume_le = 91, RuleAssume_ne = 92, RuleAssume_eq = 93, 
-    RuleCheck = 94, RuleCheck_gt = 95, RuleCheck_lt = 96, RuleCheck_ge = 97, 
-    RuleCheck_le = 98, RuleCheck_ne = 99, RuleCheck_eq = 100, RuleFor_all = 101, 
-    RuleFor_all_body = 102, RuleMsg = 103, RuleMatch_lexer = 104, RuleOpen_bracket = 105, 
-    RuleClose_bracket = 106
+    RuleInclude_quote = 4, RuleMacro_define = 5, RuleStructure = 6, RuleStructure_header = 7, 
+    RuleMulti_var = 8, RuleMulti_var_body = 9, RuleNumeration = 10, RuleTypdef = 11, 
+    RuleTypedef_header = 12, RuleIfdef = 13, RuleUndefine = 14, RuleComment = 15, 
+    RuleSingle_line = 16, RuleMulti_line = 17, RuleFunction = 18, RuleFunction_header = 19, 
+    RuleFunction_body = 20, RuleFunction_param = 21, RuleStatement = 22, 
+    RuleElement = 23, RuleDefine = 24, RuleType_def = 25, RuleLib_def = 26, 
+    RulePointer_def = 27, RuleClass_def = 28, RuleBrackets = 29, RuleAssignment = 30, 
+    RuleConditional = 31, RuleCond_header = 32, RuleCond_body = 33, RuleElif = 34, 
+    RuleEls = 35, RuleArithmetic = 36, RuleOperation = 37, RuleIncrement = 38, 
+    RuleDecrement = 39, RuleEvaluation = 40, RuleComparison = 41, RuleBoolean_ = 42, 
+    RuleEq = 43, RuleNe = 44, RuleInverse = 45, RuleBool_op = 46, RuleLoop = 47, 
+    RuleLoop_body = 48, RuleWhile_loop = 49, RuleFor_loop = 50, RuleReference = 51, 
+    RuleFunction_call = 52, RulePeriod_call = 53, RuleArrow_call = 54, RuleLib_call = 55, 
+    RuleParam_list = 56, RuleLib = 57, RuleArray = 58, RulePointer_cast = 59, 
+    RuleAddress_cast = 60, RuleType_cast = 61, RuleDisplay = 62, RuleDisplay_f = 63, 
+    RuleVariable_no_ws = 64, RuleInput = 65, RuleText = 66, RuleSymbol = 67, 
+    RuleType = 68, RuleString = 69, RuleKeyword = 70, RuleIdentifier = 71, 
+    RuleNum = 72, RuleTest = 73, RuleTest_header = 74, RuleTest_body = 75, 
+    RuleSymbolic = 76, RuleBracket_symbolic = 77, RuleUnderscore_symbolic = 78, 
+    RuleVerification = 79, RuleAssrt = 80, RuleAssrt_gt = 81, RuleAssrt_lt = 82, 
+    RuleAssrt_ge = 83, RuleAssrt_le = 84, RuleAssrt_ne = 85, RuleAssrt_eq = 86, 
+    RuleOnly_assrt = 87, RuleAssume = 88, RuleAssume_gt = 89, RuleAssume_lt = 90, 
+    RuleAssume_ge = 91, RuleAssume_le = 92, RuleAssume_ne = 93, RuleAssume_eq = 94, 
+    RuleCheck = 95, RuleCheck_gt = 96, RuleCheck_lt = 97, RuleCheck_ge = 98, 
+    RuleCheck_le = 99, RuleCheck_ne = 100, RuleCheck_eq = 101, RuleFor_all = 102, 
+    RuleFor_all_body = 103, RuleMsg = 104, RuleMatch_lexer = 105, RuleOpen_bracket = 106, 
+    RuleClose_bracket = 107
   };
 
   GenTestParser(antlr4::TokenStream *input);
@@ -81,11 +82,12 @@ public:
   class Include_quoteContext;
   class Macro_defineContext;
   class StructureContext;
-  class Single_varContext;
+  class Structure_headerContext;
   class Multi_varContext;
+  class Multi_var_bodyContext;
   class NumerationContext;
   class TypdefContext;
-  class Base_defContext;
+  class Typedef_headerContext;
   class IfdefContext;
   class UndefineContext;
   class CommentContext;
@@ -313,11 +315,8 @@ public:
   public:
     StructureContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *STRUCT();
-    Single_varContext *single_var();
+    Structure_headerContext *structure_header();
     Multi_varContext *multi_var();
-    std::vector<antlr4::tree::TerminalNode *> WS();
-    antlr4::tree::TerminalNode* WS(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -326,36 +325,51 @@ public:
 
   StructureContext* structure();
 
-  class  Single_varContext : public antlr4::ParserRuleContext {
+  class  Structure_headerContext : public antlr4::ParserRuleContext {
   public:
-    Single_varContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Structure_headerContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *STRUCT();
     IdentifierContext *identifier();
-    antlr4::tree::TerminalNode *SEMICOLON();
-    std::vector<TypeContext *> type();
-    TypeContext* type(size_t i);
+    Open_bracketContext *open_bracket();
     std::vector<antlr4::tree::TerminalNode *> WS();
     antlr4::tree::TerminalNode* WS(size_t i);
+    std::vector<antlr4::tree::TerminalNode *> NEWLINE();
+    antlr4::tree::TerminalNode* NEWLINE(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
    
   };
 
-  Single_varContext* single_var();
+  Structure_headerContext* structure_header();
 
   class  Multi_varContext : public antlr4::ParserRuleContext {
   public:
     Multi_varContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    std::vector<IdentifierContext *> identifier();
-    IdentifierContext* identifier(size_t i);
-    Open_bracketContext *open_bracket();
+    Multi_var_bodyContext *multi_var_body();
     Close_bracketContext *close_bracket();
-    std::vector<antlr4::tree::TerminalNode *> SEMICOLON();
-    antlr4::tree::TerminalNode* SEMICOLON(size_t i);
+    antlr4::tree::TerminalNode *SEMICOLON();
     std::vector<antlr4::tree::TerminalNode *> NEWLINE();
     antlr4::tree::TerminalNode* NEWLINE(size_t i);
+    IdentifierContext *identifier();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Multi_varContext* multi_var();
+
+  class  Multi_var_bodyContext : public antlr4::ParserRuleContext {
+  public:
+    Multi_var_bodyContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<antlr4::tree::TerminalNode *> SEMICOLON();
+    antlr4::tree::TerminalNode* SEMICOLON(size_t i);
+    std::vector<SymbolicContext *> symbolic();
+    SymbolicContext* symbolic(size_t i);
     std::vector<DefineContext *> define();
     DefineContext* define(size_t i);
 
@@ -364,7 +378,7 @@ public:
    
   };
 
-  Multi_varContext* multi_var();
+  Multi_var_bodyContext* multi_var_body();
 
   class  NumerationContext : public antlr4::ParserRuleContext {
   public:
@@ -396,12 +410,9 @@ public:
   public:
     TypdefContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    antlr4::tree::TerminalNode *TYPEDEF();
+    Typedef_headerContext *typedef_header();
     StructureContext *structure();
     NumerationContext *numeration();
-    Base_defContext *base_def();
-    std::vector<antlr4::tree::TerminalNode *> WS();
-    antlr4::tree::TerminalNode* WS(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -410,23 +421,20 @@ public:
 
   TypdefContext* typdef();
 
-  class  Base_defContext : public antlr4::ParserRuleContext {
+  class  Typedef_headerContext : public antlr4::ParserRuleContext {
   public:
-    Base_defContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    Typedef_headerContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    IdentifierContext *identifier();
-    antlr4::tree::TerminalNode *SEMICOLON();
+    antlr4::tree::TerminalNode *TYPEDEF();
     std::vector<antlr4::tree::TerminalNode *> WS();
     antlr4::tree::TerminalNode* WS(size_t i);
-    std::vector<TypeContext *> type();
-    TypeContext* type(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
    
   };
 
-  Base_defContext* base_def();
+  Typedef_headerContext* typedef_header();
 
   class  IfdefContext : public antlr4::ParserRuleContext {
   public:
@@ -1795,6 +1803,8 @@ public:
     virtual size_t getRuleIndex() const override;
     Bracket_symbolicContext *bracket_symbolic();
     Underscore_symbolicContext *underscore_symbolic();
+    std::vector<antlr4::tree::TerminalNode *> NEWLINE();
+    antlr4::tree::TerminalNode* NEWLINE(size_t i);
     std::vector<antlr4::tree::TerminalNode *> IDENTIFIER();
     antlr4::tree::TerminalNode* IDENTIFIER(size_t i);
     std::vector<antlr4::tree::TerminalNode *> SCOPE();
