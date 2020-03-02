@@ -19,19 +19,19 @@ public:
     DEEPSTATE_INLINE = 26, DEEPSTATE_NOINLINE = 27, DEEPSTATE_NORETURN = 28, 
     SYMBOLIC = 29, SYMBOLIC_C = 30, FORALL = 31, INT = 32, UINT8 = 33, UINT16 = 34, 
     UINT32 = 35, UINT64 = 36, SHORT = 37, LONG = 38, DOUBLE = 39, FLOAT = 40, 
-    CHAR = 41, UNSIGNED = 42, PRIVATE = 43, PUBLIC = 44, INLINE = 45, VIRTUAL = 46, 
-    CONSTANT = 47, STATIC = 48, EXTERN = 49, RETURN = 50, INCLUDE = 51, 
-    DEFINE = 52, WHILE = 53, FOR = 54, ENUM = 55, SPACE = 56, STRUCT = 57, 
-    TYPEDEF = 58, IFNDEF = 59, ENDIF = 60, UNDEF = 61, IFDEF = 62, IDENTIFIER = 63, 
-    NUM = 64, UNDERSCORE = 65, OPEN_PAR = 66, CLOSE_PAR = 67, COMMA = 68, 
-    PERIOD = 69, ARROW = 70, SCOPE = 71, LT = 72, GT = 73, GE = 74, LE = 75, 
-    EQUALS = 76, NE = 77, INVERSE = 78, SEMICOLON = 79, OPEN_SQ = 80, CLOSE_SQ = 81, 
-    EQUAL = 82, PLUS_EQ = 83, MINUS_EQ = 84, TIMES_EQ = 85, DIV_EQ = 86, 
-    PLUS = 87, SUB = 88, DIV = 89, MUL = 90, MOD = 91, OPEN_BRK = 92, CLOSE_BRK = 93, 
-    LEFT_SHIFT = 94, HASH = 95, QUOTE = 96, LINE_COMMENT = 97, MULTI_LINE_O = 98, 
-    MULTI_LINE_E = 99, ADDRESS = 100, AND = 101, OR = 102, CAR_R = 103, 
-    DOTS = 104, PRINT = 105, PRINT_F = 106, WS = 107, NEWLINE = 108, TAB = 109, 
-    TRUE = 110, FALSE = 111
+    CHAR = 41, UNSIGNED = 42, BOOL = 43, PRIVATE = 44, PUBLIC = 45, INLINE = 46, 
+    VIRTUAL = 47, CONSTANT = 48, STATIC = 49, EXTERN = 50, RETURN = 51, 
+    INCLUDE = 52, DEFINE = 53, WHILE = 54, FOR = 55, ENUM = 56, SPACE = 57, 
+    STRUCT = 58, TYPEDEF = 59, IFNDEF = 60, ENDIF = 61, UNDEF = 62, IFDEF = 63, 
+    IDENTIFIER = 64, NUM = 65, UNDERSCORE = 66, OPEN_PAR = 67, CLOSE_PAR = 68, 
+    COMMA = 69, PERIOD = 70, ARROW = 71, SCOPE = 72, LT = 73, GT = 74, GE = 75, 
+    LE = 76, EQUALS = 77, NE = 78, INVERSE = 79, SEMICOLON = 80, OPEN_SQ = 81, 
+    CLOSE_SQ = 82, EQUAL = 83, PLUS_EQ = 84, MINUS_EQ = 85, TIMES_EQ = 86, 
+    DIV_EQ = 87, PLUS = 88, SUB = 89, DIV = 90, MUL = 91, MOD = 92, OPEN_BRK = 93, 
+    CLOSE_BRK = 94, LEFT_SHIFT = 95, HASH = 96, QUOTE = 97, LINE_COMMENT = 98, 
+    MULTI_LINE_O = 99, MULTI_LINE_E = 100, ADDRESS = 101, AND = 102, OR = 103, 
+    CAR_R = 104, DOTS = 105, PRINT = 106, PRINT_F = 107, WS = 108, NEWLINE = 109, 
+    TAB = 110, TRUE = 111, FALSE = 112
   };
 
   enum {
@@ -1639,6 +1639,7 @@ public:
     antlr4::tree::TerminalNode *FLOAT();
     antlr4::tree::TerminalNode *UNSIGNED();
     antlr4::tree::TerminalNode *CHAR();
+    antlr4::tree::TerminalNode *BOOL();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -1776,6 +1777,8 @@ public:
     antlr4::tree::TerminalNode* NUM(size_t i);
     std::vector<For_allContext *> for_all();
     For_allContext* for_all(size_t i);
+    std::vector<SymbolicContext *> symbolic();
+    SymbolicContext* symbolic(size_t i);
     std::vector<antlr4::tree::TerminalNode *> WS();
     antlr4::tree::TerminalNode* WS(size_t i);
 
@@ -1810,10 +1813,11 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *SYMBOLIC_C();
     antlr4::tree::TerminalNode *LT();
-    TypeContext *type();
     antlr4::tree::TerminalNode *GT();
     std::vector<antlr4::tree::TerminalNode *> WS();
     antlr4::tree::TerminalNode* WS(size_t i);
+    std::vector<TypeContext *> type();
+    TypeContext* type(size_t i);
     std::vector<LibContext *> lib();
     LibContext* lib(size_t i);
     std::vector<ArrayContext *> array();
@@ -2408,7 +2412,6 @@ public:
     antlr4::tree::TerminalNode *DEEPSTATE_INLINE();
     antlr4::tree::TerminalNode *DEEPSTATE_NOINLINE();
     antlr4::tree::TerminalNode *SYMBOLIC();
-    antlr4::tree::TerminalNode *SYMBOLIC_C();
     antlr4::tree::TerminalNode *INT();
     antlr4::tree::TerminalNode *UINT8();
     antlr4::tree::TerminalNode *UINT16();
