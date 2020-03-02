@@ -64,8 +64,10 @@ typedef enum NonTerminals
     CLOSE_BRK,
     OPEN_BRK,
     NO_INLINE,
-    MAIN_FUNC
-    
+    MAIN_FUNC,
+    TYPEDEF,
+    STRUCT
+
 
 } NTerminal;
 

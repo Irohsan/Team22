@@ -15,6 +15,22 @@ void ASTListener::enterMulti_line(GenTestParser::Multi_lineContext *ctx)
     ASTListener::list.push_back( newNode );
 }
 
+void ASTListener::enterSingle_line(GenTestParser::Single_lineContext *ctx )
+{
+    if( list.at( list.size() - 1 ).text.find( "//" ) == std::string::npos )
+    {
+        // Create node.
+        Node newNode;
+
+        // Configure info.
+        newNode.type = COMMENT;
+        newNode.text = ctx->getText();
+
+        // Add to list.
+        ASTListener::list.push_back( newNode );
+    }
+}
+
 void ASTListener::enterSpace(GenTestParser::SpaceContext *ctx)
 {
     // Create node.
@@ -55,6 +71,30 @@ void ASTListener::enterMacro_define(GenTestParser::Macro_defineContext *ctx)
 }
 
 
+void ASTListener::enterStructure_header(GenTestParser::Structure_headerContext *ctx)
+{
+    ASTListener::semiFlag = true;
+
+    if( ASTListener::list.at( ASTListener::list.size() - 1 ).type != TYPEDEF )
+    {
+
+        
+        // Create node.
+        Node newNode;
+
+        // Configure info.
+        newNode.type = STRUCT;
+        newNode.text = ctx->getText();
+
+        // Add to list.
+        ASTListener::list.push_back( newNode );
+    }
+    else
+    {
+        list.at( list.size() - 1 ).text += ctx->getText();
+    }
+}
+
 void ASTListener::enterFunction_header(GenTestParser::Function_headerContext *ctx)
 {
     // Create node.
@@ -75,6 +115,19 @@ void ASTListener::enterStatement(GenTestParser::StatementContext *ctx)
 
     // Configure info.
     newNode.type = STATEMENT;
+    newNode.text = ctx->getText();
+
+    // Add to list.
+    ASTListener::list.push_back( newNode );
+}
+
+void ASTListener::enterTypedef_header(GenTestParser::Typedef_headerContext *ctx )
+{
+    // Create node.
+    Node newNode;
+
+    // Configure info.
+    newNode.type = TYPEDEF;
     newNode.text = ctx->getText();
 
     // Add to list.
@@ -123,7 +176,7 @@ void ASTListener::enterFor_loop(GenTestParser::For_loopContext *ctx)
 
 void ASTListener::enterCond_header(GenTestParser::Cond_headerContext *ctx) 
 {
-   // Create node.
+    // Create node.
     Node newNode;
 
     // Configure info.
@@ -228,7 +281,22 @@ void ASTListener::enterCheck_eq(GenTestParser::Check_eqContext *ctx)
 
 void ASTListener::enterSymbolic(GenTestParser::SymbolicContext *ctx)
 {
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = SYMBOLIC;
+    if( ( list.size() > 0 ) && list.at( list.size() - 1 ).type == STRUCT )
+    {
+        // Create node.
+        Node newNode;
+
+        // Configure info.
+        newNode.type = SYMBOLIC;
+        newNode.text = ctx->getText();
+
+        // Add to list.
+        ASTListener::list.push_back( newNode );
+    }
+    else
+    {
+        ASTListener::list.at( ASTListener::list.size() - 1 ).type = SYMBOLIC;
+    }
 }
 
 void ASTListener::enterType(GenTestParser::TypeContext *ctx) {
@@ -236,17 +304,46 @@ void ASTListener::enterType(GenTestParser::TypeContext *ctx) {
     ASTListener::list.at( ASTListener::list.size() - 1 ).datatype = ctx->getText();
 }
 
+void ASTListener::enterDefine(GenTestParser::DefineContext *ctx ) {
+
+    if( list.at( list.size() - 1 ).type != STATEMENT )
+    {
+        // Create node.
+        Node newNode;
+
+        // Configure info.
+        newNode.type = DEFINE;
+        newNode.text = ctx->getText() + ";";
+
+        // Add to list.
+        ASTListener::list.push_back( newNode );
+    }
+}
+
 void ASTListener::enterClose_bracket(GenTestParser::Close_bracketContext *ctx)
 {
-    // Create node.
-    Node newNode;
+    if( list.at( list.size() - 1 ).type != TYPEDEF
+        || list.at( list.size() - 1 ).type != STRUCT )
+    {
+        // Create node.
+        Node newNode;
 
-    // Configure info.
-    newNode.type = CLOSE_BRK;
-    newNode.text = ctx->getText();
+        // Configure info.
+        newNode.type = CLOSE_BRK;
 
-    // Add to list.
-    ASTListener::list.push_back( newNode );
+        if( ASTListener::semiFlag )
+        {
+            newNode.text = ctx->getText() + ";";
+            semiFlag = false;
+        }
+        else
+        {
+            newNode.text = ctx->getText();
+        }
+
+        // Add to list.
+        ASTListener::list.push_back( newNode );
+    }
 }
 
 void ASTListener::enterOpen_bracket(GenTestParser::Open_bracketContext *ctx)
