@@ -50,6 +50,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
         std::string currentString = current->text;
 
+        std::cout<<currentString;
+
         //strip the \n on everything but comments to make it consistent
         //comments do not have a \n at the end of their statement
         if( current->type != COMMENT )
@@ -106,7 +108,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             //If translation doesnt exist, convert to base case with the correct sign
             if( translation == nullptr )
             {
-                output += questionConversion( currentString, current->type ) + '\n';
+                output += questionConversion( currentString, current->type, &translate ) + '\n';
             }
             else
             {
@@ -198,11 +200,13 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
     return outputString + ';';
 }
 
-std::string questionConversion( std::string previousText, NTerminal currentNTerminal )
+std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary )
 {
     NTerminal baseCase = findBaseCase( currentNTerminal );
 
     std::string whichCheck;
+
+    std::string translateTo = dictionary->findTranslationFromNTerminal(baseCase)->translateTo;
 
     if( baseCase == CHECK )
     {
@@ -216,6 +220,50 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
 
     auto checkSign = checkCoversion.at(whichCheck);
 
+    auto start = previousText.find_first_of('(');
+
+    auto end = previousText.find_last_of(");");
+
+    auto args = previousText.substr( start+1, end-start-2);
+
+    auto comma = commaLocation( args );
+
+    std::string firstArg = stripWhiteSpace( args.substr(0, comma ));
+
+    std::string secondArg = stripWhiteSpace( args.substr(comma + 1, args.length() - comma ) );
+
+    std::string output = translateTo + "( " + firstArg + ' ' + checkSign + ' ' + secondArg + " );";
+
+    return output;
+}
+
+std::string stripWhiteSpace( std::string toStrip )
+{
+    int startSpaces = 0, endSpaces = 0;
+
+    auto cStr = toStrip.c_str();
+
+    for( int index = 0; index < toStrip.length(); index++ )
+    {
+        char currentChar = cStr[index];
+
+        if( currentChar == ' ' )
+        {
+            //still in starting spaces
+            if( startSpaces == endSpaces )
+            {
+                startSpaces++;
+
+                endSpaces++;
+            }
+        }
+        else
+        {
+            endSpaces = index;
+        }
+    }
+
+    return toStrip.substr(startSpaces, endSpaces-startSpaces+1);
 }
 
 std::string questionTranslation( TranslationEntry * translation, std::string originalString )
@@ -236,6 +284,30 @@ std::string questionWhichCheck( std::string toCheck, std::string baseCase )
     auto length = baseCase.length();
 
     return toCheck.substr(length, 2);
+}
+
+int commaLocation( std::string toFind )
+{
+    const char * cStr = toFind.c_str();
+
+    int currentDepth = 0;
+
+    for( int index = 0; index < toFind.length(); index++ )
+    {
+        char current = cStr[index];
+
+        if( current == '(') currentDepth++;
+        else if (current == ')' ) currentDepth--;
+        else if (current == ',' )
+        {
+            if( currentDepth == 0 )
+            {
+                return index;
+            }
+        }
+    }
+
+    return 0;
 }
 
 NTerminal findBaseCase( NTerminal currentCase )

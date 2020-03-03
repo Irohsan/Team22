@@ -24,11 +24,15 @@ std::string stripNewLine( std::string stringToStrip );
 
 std::string symbolicLine( std::string variableName, BinaryIterator * iterator, std::string type );
 
-std::string questionConversion( std::string previousText, NTerminal currentNTerminal );
+std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary );
+
+std::string stripWhiteSpace( std::string toStrip );
 
 std::string questionTranslation( TranslationEntry * translation, std::string originalString );
 
 std::string questionWhichCheck( std::string toCheck, std::string baseCase );
+
+int commaLocation( std::string toFind );
 
 NTerminal findBaseCase( NTerminal currentCase );
 
