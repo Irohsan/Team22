@@ -106,9 +106,11 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             //If translation doesnt exist, convert to base case with the correct sign
             if( translation == nullptr )
             {
-                auto baseCase = questionConversion( currentString, current->type );
-
-                std::cout<<baseCase;
+                output += questionConversion( currentString, current->type ) + '\n';
+            }
+            else
+            {
+                output += questionTranslation( translation, currentString ) + '\n';
             }
         }
 
@@ -187,6 +189,10 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
     {
         outputString = "unsigned " + variableName + " = " + std::to_string( iterator->nextUInt() );
     }
+    else
+    {
+        std::cout<<"UNIMPLEMENTED TYPE: "<<type<<std::endl;
+    }
     //TODO: Support all data types
 
     return outputString + ';';
@@ -210,12 +216,19 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
 
     auto checkSign = checkCoversion.at(whichCheck);
 
-    auto beginning = previousText.find_first_of('(');
+}
 
-    auto end = previousText.find_last_of(')');
+std::string questionTranslation( TranslationEntry * translation, std::string originalString )
+{
+    std::string translateTo = translation->translateTo;
 
-    //TODO: Figure out which is the right comma
+    auto start = originalString.find_first_of('(');
 
+    auto end = originalString.find_first_of(");");
+
+    auto values = originalString.substr(start, originalString.length()-start);
+
+    return translateTo + values;
 }
 
 std::string questionWhichCheck( std::string toCheck, std::string baseCase )
@@ -237,8 +250,6 @@ NTerminal findBaseCase( NTerminal currentCase )
     }
     else return CHECK;
 }
-
-
 
 void writeToFile( std::string fileLocation, std::string fileContents )
 {

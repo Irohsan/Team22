@@ -26,6 +26,8 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
 
 std::string questionConversion( std::string previousText, NTerminal currentNTerminal );
 
+std::string questionTranslation( TranslationEntry * translation, std::string originalString );
+
 std::string questionWhichCheck( std::string toCheck, std::string baseCase );
 
 NTerminal findBaseCase( NTerminal currentCase );
