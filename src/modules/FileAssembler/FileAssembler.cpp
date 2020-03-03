@@ -98,13 +98,19 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             output += symbolicLine( variableName, &it, current->datatype ) + '\n';
         }
 
-        /*
         //handle ASSERT/CHECK/ASSUME statements
-        if( current->type >= ASSERT_GT && current->type <= CHECK )
+        else if( current->type >= ASSERT_GT && current->type <= CHECK )
         {
+            auto translation = translate.findTranslationFromNTerminal( current->type );
 
+            //If translation doesnt exist, convert to base case with the correct sign
+            if( translation == nullptr )
+            {
+                auto baseCase = questionConversion( currentString, current->type );
+
+                std::cout<<baseCase;
+            }
         }
-         */
 
         //get rid of namespace
         else if( currentString.find("using namespace deepstate;") != std::string::npos )
@@ -115,7 +121,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         else if( current->type == FUNC && currentString.find(S_DEEPSTATE_NOINLINE) != std::string::npos )
         {
             //TODO: Gracefully crash if no translation for NO_INLINE in the cfg
-            output += translate.findTranslationFromNTerminal(NO_INLINE)->translateTo +
+            output += translate.findTranslationFromNTerminal(DEEPSTATE_NOINLINE)->translateTo +
                     currentString.substr(S_DEEPSTATE_NOINLINE.length());
         }
         else
@@ -185,6 +191,54 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
 
     return outputString + ';';
 }
+
+std::string questionConversion( std::string previousText, NTerminal currentNTerminal )
+{
+    NTerminal baseCase = findBaseCase( currentNTerminal );
+
+    std::string whichCheck;
+
+    if( baseCase == CHECK )
+    {
+        whichCheck = questionWhichCheck( previousText, "CHECK_" );
+    }
+    else if( baseCase == ASSUME )
+    {
+        whichCheck = questionWhichCheck( previousText, "ASSUME_" );
+    }
+    else whichCheck = questionWhichCheck( previousText, "ASSERT_" );
+
+    auto checkSign = checkCoversion.at(whichCheck);
+
+    auto beginning = previousText.find_first_of('(');
+
+    auto end = previousText.find_last_of(')');
+
+    //TODO: Figure out which is the right comma
+
+}
+
+std::string questionWhichCheck( std::string toCheck, std::string baseCase )
+{
+    auto length = baseCase.length();
+
+    return toCheck.substr(length, 2);
+}
+
+NTerminal findBaseCase( NTerminal currentCase )
+{
+    if( currentCase >= ASSERT_GT && currentCase < ASSERT )
+    {
+        return ASSERT;
+    }
+    else if( currentCase >= ASSUME_GT && currentCase < ASSUME )
+    {
+        return ASSUME;
+    }
+    else return CHECK;
+}
+
+
 
 void writeToFile( std::string fileLocation, std::string fileContents )
 {
