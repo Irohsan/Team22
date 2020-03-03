@@ -40,19 +40,19 @@ void TranslationEntry::appendToEnd( std::string nTerminalVal, std::string transl
     }
 }
 
-bool TranslationEntry::assignTranslation(std::string translation, NonTerminals toAssign )
+bool TranslationEntry::assignTranslation( const std::string& translation, NonTerminals toAssign )
 {
-    if( this == nullptr )
-    {
-        //TODO: Log not finding a translation in the entries
-        return false;
-    }
     //if this translation is correct
     if( this->nTerminalVal == translation )
     {
         this->nTerminal = toAssign;
 
         return true;
+    }
+
+    if( this->nextEntry == nullptr )
+    {
+        return false;
     }
 
     return this->nextEntry->assignTranslation(translation, toAssign);
@@ -83,6 +83,8 @@ void TranslationDictionary::setFile(const std::string& filePath )
 
 bool TranslationDictionary::loadFile()
 {
+    bool first = false;
+
     //loops over each line of cfg file
     while( !configFile.eof() )
     {
@@ -114,17 +116,17 @@ bool TranslationDictionary::loadFile()
         }
 
         //if first entry
-        if( translations == nullptr )
+        if( !first )
         {
-            translations = new TranslationEntry();
+            translations.nTerminalVal = nTerminal;
 
-            translations->nTerminalVal = nTerminal;
+            translations.translateTo = translateTo;
 
-            translations->translateTo = translateTo;
+            first = true;
         }
         //else append to end
         else {
-            translations->appendToEnd( nTerminal, translateTo );
+            translations.appendToEnd( nTerminal, translateTo );
         }
     }
 
@@ -133,7 +135,7 @@ bool TranslationDictionary::loadFile()
 
 TranslationEntry * TranslationDictionary::findTranslationFromNTerminal( NonTerminals NTerminalToFind )
 {
-    return translations->findTranslationFromNTerminal( NTerminalToFind );
+    return translations.findTranslationFromNTerminal( NTerminalToFind );
 }
 
 /**
@@ -150,7 +152,7 @@ bool TranslationDictionary::populateNTerminals()
 
         NTerminal currentNTerminal = it->second;
 
-        bool populated = translations->assignTranslation( currentNTerminalVal, currentNTerminal );
+        bool populated = translations.assignTranslation( currentNTerminalVal, currentNTerminal );
 
         //if a vitalTranslation wasn't populated
         if( !populated )
@@ -163,7 +165,6 @@ bool TranslationDictionary::populateNTerminals()
         it++;
 
     }
-
     auto nonVitalIt = nonVital.begin();
 
     while( nonVitalIt != nonVital.end() )
@@ -172,7 +173,7 @@ bool TranslationDictionary::populateNTerminals()
 
         NTerminal currentNTerminal = nonVitalIt->second;
 
-        bool populated = translations->assignTranslation( currentNTerminalVal, currentNTerminal );
+        bool populated = translations.assignTranslation( currentNTerminalVal, currentNTerminal );
 
         if( !populated )
         {

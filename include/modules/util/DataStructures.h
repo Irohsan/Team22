@@ -128,7 +128,7 @@ public:
 
     void appendToEnd( std::string nTerminalVal, std::string translateTo );
 
-    bool assignTranslation(std::string translation, NonTerminals toAssign );
+    bool assignTranslation(const std::string& translation, NonTerminals toAssign );
 
     TranslationEntry* findTranslationFromNTerminal( NonTerminals NTerminalToFind );
 };
@@ -148,7 +148,7 @@ public:
 private:
     std::fstream configFile;
 
-    TranslationEntry * translations = nullptr;
+    TranslationEntry translations;
 
     bool populateNTerminals();
 };

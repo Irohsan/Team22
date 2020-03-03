@@ -22,10 +22,6 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 {
     std::map<std::string, std::string> varMap;
 
-    auto current = transEngineOutput.begin();
-
-    auto size = transEngineOutput.size();
-
     std::string output = "";
 
     BinaryParser bp;
@@ -42,6 +38,10 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     {
         //TODO: Log if loading the file is bad
     }
+
+    auto current = transEngineOutput.begin();
+
+    auto size = transEngineOutput.size();
 
     for( int currentTranslation = 0; currentTranslation < (int) size; currentTranslation++ )
     {
