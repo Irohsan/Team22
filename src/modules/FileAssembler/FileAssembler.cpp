@@ -22,10 +22,6 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 {
     std::map<std::string, std::string> varMap;
 
-    auto current = transEngineOutput.begin();
-
-    auto size = transEngineOutput.size();
-
     std::string output = "";
 
     BinaryParser bp;
@@ -43,12 +39,18 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         //TODO: Log if loading the file is bad
     }
 
+    auto current = transEngineOutput.begin();
+
+    auto size = transEngineOutput.size();
+
     for( int currentTranslation = 0; currentTranslation < (int) size; currentTranslation++ )
     {
         //maybe move individual translations to a seperate class/function that the translation is passed into
         //convert testing library to correct library
 
         std::string currentString = current->text;
+
+        std::cout<<currentString;
 
         //strip the \n on everything but comments to make it consistent
         //comments do not have a \n at the end of their statement
@@ -98,13 +100,21 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             output += symbolicLine( variableName, &it, current->datatype ) + '\n';
         }
 
-        /*
         //handle ASSERT/CHECK/ASSUME statements
-        if( current->type >= ASSERT_GT && current->type <= CHECK )
+        else if( current->type >= ASSERT_GT && current->type <= CHECK )
         {
+            auto translation = translate.findTranslationFromNTerminal( current->type );
 
+            //If translation doesnt exist, convert to base case with the correct sign
+            if( translation == nullptr )
+            {
+                output += questionConversion( currentString, current->type, &translate ) + '\n';
+            }
+            else
+            {
+                output += questionTranslation( translation, currentString ) + '\n';
+            }
         }
-         */
 
         //get rid of namespace
         else if( currentString.find("using namespace deepstate;") != std::string::npos )
@@ -115,7 +125,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         else if( current->type == FUNC && currentString.find(S_DEEPSTATE_NOINLINE) != std::string::npos )
         {
             //TODO: Gracefully crash if no translation for NO_INLINE in the cfg
-            output += translate.findTranslationFromNTerminal(NO_INLINE)->translateTo +
+            output += translate.findTranslationFromNTerminal(DEEPSTATE_NOINLINE)->translateTo +
                     currentString.substr(S_DEEPSTATE_NOINLINE.length());
         }
         else
@@ -181,9 +191,136 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
     {
         outputString = "unsigned " + variableName + " = " + std::to_string( iterator->nextUInt() );
     }
+    else
+    {
+        std::cout<<"UNIMPLEMENTED TYPE: "<<type<<std::endl;
+    }
     //TODO: Support all data types
 
     return outputString + ';';
+}
+
+std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary )
+{
+    NTerminal baseCase = findBaseCase( currentNTerminal );
+
+    std::string whichCheck;
+
+    std::string translateTo = dictionary->findTranslationFromNTerminal(baseCase)->translateTo;
+
+    if( baseCase == CHECK )
+    {
+        whichCheck = questionWhichCheck( previousText, "CHECK_" );
+    }
+    else if( baseCase == ASSUME )
+    {
+        whichCheck = questionWhichCheck( previousText, "ASSUME_" );
+    }
+    else whichCheck = questionWhichCheck( previousText, "ASSERT_" );
+
+    auto checkSign = checkCoversion.at(whichCheck);
+
+    auto start = previousText.find_first_of('(');
+
+    auto end = previousText.find_last_of(");");
+
+    auto args = previousText.substr( start+1, end-start-2);
+
+    auto comma = commaLocation( args );
+
+    std::string firstArg = stripWhiteSpace( args.substr(0, comma ));
+
+    std::string secondArg = stripWhiteSpace( args.substr(comma + 1, args.length() - comma ) );
+
+    std::string output = translateTo + "( " + firstArg + ' ' + checkSign + ' ' + secondArg + " );";
+
+    return output;
+}
+
+std::string stripWhiteSpace( std::string toStrip )
+{
+    int startSpaces = 0, endSpaces = 0;
+
+    auto cStr = toStrip.c_str();
+
+    for( int index = 0; index < toStrip.length(); index++ )
+    {
+        char currentChar = cStr[index];
+
+        if( currentChar == ' ' )
+        {
+            //still in starting spaces
+            if( startSpaces == endSpaces )
+            {
+                startSpaces++;
+
+                endSpaces++;
+            }
+        }
+        else
+        {
+            endSpaces = index;
+        }
+    }
+
+    return toStrip.substr(startSpaces, endSpaces-startSpaces+1);
+}
+
+std::string questionTranslation( TranslationEntry * translation, std::string originalString )
+{
+    std::string translateTo = translation->translateTo;
+
+    auto start = originalString.find_first_of('(');
+
+    auto end = originalString.find_first_of(");");
+
+    auto values = originalString.substr(start, originalString.length()-start);
+
+    return translateTo + values;
+}
+
+std::string questionWhichCheck( std::string toCheck, std::string baseCase )
+{
+    auto length = baseCase.length();
+
+    return toCheck.substr(length, 2);
+}
+
+int commaLocation( std::string toFind )
+{
+    const char * cStr = toFind.c_str();
+
+    int currentDepth = 0;
+
+    for( int index = 0; index < toFind.length(); index++ )
+    {
+        char current = cStr[index];
+
+        if( current == '(') currentDepth++;
+        else if (current == ')' ) currentDepth--;
+        else if (current == ',' )
+        {
+            if( currentDepth == 0 )
+            {
+                return index;
+            }
+        }
+    }
+
+    return 0;
+}
+
+NTerminal findBaseCase( NTerminal currentCase )
+{
+    if( currentCase >= ASSERT_GT && currentCase < ASSERT )
+    {
+        return ASSERT;
+    }
+    else if( currentCase >= ASSUME_GT && currentCase < ASSUME )
+    {
+        return ASSUME;
+    }
+    else return CHECK;
 }
 
 void writeToFile( std::string fileLocation, std::string fileContents )
