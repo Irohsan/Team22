@@ -37,11 +37,14 @@ public:
   virtual void enterStructure(GenTestParser::StructureContext * /*ctx*/) override { }
   virtual void exitStructure(GenTestParser::StructureContext * /*ctx*/) override { }
 
-  virtual void enterSingle_var(GenTestParser::Single_varContext * /*ctx*/) override { }
-  virtual void exitSingle_var(GenTestParser::Single_varContext * /*ctx*/) override { }
+  virtual void enterStructure_header(GenTestParser::Structure_headerContext * /*ctx*/) override { }
+  virtual void exitStructure_header(GenTestParser::Structure_headerContext * /*ctx*/) override { }
 
   virtual void enterMulti_var(GenTestParser::Multi_varContext * /*ctx*/) override { }
   virtual void exitMulti_var(GenTestParser::Multi_varContext * /*ctx*/) override { }
+
+  virtual void enterMulti_var_body(GenTestParser::Multi_var_bodyContext * /*ctx*/) override { }
+  virtual void exitMulti_var_body(GenTestParser::Multi_var_bodyContext * /*ctx*/) override { }
 
   virtual void enterNumeration(GenTestParser::NumerationContext * /*ctx*/) override { }
   virtual void exitNumeration(GenTestParser::NumerationContext * /*ctx*/) override { }
@@ -49,8 +52,8 @@ public:
   virtual void enterTypdef(GenTestParser::TypdefContext * /*ctx*/) override { }
   virtual void exitTypdef(GenTestParser::TypdefContext * /*ctx*/) override { }
 
-  virtual void enterBase_def(GenTestParser::Base_defContext * /*ctx*/) override { }
-  virtual void exitBase_def(GenTestParser::Base_defContext * /*ctx*/) override { }
+  virtual void enterTypedef_header(GenTestParser::Typedef_headerContext * /*ctx*/) override { }
+  virtual void exitTypedef_header(GenTestParser::Typedef_headerContext * /*ctx*/) override { }
 
   virtual void enterIfdef(GenTestParser::IfdefContext * /*ctx*/) override { }
   virtual void exitIfdef(GenTestParser::IfdefContext * /*ctx*/) override { }
@@ -318,6 +321,12 @@ public:
 
   virtual void enterCheck_eq(GenTestParser::Check_eqContext * /*ctx*/) override { }
   virtual void exitCheck_eq(GenTestParser::Check_eqContext * /*ctx*/) override { }
+
+  virtual void enterFor_all(GenTestParser::For_allContext * /*ctx*/) override { }
+  virtual void exitFor_all(GenTestParser::For_allContext * /*ctx*/) override { }
+
+  virtual void enterFor_all_body(GenTestParser::For_all_bodyContext * /*ctx*/) override { }
+  virtual void exitFor_all_body(GenTestParser::For_all_bodyContext * /*ctx*/) override { }
 
   virtual void enterMsg(GenTestParser::MsgContext * /*ctx*/) override { }
   virtual void exitMsg(GenTestParser::MsgContext * /*ctx*/) override { }
