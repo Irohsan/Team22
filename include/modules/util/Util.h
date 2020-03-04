@@ -78,6 +78,7 @@ const std::string SYMB_BRACKET_DOUBLE = "Symbolic<double>";
 const std::string SYMB_BRACKET_UNSIGNED = "Symbolic<unsigned>";
 
 const std::string SYMBOLIC_BRACKETS = "Symbolic";
+const std::string INCLUDE_STATEMENT = "DeepState.hpp";
 
 // General Constants
 const std::string EMPTY_STRING = "";

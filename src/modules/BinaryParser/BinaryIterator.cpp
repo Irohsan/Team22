@@ -40,6 +40,15 @@ char BinaryIterator::nextChar()
     return next<char>();
 }
 
+std::size_t BinaryIterator::nextSize_t()
+{
+    return static_cast<std::size_t>( 0 );
+}
+
+short BinaryIterator::nextShort()
+{
+    return static_cast<short>( 0 );
+}
 
 void BinaryIterator::rewind()
 {
@@ -56,4 +65,57 @@ void BinaryIterator::rewind( std::size_t step )
         {
             index -= step;
         }
+}
+
+std::uint64_t BinaryIterator::nextUInt64()
+{
+
+    return static_cast<std::uint64_t>( 0 );
+}
+
+std::int64_t BinaryIterator::nextInt64()
+{
+    return static_cast<std::int64_t>( nextUInt64() );
+}
+
+std::uint16_t BinaryIterator::nextUInt16()
+{
+
+    return static_cast<std::uint16_t>( 0 );
+}
+
+std::int16_t BinaryIterator::nextInt16()
+{
+    return static_cast<std::int16_t>( nextUInt16() );
+}
+
+long BinaryIterator::nextLong()
+{
+    return static_cast<long>( 0 );
+}
+
+float BinaryIterator::nextFloat()
+{
+    return static_cast<float>( 0 );
+}
+
+double BinaryIterator::nextDouble()
+{
+    return static_cast<double>( 0 );
+}
+
+int BinaryIterator::nextRandInt()
+{
+    return static_cast<int>( 0 );
+}
+
+bool BinaryIterator::nextBool()
+{
+    return false;
+}
+
+std::string BinaryIterator::nextString( std::size_t len, const std::string *allowed )
+{
+
+    return "";
 }
