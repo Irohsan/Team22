@@ -190,6 +190,10 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
     {
         outputString = "unsigned " + variableName + " = " + std::to_string( iterator->nextUInt() );
     }
+    else if( type == "bool" )
+    {
+        outputString = "bool " + variableName + " = " + std::to_string( iterator->nextBool() );
+    }
     else
     {
         std::cout<<"UNIMPLEMENTED TYPE: "<<type<<std::endl;
@@ -208,6 +212,9 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
     std::string whichCheck;
 
     std::string translateTo = dictionary->findTranslationFromNTerminal(baseCase)->translateTo;
+
+    //Something changed and now there is occasionally whitespace where there shouldn't be, added this line to fix
+    previousText = stripWhiteSpace( previousText );
 
     if( baseCase == CHECK )
     {
