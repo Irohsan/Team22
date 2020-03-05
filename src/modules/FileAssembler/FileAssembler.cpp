@@ -50,8 +50,6 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
         std::string currentString = current->text;
 
-        std::cout<<currentString;
-
         //strip the \n on everything but comments to make it consistent
         //comments do not have a \n at the end of their statement
         if( current->type != COMMENT )
@@ -99,6 +97,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             output += symbolicLine( variableName, &it, current->datatype ) + '\n';
         }
+
 
         //handle ASSERT/CHECK/ASSUME statements
         else if( current->type >= ASSERT_GT && current->type <= CHECK )
@@ -195,10 +194,12 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
     {
         std::cout<<"UNIMPLEMENTED TYPE: "<<type<<std::endl;
     }
+
     //TODO: Support all data types
 
     return outputString + ';';
 }
+
 
 std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary )
 {

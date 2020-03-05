@@ -39,9 +39,9 @@ void TranslationEntry::appendToEnd( std::string nTerminalVal, std::string transl
         this->nextEntry->appendToEnd( nTerminalVal, translateTo );
     }
 }
-
 bool TranslationEntry::assignTranslation( const std::string& translation, NonTerminals toAssign )
-{
+
+
     //if this translation is correct
     if( this->nTerminalVal == translation )
     {
@@ -84,6 +84,7 @@ void TranslationDictionary::setFile(const std::string& filePath )
 bool TranslationDictionary::loadFile()
 {
     bool first = false;
+
 
     //loops over each line of cfg file
     while( !configFile.eof() )

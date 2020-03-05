@@ -8,9 +8,15 @@ class ASTListener : public GenTestBaseListener
 {
     std::vector<Node> list;
     bool semiFlag;
+    const std::string WHITESPACE = " \n\r\t\f\v";
+
+    void trimWhitespace();
+    void indent();
+    void formatTree();
+    std::string createIndent( int level );
 
     public: 
-
+	  ASTListener();
           void enterMulti_line(GenTestParser::Multi_lineContext *ctx);
 	  void enterSingle_line(GenTestParser::Single_lineContext *ctx);
           void enterSpace(GenTestParser::SpaceContext *ctx);

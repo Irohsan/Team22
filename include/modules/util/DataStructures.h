@@ -69,7 +69,6 @@ typedef enum NonTerminals
     TYPEDEF,
     STRUCT
 
-
 } NTerminal;
 
 //Contains all translations required to run the program
@@ -183,8 +182,10 @@ public:
 
 private:
     std::fstream configFile;
-
+  
     TranslationEntry translations;
+  
+    TranslationEntry * translations = nullptr;
 
     bool populateNTerminals();
 };
