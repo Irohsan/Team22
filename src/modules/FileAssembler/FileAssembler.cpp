@@ -54,7 +54,6 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         {
             currentString = stripNewLine( currentString );
         }
-
         //translate the deepstate include statement
         if( current->type == INCLUDE && current->text.find(INCLUDE_STATEMENT) != std::string::npos )
         {
@@ -62,6 +61,10 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         }
         else if( current->type == SYMBOLIC )
         {
+
+            //Added due to AST functionality
+            currentString = stripWhiteSpace( currentString);
+
             //if multi variable line
             while( currentString.find(',') != std::string::npos )
             {
