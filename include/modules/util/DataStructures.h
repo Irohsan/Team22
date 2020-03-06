@@ -175,7 +175,7 @@ public:
     TranslationEntry findTranslationFromNTerminal( NonTerminals NTerminalToFind );
 
 private:
-    std::fstream configFile;
+    std::ifstream configFile;
   
     std::vector< TranslationEntry > translations;
 

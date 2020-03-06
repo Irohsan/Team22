@@ -36,39 +36,45 @@ bool TranslationDictionary::loadFile( const std::string& filePath )
 
         std::getline( configFile, currentTrans );
 
+        std::cout<<currentTrans + "\n\n";
+
         int location = currentTrans.find('=');
 
         //if invalid translation
         if( location == std::string::npos )
         {
             //log if this happens
-
-            return false;
         }
-
-        nTerminal = currentTrans.substr(0, location );
-
-        translateTo = currentTrans.substr( location + 1 );
-
-        //replaces all "unnatural new lines" mainly for MAIN_FUNC
-        while( translateTo.find("\\") != std::string::npos )
+        else
         {
-            auto location = translateTo.find_first_of("\\");
+            nTerminal = currentTrans.substr(0, location );
 
-            translateTo = translateTo.substr(0,location) + '\n'
-                    + translateTo.substr(location+2, translateTo.length());
+            translateTo = currentTrans.substr( location + 1 );
+
+            //replaces all "unnatural new lines" mainly for MAIN_FUNC
+            while( translateTo.find("\\") != std::string::npos )
+            {
+                auto location = translateTo.find_first_of("\\");
+
+                translateTo = translateTo.substr(0,location) + '\n'
+                              + translateTo.substr(location+2, translateTo.length());
+            }
+
+            TranslationEntry newEntry;
+
+            newEntry.nTerminalVal = nTerminal;
+
+            newEntry.translateTo = translateTo;
+
+            newEntry.newEntry = false;
+
+            translations.push_back( newEntry );
         }
 
-        TranslationEntry newEntry;
 
-        newEntry.nTerminalVal = nTerminal;
-
-        newEntry.translateTo = translateTo;
-
-        newEntry.newEntry = false;
-
-        translations.push_back( newEntry );
     }
+
+    configFile.close();
 
     return populateNTerminals();
 }
