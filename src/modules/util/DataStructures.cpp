@@ -36,8 +36,6 @@ bool TranslationDictionary::loadFile( const std::string& filePath )
 
         std::getline( configFile, currentTrans );
 
-        std::cout<<currentTrans + "\n\n";
-
         int location = currentTrans.find('=');
 
         //if invalid translation
