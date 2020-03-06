@@ -32,9 +32,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     TranslationDictionary translate;
 
-    translate.setFile(translateCFG);
-
-    if( !translate.loadFile() )
+    if( !translate.loadFile(translateCFG) )
     {
         //TODO: Log if loading the file is bad
     }
@@ -56,14 +54,17 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         {
             currentString = stripNewLine( currentString );
         }
-
         //translate the deepstate include statement
         if( current->type == INCLUDE && current->text.find(INCLUDE_STATEMENT) != std::string::npos )
         {
-            output += translate.findTranslationFromNTerminal(INCLUDE)->translateTo + '\n';
+            output += translate.findTranslationFromNTerminal(INCLUDE).translateTo + '\n';
         }
         else if( current->type == SYMBOLIC )
         {
+
+            //Added due to AST functionality
+            currentString = stripWhiteSpace( currentString);
+
             //if multi variable line
             while( currentString.find(',') != std::string::npos )
             {
@@ -102,10 +103,10 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         //handle ASSERT/CHECK/ASSUME statements
         else if( current->type >= ASSERT_GT && current->type <= CHECK )
         {
-            auto translation = translate.findTranslationFromNTerminal( current->type );
+            TranslationEntry translation = translate.findTranslationFromNTerminal(current->type );
 
             //If translation doesnt exist, convert to base case with the correct sign
-            if( translation == nullptr )
+            if( translation.newEntry )
             {
                 output += questionConversion( currentString, current->type, &translate ) + '\n';
             }
@@ -124,7 +125,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         else if( current->type == FUNC && currentString.find(S_DEEPSTATE_NOINLINE) != std::string::npos )
         {
             //TODO: Gracefully crash if no translation for NO_INLINE in the cfg
-            output += translate.findTranslationFromNTerminal(DEEPSTATE_NOINLINE)->translateTo +
+            output += translate.findTranslationFromNTerminal(DEEPSTATE_NOINLINE).translateTo +
                     currentString.substr(S_DEEPSTATE_NOINLINE.length());
         }
         else
@@ -138,9 +139,9 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     //will insert a main function from the .cfg if it exists.
     auto mainTrans = translate.findTranslationFromNTerminal(MAIN_FUNC);
 
-    if( mainTrans != nullptr )
+    if( !mainTrans.translationAdded )
     {
-        output +=  '\n' + mainTrans->translateTo;
+        output +=  '\n' + mainTrans.translateTo;
     }
 
     writeToFile( outputPath, output);
@@ -211,7 +212,7 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
 
     std::string whichCheck;
 
-    std::string translateTo = dictionary->findTranslationFromNTerminal(baseCase)->translateTo;
+    std::string translateTo = dictionary->findTranslationFromNTerminal(baseCase).translateTo;
 
     //Something changed and now there is occasionally whitespace where there shouldn't be, added this line to fix
     previousText = stripWhiteSpace( previousText );
@@ -274,9 +275,9 @@ std::string stripWhiteSpace( std::string toStrip )
     return toStrip.substr(startSpaces, endSpaces-startSpaces+1);
 }
 
-std::string questionTranslation( TranslationEntry * translation, std::string originalString )
+std::string questionTranslation( TranslationEntry translation, std::string originalString )
 {
-    std::string translateTo = translation->translateTo;
+    std::string translateTo = translation.translateTo;
 
     auto start = originalString.find_first_of('(');
 

@@ -437,9 +437,6 @@ void ASTListener::enterOpen_bracket(GenTestParser::Open_bracketContext *ctx)
 
 vector<Node> ASTListener::getAST(){
 
-this->trimWhitespace();
-this->indent();
-this->formatTree();
 return ASTListener::list;
 
 }

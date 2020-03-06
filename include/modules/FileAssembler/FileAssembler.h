@@ -28,7 +28,7 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
 
 std::string stripWhiteSpace( std::string toStrip );
 
-std::string questionTranslation( TranslationEntry * translation, std::string originalString );
+std::string questionTranslation( TranslationEntry translation, std::string originalString );
 
 std::string questionWhichCheck( std::string toCheck, std::string baseCase );
 
