@@ -2,8 +2,9 @@
 #include "catch.hpp"
 #include "BinaryParser.h"
 #include "TranslationEngine.h"
+#include "FileAssembler.h"
 #include "Util.h"
-
+#include "DataStructures.h"
 
 // BinaryParser Tests
 TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
@@ -86,3 +87,5 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 // TranslationEngine Tests
 
 // Util Tests
+
+// Data Structures Tests

@@ -54,19 +54,60 @@ typedef enum NonTerminals
     ASSUME_LE,
     ASSUME_NE,
     ASSUME_EQ,
+    ASSUME,
     CHECK_GT,
     CHECK_LT,
     CHECK_GE,
     CHECK_LE,
     CHECK_NE,
     CHECK_EQ,
+    CHECK,
     SYMBOLIC,
     CLOSE_BRK,
-    OPEN_BRK
-    
+    OPEN_BRK,
+    MAIN_FUNC,
+    TYPEDEF,
+    STRUCT
 
 } NTerminal;
 
+//Contains all translations required to run the program
+const std::map < std::string, NonTerminals > vitalTranslations =
+        {{"ASSERT", ASSERT},
+         {"CHECK", CHECK},
+         {"ASSUME", ASSUME},
+         {"INCLUDE", INCLUDE}};
+
+//Contains all translations not vital to run the program, but can still be used.
+const std::map < std::string, NonTerminals > nonVital =
+        {{"NO_INLINE", DEEPSTATE_NOINLINE},
+         {"MAIN_FUNC", MAIN_FUNC},
+         { "ASSERT_GT", ASSERT_GT },
+         { "ASSERT_GE", ASSERT_GE },
+         { "ASSERT_LT", ASSERT_LT },
+         { "ASSERT_LE", ASSERT_LE },
+         { "ASSERT_NE", ASSERT_NE },
+         { "ASSERT_EQ", ASSERT_EQ },
+         { "CHECK_EQ", CHECK_EQ },
+         { "CHECK_NE", CHECK_NE },
+         { "CHECK_LT", CHECK_LT },
+         { "CHECK_LE", CHECK_LE },
+         { "CHECK_GT", CHECK_GT },
+         { "CHECK_GE", CHECK_GE },
+         { "ASSUME_EQ", ASSUME_EQ },
+         { "ASSUME_NE", ASSUME_NE },
+         { "ASSUME_LT", ASSUME_LT },
+         { "ASSUME_LE", ASSUME_LE },
+         { "ASSUME_GT", ASSUME_GT },
+         { "ASSUME_GE", ASSUME_GE }};
+
+const std::map <std::string, std::string> checkCoversion =
+        {{"GT", ">"},
+        {"GE", ">="},
+        {"LT", "<"},
+        {"LE", "<="},
+        {"NE", "!="},
+        {"EQ", "=="}};
 
 class GoogleTestDictionary
 {
@@ -94,25 +135,6 @@ public:
     std::string decodeNonTerminal( NTerminal nt );
 };
 
-class CFGDictionary
-{
-public:
-
-    /**
-      *   Function Name: getCFGAssoc
-      *   -------------------------------------------------------
-      *   Algorithm: Takes in a string and returns its non-terminal
-      *              representation if it exists.
-      *
-      *   Preconditions: A valid string supplied to the function.
-      *   Postconditions: The appropriate non-terminal code returned.
-      *
-      *   Notes: N/A
-    **/
-    NTerminal getCFGAssoc( std::string string );
-};
-
-
 class Node {
 	
     public:
@@ -123,6 +145,44 @@ class Node {
 };
 
 
+
+
+/**
+ * Helper class for TranslationDictionary, stores the desired translation
+ */
+class TranslationEntry
+{
+public:
+    std::string nTerminalVal;
+
+    NonTerminals nTerminal;
+
+    std::string translateTo;
+
+    bool newEntry = true;
+
+    bool translationAdded = false;
+};
+
+/**
+ * Class for storing translations loaded from a configuration file.
+ */
+class TranslationDictionary
+{
+public:
+    bool loadFile( const std::string& filePath );
+
+    TranslationEntry findTranslationFromNTerminal( NonTerminals NTerminalToFind );
+
+private:
+    std::ifstream configFile;
+  
+    std::vector< TranslationEntry > translations;
+
+    bool populateNTerminals();
+
+    bool assignTranslation(std::string translationString, NTerminal currentNTerminal );
+};
 
 
 #endif //GENTEST_DATASTRUCTURES_H
