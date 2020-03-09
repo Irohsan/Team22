@@ -26,9 +26,11 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
 
 std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary );
 
-std::string stripWhiteSpace( std::string toStrip );
-
 std::string questionTranslation( TranslationEntry translation, std::string originalString );
+
+int questionClosingParen( std::string args );
+
+std::string stripWhiteSpace( std::string toStrip );
 
 std::string questionWhichCheck( std::string toCheck, std::string baseCase );
 

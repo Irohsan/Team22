@@ -17,20 +17,52 @@
 
 #include <deepstate/DeepState.hpp>
 
+using namespace deepstate;
+
 struct testStruct {
 
-Symbolic<int> x;
+Symbolic<int> xVar;
 
 };
 
-using namespace deepstate;
+
+struct zed {
+
+Symbolic<int> zVar;
+Symbolic<char> cVar;
+
+};
+
+
+typedef struct X {
+
+testStruct myEvilPlan;
+
+};
+
+struct Y {
+
+X mySecondEvilPlan;
+testStruct zVar;
+
+};
+
+struct testStruct2 {
+
+char x;
+
+};
 
 static unsigned pow5(unsigned v) {
     return v * v * v * v * v;
 }
 
 TEST(Euler, SumsOfLikePowers) {
+
 symbolic_unsigned a, b, c, d, e;
+
+testStruct myStruct;
+
 ASSERT_GT(a, 1);
 ASSERT_GT(b, 1);
 ASSERT_GT(c, 1);

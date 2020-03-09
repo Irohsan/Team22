@@ -27,8 +27,6 @@ bool TranslationDictionary::loadFile( const std::string& filePath )
 {
     configFile.open( filePath );
 
-    bool first = false;
-
     //loops over each line of cfg file
     while( !configFile.eof() )
     {
@@ -36,7 +34,7 @@ bool TranslationDictionary::loadFile( const std::string& filePath )
 
         std::getline( configFile, currentTrans );
 
-        int location = currentTrans.find('=');
+        auto location = currentTrans.find('=');
 
         //if invalid translation
         if( location == std::string::npos )
@@ -50,12 +48,12 @@ bool TranslationDictionary::loadFile( const std::string& filePath )
             translateTo = currentTrans.substr( location + 1 );
 
             //replaces all "unnatural new lines" mainly for MAIN_FUNC
-            while( translateTo.find("\\") != std::string::npos )
+            while( translateTo.find('\\') != std::string::npos )
             {
-                auto location = translateTo.find_first_of("\\");
+                auto locationOfNewLine = translateTo.find_first_of('\\');
 
-                translateTo = translateTo.substr(0,location) + '\n'
-                              + translateTo.substr(location+2, translateTo.length());
+                translateTo = translateTo.substr(0,locationOfNewLine) + '\n'
+                              + translateTo.substr(locationOfNewLine+2, translateTo.length());
             }
 
             TranslationEntry newEntry;
@@ -81,11 +79,11 @@ TranslationEntry TranslationDictionary::findTranslationFromNTerminal( NonTermina
 {
     TranslationEntry output = TranslationEntry();
 
-    for( int index = 0; index < translations.size(); index++ )
+    for( auto & translation : translations )
     {
-        if( translations[index].nTerminal == NTerminalToFind )
+        if( translation.nTerminal == NTerminalToFind )
         {
-            output = translations[index];
+            output = translation;
         }
     }
 
