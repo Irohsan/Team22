@@ -69,7 +69,6 @@ typedef enum NonTerminals
     TYPEDEF,
     STRUCT
 
-
 } NTerminal;
 
 //Contains all translations required to run the program
@@ -160,13 +159,9 @@ public:
 
     std::string translateTo;
 
-    TranslationEntry * nextEntry = nullptr;
+    bool newEntry = true;
 
-    void appendToEnd( std::string nTerminalVal, std::string translateTo );
-
-    bool assignTranslation(const std::string& translation, NonTerminals toAssign );
-
-    TranslationEntry* findTranslationFromNTerminal( NonTerminals NTerminalToFind );
+    bool translationAdded = false;
 };
 
 /**
@@ -175,18 +170,18 @@ public:
 class TranslationDictionary
 {
 public:
-    void setFile( const std::string& filePath );
+    bool loadFile( const std::string& filePath );
 
-    bool loadFile();
-
-    TranslationEntry * findTranslationFromNTerminal( NonTerminals NTerminalToFind );
+    TranslationEntry findTranslationFromNTerminal( NonTerminals NTerminalToFind );
 
 private:
-    std::fstream configFile;
-
-    TranslationEntry translations;
+    std::ifstream configFile;
+  
+    std::vector< TranslationEntry > translations;
 
     bool populateNTerminals();
+
+    bool assignTranslation(std::string translationString, NTerminal currentNTerminal );
 };
 
 

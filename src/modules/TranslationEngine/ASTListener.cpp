@@ -1,6 +1,78 @@
 #include "ASTListener.h"
 
+#define INDENT 2
+
 using namespace std;
+
+ASTListener::ASTListener()
+{
+    this->semiFlag = false;
+}
+
+void ASTListener::trimWhitespace()
+{
+    for( int i = 0; i < (int) list.size(); i++ )
+    {
+        size_t start = list.at( i ).text.find_first_not_of( ASTListener::WHITESPACE );
+        list.at( i ).text = list.at( i ).text.substr(start);
+    }
+}
+
+void ASTListener::indent()
+{
+    int level = 0;
+
+    for( int i = 0; i < (int) list.size(); i++ )
+    {
+        if( list.at( i ).type == CLOSE_BRK )
+        {
+            level--;
+        }
+        
+        list.at( i ).text = this->createIndent( level ) + list.at( i ).text;
+
+        if( list.at( i ).type == OPEN_BRK ||
+            list.at( i ).type == IF ||
+            list.at( i ).type == TEST ||
+            list.at( i ).type == WHILE_LOOP ||
+            list.at( i ).type == FOR_LOOP || 
+            list.at( i ).type == TYPEDEF ||
+            list.at( i ).type == STRUCT )
+        {
+            level++;
+        }
+    }
+}
+
+void ASTListener::formatTree()
+{
+    for( int i = 0; i < (int) list.size(); i++ )
+    {
+        if( list.at( i ).type == FUNC ||
+            list.at( i ).type == TEST ||
+            list.at( i ).type == TYPEDEF ||
+            list.at( i ).type == STRUCT ||
+            list.at( i ).type == NAMESPACE ||
+            list.at( i ).type == DEFINE ||
+            list.at( i ).type == INCLUDE )
+        {
+            list.at( i ).text = "\n" + list.at( i ).text;
+        }
+    }
+}
+
+std::string ASTListener::createIndent( int level )
+{
+    std::string indentString = "";
+
+    for( int i = 0; i < level * INDENT; i++ )
+    {
+        indentString += " ";
+    }
+
+    return indentString;
+}
+
 
 void ASTListener::enterMulti_line(GenTestParser::Multi_lineContext *ctx)
 {
@@ -77,8 +149,6 @@ void ASTListener::enterStructure_header(GenTestParser::Structure_headerContext *
 
     if( ASTListener::list.at( ASTListener::list.size() - 1 ).type != TYPEDEF )
     {
-
-        
         // Create node.
         Node newNode;
 
@@ -306,7 +376,7 @@ void ASTListener::enterType(GenTestParser::TypeContext *ctx) {
 
 void ASTListener::enterDefine(GenTestParser::DefineContext *ctx ) {
 
-    if( list.at( list.size() - 1 ).type != STATEMENT )
+    if( ASTListener::semiFlag )
     {
         // Create node.
         Node newNode;
@@ -359,8 +429,7 @@ void ASTListener::enterOpen_bracket(GenTestParser::Open_bracketContext *ctx)
     // Add to list.
     if( list.at( list.size() - 1 ).type == FOR_LOOP
 	|| list.at( list.size() - 1 ).type == WHILE_LOOP
- 	|| list.at( list.size() - 1 ).type == FUNC
-	|| list.at( list.size() - 1 ).type == TEST )
+ 	|| list.at( list.size() - 1 ).type == FUNC )
     {
     	ASTListener::list.push_back( newNode );
     }

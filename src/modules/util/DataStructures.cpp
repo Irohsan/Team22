@@ -22,68 +22,10 @@
 #include "DataStructures.h"
 
 
-//Translation Entry Methods
-
-void TranslationEntry::appendToEnd( std::string nTerminalVal, std::string translateTo )
-{
-    //if current index is end of list
-    if( this->nextEntry == nullptr )
-    {
-        this->nextEntry = new TranslationEntry;
-
-        this->nextEntry->nTerminalVal = nTerminalVal;
-
-        this->nextEntry->translateTo = translateTo;
-    } else
-    {
-        this->nextEntry->appendToEnd( nTerminalVal, translateTo );
-    }
-}
-
-bool TranslationEntry::assignTranslation( const std::string& translation, NonTerminals toAssign )
-{
-    //if this translation is correct
-    if( this->nTerminalVal == translation )
-    {
-        this->nTerminal = toAssign;
-
-        return true;
-    }
-
-    if( this->nextEntry == nullptr )
-    {
-        return false;
-    }
-
-    return this->nextEntry->assignTranslation(translation, toAssign);
-}
-
-TranslationEntry* TranslationEntry::findTranslationFromNTerminal( NonTerminals NTerminalToFind )
-{
-    if( this == nullptr )
-    {
-        //TODO: Log this
-
-        return nullptr;
-    }
-    if( NTerminalToFind == this->nTerminal )
-    {
-        return this;
-    }
-
-    return this->nextEntry->findTranslationFromNTerminal( NTerminalToFind );
-}
-
 //Translation Dictionary Methods
-
-void TranslationDictionary::setFile(const std::string& filePath )
+bool TranslationDictionary::loadFile( const std::string& filePath )
 {
     configFile.open( filePath );
-}
-
-bool TranslationDictionary::loadFile()
-{
-    bool first = false;
 
     //loops over each line of cfg file
     while( !configFile.eof() )
@@ -92,50 +34,60 @@ bool TranslationDictionary::loadFile()
 
         std::getline( configFile, currentTrans );
 
-        int location = currentTrans.find('=');
+        auto location = currentTrans.find('=');
 
         //if invalid translation
         if( location == std::string::npos )
         {
             //log if this happens
-
-            return false;
         }
-
-        nTerminal = currentTrans.substr(0, location );
-
-        translateTo = currentTrans.substr( location + 1 );
-
-        //replaces all "unnatural new lines" mainly for MAIN_FUNC
-        while( translateTo.find("\\") != std::string::npos )
+        else
         {
-            auto location = translateTo.find_first_of("\\");
+            nTerminal = currentTrans.substr(0, location );
 
-            translateTo = translateTo.substr(0,location) + '\n'
-                    + translateTo.substr(location+2, translateTo.length());
+            translateTo = currentTrans.substr( location + 1 );
+
+            //replaces all "unnatural new lines" mainly for MAIN_FUNC
+            while( translateTo.find('\\') != std::string::npos )
+            {
+                auto locationOfNewLine = translateTo.find_first_of('\\');
+
+                translateTo = translateTo.substr(0,locationOfNewLine) + '\n'
+                              + translateTo.substr(locationOfNewLine+2, translateTo.length());
+            }
+
+            TranslationEntry newEntry;
+
+            newEntry.nTerminalVal = nTerminal;
+
+            newEntry.translateTo = translateTo;
+
+            newEntry.newEntry = false;
+
+            translations.push_back( newEntry );
         }
 
-        //if first entry
-        if( !first )
-        {
-            translations.nTerminalVal = nTerminal;
 
-            translations.translateTo = translateTo;
-
-            first = true;
-        }
-        //else append to end
-        else {
-            translations.appendToEnd( nTerminal, translateTo );
-        }
     }
+
+    configFile.close();
 
     return populateNTerminals();
 }
 
-TranslationEntry * TranslationDictionary::findTranslationFromNTerminal( NonTerminals NTerminalToFind )
+TranslationEntry TranslationDictionary::findTranslationFromNTerminal( NonTerminals NTerminalToFind )
 {
-    return translations.findTranslationFromNTerminal( NTerminalToFind );
+    TranslationEntry output = TranslationEntry();
+
+    for( auto & translation : translations )
+    {
+        if( translation.nTerminal == NTerminalToFind )
+        {
+            output = translation;
+        }
+    }
+
+    return output;
 }
 
 /**
@@ -152,7 +104,7 @@ bool TranslationDictionary::populateNTerminals()
 
         NTerminal currentNTerminal = it->second;
 
-        bool populated = translations.assignTranslation( currentNTerminalVal, currentNTerminal );
+        bool populated = assignTranslation( currentNTerminalVal, currentNTerminal );
 
         //if a vitalTranslation wasn't populated
         if( !populated )
@@ -173,7 +125,7 @@ bool TranslationDictionary::populateNTerminals()
 
         NTerminal currentNTerminal = nonVitalIt->second;
 
-        bool populated = translations.assignTranslation( currentNTerminalVal, currentNTerminal );
+        bool populated = assignTranslation( currentNTerminalVal, currentNTerminal );
 
         if( !populated )
         {
@@ -184,6 +136,25 @@ bool TranslationDictionary::populateNTerminals()
     }
 
     return true;
+}
+
+bool TranslationDictionary::assignTranslation(std::string translationString, NTerminal currentNTerminal )
+{
+    bool added = false;
+
+    for( int index = 0; index < translations.size(); index++ )
+    {
+        if( translations[ index ].nTerminalVal == translationString )
+        {
+            translations[ index ].nTerminal = currentNTerminal;
+
+            translations[ index ].translationAdded = true;
+
+            added = true;
+        }
+    }
+
+    return added;
 }
 
 

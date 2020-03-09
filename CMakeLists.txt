@@ -19,6 +19,8 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
+set(CMAKE_BUILD_TYPE RelWithDebInfo)
+
 add_library(gentest_binaryparser STATIC src/modules/BinaryParser/BinaryParser.cpp
         src/modules/BinaryParser/BinaryIterator.cpp
   )
@@ -45,7 +47,7 @@ set( GENTEST_MODULES
 target_link_libraries( gentest_translationengine gentest_binaryparser )
 target_link_libraries( gentest_translationengine ${CMAKE_CURRENT_SOURCE_DIR}/lib/libantlr4-runtime.a )
 
-option( BUILD_TESTS "Determines whether to build tests." ON )
+option( BUILD_TESTS OFF "Determines whether to build tests." )
 if(BUILD_TESTS)
 
   include_directories(lib)
