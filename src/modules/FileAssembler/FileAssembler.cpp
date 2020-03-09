@@ -22,7 +22,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 {
     std::map<std::string, std::string> varMap;
 
-    std::string output = "";
+    std::string output;
 
     BinaryParser bp;
 
@@ -216,6 +216,8 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
 
     std::string translateTo = dictionary->findTranslationFromNTerminal(baseCase).translateTo;
 
+    bool extraInfo = previousText.find("<<") != std::string::npos;
+
     //Something changed and now there is occasionally whitespace where there shouldn't be, added this line to fix
     previousText = stripWhiteSpace( previousText );
 
@@ -233,9 +235,9 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
 
     auto start = previousText.find_first_of('(');
 
-    auto end = previousText.find_last_of(");");
+    auto end = questionClosingParen( previousText );
 
-    auto args = previousText.substr( start+1, end-start-2);
+    auto args = previousText.substr( start+1, end-start-1);
 
     auto comma = commaLocation( args );
 
@@ -243,9 +245,62 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
 
     std::string secondArg = stripWhiteSpace( args.substr(comma + 1, args.length() - comma ) );
 
-    std::string output = translateTo + "( " + firstArg + ' ' + checkSign + ' ' + secondArg + " );";
+    std::string output = translateTo + "( " + firstArg + ' ' + checkSign + ' ' + secondArg + " )";
+
+    if( extraInfo )
+    {
+        output += previousText.substr( end + 1 );
+
+    }
+    else
+    {
+        output += ';';
+    }
 
     return output;
+}
+
+
+std::string questionTranslation( TranslationEntry translation, std::string originalString )
+{
+    std::string translateTo = translation.translateTo;
+
+    auto start = originalString.find_first_of('(');
+
+    auto values = originalString.substr(start, originalString.length()-start);
+
+    return translateTo + values;
+}
+
+int questionClosingParen( std::string args )
+{
+    auto cstr = args.c_str();
+
+    int scopeCount = 0;
+
+    int index;
+
+    for( index = 0; index < args.size(); index++ )
+    {
+        char currentVal = cstr[index];
+
+        if( currentVal == '(' )
+        {
+            scopeCount++;
+        }
+        else if( currentVal == ')' )
+        {
+            scopeCount--;
+
+            //if last closing parentheses in args, but not later values
+            if( scopeCount == 0 )
+            {
+                return index;
+            }
+        }
+    }
+
+    return index;
 }
 
 std::string stripWhiteSpace( std::string toStrip )
@@ -275,19 +330,6 @@ std::string stripWhiteSpace( std::string toStrip )
     }
 
     return toStrip.substr(startSpaces, endSpaces-startSpaces+1);
-}
-
-std::string questionTranslation( TranslationEntry translation, std::string originalString )
-{
-    std::string translateTo = translation.translateTo;
-
-    auto start = originalString.find_first_of('(');
-
-    auto end = originalString.find_first_of(");");
-
-    auto values = originalString.substr(start, originalString.length()-start);
-
-    return translateTo + values;
 }
 
 std::string questionWhichCheck( std::string toCheck, std::string baseCase )
