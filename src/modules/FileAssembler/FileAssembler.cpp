@@ -34,7 +34,6 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     // Struct translation handler.
     StructHandler handler( transEngineOutput );
     handler.createAssoc();
-    std::vector<TypedefEntry> list = handler.getEntryList();
 
     handler.populateAssoc( &it );
     transEngineOutput = handler.getAST();
