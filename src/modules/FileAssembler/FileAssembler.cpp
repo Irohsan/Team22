@@ -34,6 +34,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     if( !translate.loadFile(translateCFG) )
     {
+        std::cout<<"Bad Load\n";
+
         //TODO: Log if loading the file is bad
     }
 
@@ -139,7 +141,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     //will insert a main function from the .cfg if it exists.
     auto mainTrans = translate.findTranslationFromNTerminal(MAIN_FUNC);
 
-    if( !mainTrans.translationAdded )
+    if( mainTrans.translationAdded )
     {
         output +=  '\n' + mainTrans.translateTo;
     }
