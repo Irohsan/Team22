@@ -48,6 +48,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         //maybe move individual translations to a seperate class/function that the translation is passed into
         //convert testing library to correct library
 
+        bool added = false;
+
         std::string currentString = current->text;
 
         //strip the \n on everything but comments to make it consistent
@@ -57,9 +59,11 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             currentString = stripNewLine( currentString );
         }
         //translate the deepstate include statement
-        if( current->type == INCLUDE && current->text.find(INCLUDE_STATEMENT) != std::string::npos )
+        if( current->type == INCLUDE && current->text.find( INCLUDE_STATEMENT ) != std::string::npos )
         {
             output += translate.findTranslationFromNTerminal(INCLUDE).translateTo + '\n';
+
+            added = true;
         }
         else if( current->type == SYMBOLIC )
         {
@@ -98,6 +102,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             std::string variableName = currentString.substr(startOfVar, endOfVar - startOfVar );
 
+            added = true;
+
             output += symbolicLine( variableName, &it, current->datatype ) + '\n';
         }
 
@@ -116,12 +122,16 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             {
                 output += questionTranslation( translation, currentString ) + '\n';
             }
+
+            added = true;
         }
 
         //get rid of namespace
         else if( currentString.find("using namespace deepstate;") != std::string::npos )
         {
             currentString = "";
+
+            added = true;
         }
         //if a function has a NO_INLINE
         else if( current->type == FUNC && currentString.find(S_DEEPSTATE_NOINLINE) != std::string::npos )
@@ -129,10 +139,18 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             //TODO: Gracefully crash if no translation for NO_INLINE in the cfg
             output += translate.findTranslationFromNTerminal(DEEPSTATE_NOINLINE).translateTo +
                     currentString.substr(S_DEEPSTATE_NOINLINE.length());
+
+            added = true;
         }
-        else
+        if( !added )
         {
             output+=currentString + "\n";
+        }
+
+        //reset the iterator for each test
+        if( current->type == TEST )
+        {
+            it.reset();
         }
 
         current++;
