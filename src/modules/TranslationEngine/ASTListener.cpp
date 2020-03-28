@@ -4,444 +4,224 @@
 
 using namespace std;
 
-ASTListener::ASTListener()
-{
-    this->semiFlag = false;
-}
-
-void ASTListener::trimWhitespace()
-{
-    for( int i = 0; i < (int) list.size(); i++ )
-    {
-        size_t start = list.at( i ).text.find_first_not_of( ASTListener::WHITESPACE );
-        list.at( i ).text = list.at( i ).text.substr(start);
-    }
-}
-
-void ASTListener::indent()
-{
-    int level = 0;
-
-    for( int i = 0; i < (int) list.size(); i++ )
-    {
-        if( list.at( i ).type == CLOSE_BRK )
-        {
-            level--;
-        }
-        
-        list.at( i ).text = this->createIndent( level ) + list.at( i ).text;
-
-        if( list.at( i ).type == OPEN_BRK ||
-            list.at( i ).type == IF ||
-            list.at( i ).type == TEST ||
-            list.at( i ).type == WHILE_LOOP ||
-            list.at( i ).type == FOR_LOOP || 
-            list.at( i ).type == TYPEDEF ||
-            list.at( i ).type == STRUCT )
-        {
-            level++;
-        }
-    }
-}
-
-void ASTListener::formatTree()
-{
-    for( int i = 0; i < (int) list.size(); i++ )
-    {
-        if( list.at( i ).type == FUNC ||
-            list.at( i ).type == TEST ||
-            list.at( i ).type == TYPEDEF ||
-            list.at( i ).type == STRUCT ||
-            list.at( i ).type == NAMESPACE ||
-            list.at( i ).type == DEFINE ||
-            list.at( i ).type == INCLUDE )
-        {
-            list.at( i ).text = "\n" + list.at( i ).text;
-        }
-    }
-}
-
-std::string ASTListener::createIndent( int level )
-{
-    std::string indentString = "";
-
-    for( int i = 0; i < level * INDENT; i++ )
-    {
-        indentString += " ";
-    }
-
-    return indentString;
-}
-
-
-void ASTListener::enterMulti_line(GenTestParser::Multi_lineContext *ctx)
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = COMMENT;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-void ASTListener::enterSingle_line(GenTestParser::Single_lineContext *ctx )
-{
-    if( list.at( list.size() - 1 ).text.find( "//" ) == std::string::npos )
-    {
-        // Create node.
-        Node newNode;
-
-        // Configure info.
-        newNode.type = COMMENT;
-        newNode.text = ctx->getText();
-
-        // Add to list.
-        ASTListener::list.push_back( newNode );
-    }
-}
-
-void ASTListener::enterSpace(GenTestParser::SpaceContext *ctx)
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = NAMESPACE;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-void ASTListener::enterInclude(GenTestParser::IncludeContext *ctx)
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = INCLUDE;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-void ASTListener::enterMacro_define(GenTestParser::Macro_defineContext *ctx)
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = DEFINE;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-
-void ASTListener::enterStructure_header(GenTestParser::Structure_headerContext *ctx)
-{
-    ASTListener::semiFlag = true;
-
-    if( ASTListener::list.at( ASTListener::list.size() - 1 ).type != TYPEDEF )
-    {
-        // Create node.
-        Node newNode;
-
-        // Configure info.
-        newNode.type = STRUCT;
-        newNode.text = ctx->getText();
-
-        // Add to list.
-        ASTListener::list.push_back( newNode );
-    }
-    else
-    {
-        list.at( list.size() - 1 ).text += ctx->getText();
-    }
-}
-
-void ASTListener::enterFunction_header(GenTestParser::Function_headerContext *ctx)
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = FUNC;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-void ASTListener::enterStatement(GenTestParser::StatementContext *ctx) 
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = STATEMENT;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-void ASTListener::enterTypedef_header(GenTestParser::Typedef_headerContext *ctx )
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = TYPEDEF;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-void ASTListener::enterTest_header(GenTestParser::Test_headerContext *ctx) 
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = TEST;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-void ASTListener::enterWhile_loop(GenTestParser::While_loopContext *ctx) 
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = WHILE_LOOP;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-void ASTListener::enterFor_loop(GenTestParser::For_loopContext *ctx) 
-{
-   // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = FOR_LOOP;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-
-void ASTListener::enterCond_header(GenTestParser::Cond_headerContext *ctx) 
-{
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = IF;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    ASTListener::list.push_back( newNode );
-}
-
-void ASTListener::enterAssrt_gt(GenTestParser::Assrt_gtContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSERT_GT;
-}
-
-void ASTListener::enterAssrt_lt(GenTestParser::Assrt_ltContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSERT_LT;
-}
-
-void ASTListener::enterAssrt_ge(GenTestParser::Assrt_geContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSERT_GE;
-}
-
-void ASTListener::enterAssrt_le(GenTestParser::Assrt_leContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSERT_LE;
-}
-
-void ASTListener::enterAssrt_ne(GenTestParser::Assrt_neContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSERT_NE;
-}
-
-void ASTListener::enterAssrt_eq(GenTestParser::Assrt_eqContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSERT_EQ;
-
-}
-
-void ASTListener::enterAssume_gt(GenTestParser::Assume_gtContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_GT;
-}
-
-void ASTListener::enterAssume_lt(GenTestParser::Assume_ltContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_LT;
-}
-
-void ASTListener::enterAssume_ge(GenTestParser::Assume_geContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_GE;
-}
-
-void ASTListener::enterAssume_le(GenTestParser::Assume_leContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_LE;
-}
-
-void ASTListener::enterAssume_ne(GenTestParser::Assume_neContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_NE;
-}
-
-void ASTListener::enterAssume_eq(GenTestParser::Assume_eqContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_EQ;
-}
-
-void ASTListener::enterCheck_gt(GenTestParser::Check_gtContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = CHECK_GT;
-}
-
-void ASTListener::enterCheck_lt(GenTestParser::Check_ltContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_LT;
-}
-
-void ASTListener::enterCheck_ge(GenTestParser::Check_geContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_GE;
-}
-
-void ASTListener::enterCheck_le(GenTestParser::Check_leContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_LE;
-}
-
-void ASTListener::enterCheck_ne(GenTestParser::Check_neContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_NE;
-}
-
-void ASTListener::enterCheck_eq(GenTestParser::Check_eqContext *ctx)
-{
-    ASTListener::list.at( ASTListener::list.size() - 1 ).type = ASSUME_EQ;
-
-}
-
-void ASTListener::enterSymbolic(GenTestParser::SymbolicContext *ctx)
-{
-    if( ( list.size() > 0 ) && list.at( list.size() - 1 ).type == STRUCT )
-    {
-        // Create node.
-        Node newNode;
-
-        // Configure info.
-        newNode.type = SYMBOLIC;
-        newNode.text = ctx->getText();
-
-        // Add to list.
-        ASTListener::list.push_back( newNode );
-    }
-    else
-    {
-        ASTListener::list.at( ASTListener::list.size() - 1 ).type = SYMBOLIC;
-    }
-}
-
-void ASTListener::enterType(GenTestParser::TypeContext *ctx) {
-
-    ASTListener::list.at( ASTListener::list.size() - 1 ).datatype = ctx->getText();
-}
-
-void ASTListener::enterDefine(GenTestParser::DefineContext *ctx ) {
-
-    if( ASTListener::semiFlag )
-    {
-        // Create node.
-        Node newNode;
-
-        // Configure info.
-        newNode.type = DEFINE;
-        newNode.text = ctx->getText() + ";";
-
-        // Add to list.
-        ASTListener::list.push_back( newNode );
-    }
-}
-
-void ASTListener::enterClose_bracket(GenTestParser::Close_bracketContext *ctx)
-{
-    if( list.at( list.size() - 1 ).type != TYPEDEF
-        || list.at( list.size() - 1 ).type != STRUCT )
-    {
-        // Create node.
-        Node newNode;
-
-        // Configure info.
-        newNode.type = CLOSE_BRK;
-
-        if( ASTListener::semiFlag )
-        {
-            newNode.text = ctx->getText() + ";";
-            semiFlag = false;
-        }
-        else
-        {
-            newNode.text = ctx->getText();
-        }
-
-        // Add to list.
-        ASTListener::list.push_back( newNode );
-    }
-}
-
-void ASTListener::enterOpen_bracket(GenTestParser::Open_bracketContext *ctx)
-{
-
-    // Create node.
-    Node newNode;
-
-    // Configure info.
-    newNode.type = OPEN_BRK;
-    newNode.text = ctx->getText();
-
-    // Add to list.
-    if( list.at( list.size() - 1 ).type == FOR_LOOP
-	|| list.at( list.size() - 1 ).type == WHILE_LOOP
- 	|| list.at( list.size() - 1 ).type == FUNC )
-    {
-    	ASTListener::list.push_back( newNode );
-    }
-}
-
 vector<Node> ASTListener::getAST(){
 
 return ASTListener::list;
 
 }
 
+// Private functions
+void ASTListener::addToList( NTerminal type, std::string text )
+{
+    // Create a new node.
+    Node newNode;
+
+    // Set type and text.
+    newNode.type = type;
+    newNode.text = text;
+
+    // Push to back of AST.
+    ASTListener::list.push_back( newNode );
+}
 
 
+// Non-target implementation.
+void ASTListener::enterLine(GenTestParser::LineContext * ctx)
+{
+    this->addToList( NO_TRANSLATE, ctx->getText() );
+}
+
+
+
+// Target implementations.
+void ASTListener::enterNoinline(GenTestParser::NoinlineContext * ctx)
+{
+    this->addToList( DEEPSTATE_NOINLINE, ctx->getText() );
+}
+
+void ASTListener::enterDsinline(GenTestParser::DsinlineContext * ctx)
+{
+    this->addToList( DEEPSTATE_INLINE, ctx->getText() );
+}
+
+void ASTListener::enterDsnoreturn(GenTestParser::DsnoreturnContext * ctx)
+{
+    this->addToList( DEEPSTATE_NO_RETURN, ctx->getText() );
+}
+
+
+
+void ASTListener::enterAssert_gt(GenTestParser::Assert_gtContext * ctx)
+{
+    this->addToList( ASSERT_GT, ctx->getText() );
+}
+
+void ASTListener::enterAssert_lt(GenTestParser::Assert_ltContext * ctx)
+{
+    this->addToList( ASSERT_LT, ctx->getText() );
+}
+
+void ASTListener::enterAssert_ge(GenTestParser::Assert_geContext * ctx)
+{
+   this->addToList( ASSERT_GE, ctx->getText() );
+}
+
+
+void ASTListener::enterAssert_le(GenTestParser::Assert_leContext * ctx)
+{
+    this->addToList( ASSERT_LE, ctx->getText() );
+}
+
+void ASTListener::enterAssert_ne(GenTestParser::Assert_neContext * ctx)
+{
+   this->addToList( ASSERT_NE, ctx->getText() );
+}
+
+void ASTListener::enterAssert_eq(GenTestParser::Assert_eqContext * ctx)
+{
+   this->addToList( ASSERT_EQ, ctx->getText() );
+}
+
+
+void ASTListener::enterAssume_gt(GenTestParser::Assume_gtContext * ctx)
+{
+    this->addToList( ASSUME_GT, ctx->getText() );
+}
+
+void ASTListener::enterAssume_lt(GenTestParser::Assume_ltContext * ctx)
+{
+    this->addToList( ASSUME_LT, ctx->getText() );
+}
+
+void ASTListener::enterAssume_ge(GenTestParser::Assume_geContext * ctx)
+{
+    this->addToList( ASSUME_GE, ctx->getText() );
+}
+
+void ASTListener::enterAssume_le(GenTestParser::Assume_leContext * ctx)
+{
+    this->addToList( ASSUME_LE, ctx->getText() );
+}
+
+void ASTListener::enterAssume_ne(GenTestParser::Assume_neContext * ctx)
+{
+    this->addToList( ASSUME_NE, ctx->getText() );
+}
+
+void ASTListener::enterAssume_eq(GenTestParser::Assume_eqContext * ctx)
+{
+    this->addToList( ASSUME_EQ, ctx->getText() );
+}
+
+void ASTListener::enterCheck_gt(GenTestParser::Check_gtContext * ctx)
+{
+    this->addToList( CHECK_GT, ctx->getText() );
+}
+
+void ASTListener::enterCheck_lt(GenTestParser::Check_ltContext * ctx)
+{
+    this->addToList( CHECK_LT, ctx->getText() );
+}
+
+void ASTListener::enterCheck_ge(GenTestParser::Check_geContext * ctx)
+{
+    this->addToList( CHECK_GE, ctx->getText() );
+}
+
+void ASTListener::enterCheck_le(GenTestParser::Check_leContext * ctx)
+{
+    this->addToList( CHECK_LE, ctx->getText() );
+}
+
+void ASTListener::enterCheck_ne(GenTestParser::Check_neContext * ctx)
+{
+    this->addToList( CHECK_NE, ctx->getText() );
+}
+
+void ASTListener::enterCheck_eq(GenTestParser::Check_eqContext * ctx)
+{
+    this->addToList( CHECK_EQ, ctx->getText() );
+}
+
+
+void ASTListener::enterDs_assert(GenTestParser::Ds_assertContext * ctx)
+{
+    this->addToList( DEEPSTATE_ASSERT, ctx->getText() );
+}
+
+void ASTListener::enterDs_assume(GenTestParser::Ds_assumeContext * ctx)
+{
+    this->addToList( DEEPSTATE_ASSUME, ctx->getText() );
+}
+
+void ASTListener::enterDs_check(GenTestParser::Ds_checkContext * ctx)
+{
+    this->addToList( DEEPSTATE_CHECK, ctx->getText() );
+}
+
+void ASTListener::enterDs_int(GenTestParser::Ds_intContext * ctx)
+{
+    this->addToList( DEEPSTATE_INT, ctx->getText() );
+}
+
+void ASTListener::enterDs_uint8(GenTestParser::Ds_uint8Context * ctx)
+{
+    this->addToList( DEEPSTATE_UINT8, ctx->getText() );
+}
+
+void ASTListener::enterDs_uint16(GenTestParser::Ds_uint16Context * ctx)
+{
+    this->addToList( DEEPSTATE_UINT16, ctx->getText() );
+}
+
+void ASTListener::enterDs_uint32(GenTestParser::Ds_uint32Context * ctx)
+{
+    this->addToList( DEEPSTATE_UINT32, ctx->getText() );
+}
+
+void ASTListener::enterDs_uint64(GenTestParser::Ds_uint64Context * ctx)
+{
+    this->addToList( DEEPSTATE_UINT64, ctx->getText() );
+}
+
+void ASTListener::enterDs_float(GenTestParser::Ds_floatContext * ctx)
+{
+    this->addToList( DEEPSTATE_FLOAT, ctx->getText() );
+}
+
+void ASTListener::enterDs_double(GenTestParser::Ds_doubleContext * ctx)
+{
+    this->addToList( DEEPSTATE_DOUBLE, ctx->getText() );
+}
+
+void ASTListener::enterDs_ushort(GenTestParser::Ds_ushortContext * ctx)
+{
+    this->addToList( DEEPSTATE_USHORT, ctx->getText() );
+}
+
+void ASTListener::enterDs_uchar(GenTestParser::Ds_ucharContext * ctx)
+{
+    this->addToList( DEEPSTATE_UCHAR, ctx->getText() );
+}
+
+void ASTListener::enterTest(GenTestParser::TestContext * ctx)
+{
+    this->addToList( TEST, ctx->getText() );
+}
+
+void ASTListener::enterSymbolic(GenTestParser::SymbolicContext * ctx)
+{
+    this->addToList( SYMBOLIC, ctx->getText() );
+}
+
+void ASTListener::enterType(GenTestParser::TypeContext * ctx)
+{
+    ASTListener::list.at( list.size() - 1 ).datatype = ctx->getText();
+}
+
+void ASTListener::enterInclude(GenTestParser::IncludeContext * ctx)
+{
+    this->addToList( INCLUDE, ctx->getText() );
+}
 
 

@@ -23,12 +23,20 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     std::map<std::string, std::string> varMap;
 
     std::string output;
+    bool structFlag = false;
 
     BinaryParser bp;
 
     bp.parse( binaryFile );
 
     auto it = bp.getIterator();
+
+    // Struct translation handler.
+    StructHandler handler( transEngineOutput );
+    handler.createAssoc();
+
+    handler.populateAssoc( &it );
+    transEngineOutput = handler.getAST();
 
     TranslationDictionary translate;
 
@@ -64,6 +72,26 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             output += translate.findTranslationFromNTerminal(INCLUDE).translateTo + '\n';
 
             added = true;
+        }
+        else if( current->type == CLOSE_BRK )
+        {
+            structFlag = false;
+            output += "\n" + current->text + "\n";
+        }
+        else if( current->type == STRUCT || current->type == TYPEDEF )
+        {
+            structFlag = true;
+            output += current->text;
+        }
+        else if( current->type == SYMBOLIC && structFlag )
+        {
+            auto startOfVar = currentString.find_first_of(' ') + 1;
+
+            auto location = currentString.find(',');
+
+            std::string variableName = currentString.substr( startOfVar, location - startOfVar );
+
+            output += current->datatype + " " + variableName + ";" + "\n";
         }
         else if( current->type == SYMBOLIC )
         {
@@ -106,7 +134,6 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             output += symbolicLine( variableName, &it, current->datatype ) + '\n';
         }
-
 
         //handle ASSERT/CHECK/ASSUME statements
         else if( current->type >= ASSERT_GT && current->type <= CHECK )
