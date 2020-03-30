@@ -26,6 +26,7 @@ class ASTListener : public GenTestBaseListener
 	  void enterAssume_ne(GenTestParser::Assume_neContext * ctx);
 	  void enterAssume_eq(GenTestParser::Assume_eqContext * ctx);
 
+	  void enterAssrt(GenTestParser::AssrtContext * ctx );
 	  void enterAssert_gt(GenTestParser::Assert_gtContext * ctx);
 	  void enterAssert_lt(GenTestParser::Assert_ltContext * ctx);
 	  void enterAssert_ge(GenTestParser::Assert_geContext * ctx);
