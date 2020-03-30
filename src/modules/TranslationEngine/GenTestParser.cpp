@@ -4034,7 +4034,7 @@ std::vector<std::string> GenTestParser::_ruleNames = {
 std::vector<std::string> GenTestParser::_literalNames = {
   "", "'#include'", "'typedef'", "'struct'", "'_'", "'Int'", "'UInt8'", 
   "'UInt16'", "'UInt32'", "'UInt64'", "'Float'", "'Double'", "'UShort'", 
-  "'UChar'", "'Malloc'", "'C_Str_C'", "'C_StrUpToLen'", "'_F'", "'<'", "'>'", 
+  "'UChar'", "'Malloc'", "'CStr_C'", "'C_StrUpToLen'", "'_F'", "'<'", "'>'", 
   "'='", "'-'", "'%'", "'+'", "':'", "'\"'", "','", "'?'", "'.'", "'!'", 
   "'~'", "'{'", "'}'", "'['", "']'", "'&'", "'*'", "'#'", "'('", "')'", 
   "'^'", "'$'", "'`'", "'/'", "'//'", "'if'", "'/*'", "'*/'", "'OneOf'", 
