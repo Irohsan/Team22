@@ -18,28 +18,31 @@ public:
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
     T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
     T__32 = 33, T__33 = 34, T__34 = 35, T__35 = 36, T__36 = 37, T__37 = 38, 
-    T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, T__42 = 43, ASSUME_C = 44, 
-    ASSUME = 45, ASSRT = 46, ASSRT_C = 47, DEEPSTATE = 48, CHK = 49, CHK_C = 50, 
-    GREATER = 51, LESS = 52, GREATER_EQ = 53, LESS_EQ = 54, EQ = 55, NOT_E = 56, 
-    TEST = 57, DEEPSTATE_INLINE = 58, DEEPSTATE_NOINLINE = 59, DEEPSTATE_NORETURN = 60, 
-    SYMBOLIC = 61, SYMBOLIC_C = 62, FORALL = 63, INT = 64, UINT8 = 65, UINT16 = 66, 
-    UINT32 = 67, UINT64 = 68, SHORT = 69, LONG = 70, DOUBLE = 71, FLOAT = 72, 
-    CHAR = 73, UNSIGNED = 74, BOOL = 75, IDENTIFIER = 76, NUM = 77, WS = 78, 
-    NEWLINE = 79, TAB = 80, SEMICOLON = 81, TRUE = 82, FALSE = 83
+    T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, T__42 = 43, T__43 = 44, 
+    T__44 = 45, T__45 = 46, T__46 = 47, T__47 = 48, ASSUME_C = 49, ASSUME = 50, 
+    ASSRT = 51, ASSRT_C = 52, DEEPSTATE = 53, CHK = 54, CHK_C = 55, GREATER = 56, 
+    LESS = 57, GREATER_EQ = 58, LESS_EQ = 59, EQ = 60, NOT_E = 61, TEST = 62, 
+    DEEPSTATE_INLINE = 63, DEEPSTATE_NOINLINE = 64, DEEPSTATE_NORETURN = 65, 
+    SYMBOLIC = 66, SYMBOLIC_C = 67, FORALL = 68, INT = 69, UINT8 = 70, UINT16 = 71, 
+    UINT32 = 72, UINT64 = 73, SHORT = 74, LONG = 75, DOUBLE = 76, FLOAT = 77, 
+    CHAR = 78, UNSIGNED = 79, BOOL = 80, IDENTIFIER = 81, NUM = 82, WS = 83, 
+    NEWLINE = 84, TAB = 85, SEMICOLON = 86, TRUE = 87, FALSE = 88
   };
 
   enum {
     RuleFile = 0, RuleLine = 1, RuleType = 2, RuleTarget = 3, RuleInclude = 4, 
-    RuleNoinline = 5, RuleDsinline = 6, RuleDsnoreturn = 7, RuleAssume_gt = 8, 
-    RuleAssume_lt = 9, RuleAssume_ge = 10, RuleAssume_le = 11, RuleAssume_eq = 12, 
-    RuleAssume_ne = 13, RuleAssrt = 14, RuleAssert_gt = 15, RuleAssert_lt = 16, 
-    RuleAssert_ge = 17, RuleAssert_le = 18, RuleAssert_eq = 19, RuleAssert_ne = 20, 
-    RuleCheck_gt = 21, RuleCheck_lt = 22, RuleCheck_ge = 23, RuleCheck_le = 24, 
-    RuleCheck_eq = 25, RuleCheck_ne = 26, RuleDs_assume = 27, RuleDs_assert = 28, 
-    RuleDs_check = 29, RuleDs_int = 30, RuleDs_uint8 = 31, RuleDs_uint16 = 32, 
-    RuleDs_uint32 = 33, RuleDs_uint64 = 34, RuleDs_float = 35, RuleDs_double = 36, 
-    RuleDs_ushort = 37, RuleDs_uchar = 38, RuleTest = 39, RuleSymbolic = 40, 
-    RuleSymbolic_underscore = 41, RuleSymbolic_bracket = 42, RuleText = 43
+    RuleType_definitions = 5, RuleStructure = 6, RuleNoinline = 7, RuleDsinline = 8, 
+    RuleDsnoreturn = 9, RuleAssume_gt = 10, RuleAssume_lt = 11, RuleAssume_ge = 12, 
+    RuleAssume_le = 13, RuleAssume_eq = 14, RuleAssume_ne = 15, RuleAssrt = 16, 
+    RuleAssert_gt = 17, RuleAssert_lt = 18, RuleAssert_ge = 19, RuleAssert_le = 20, 
+    RuleAssert_eq = 21, RuleAssert_ne = 22, RuleCheck_gt = 23, RuleCheck_lt = 24, 
+    RuleCheck_ge = 25, RuleCheck_le = 26, RuleCheck_eq = 27, RuleCheck_ne = 28, 
+    RuleDs_assume = 29, RuleDs_assert = 30, RuleDs_check = 31, RuleDs_int = 32, 
+    RuleDs_uint8 = 33, RuleDs_uint16 = 34, RuleDs_uint32 = 35, RuleDs_uint64 = 36, 
+    RuleDs_float = 37, RuleDs_double = 38, RuleDs_ushort = 39, RuleDs_uchar = 40, 
+    RuleDs_malloc = 41, RuleDs_c_str = 42, RuleDs_c_struptolen = 43, RuleTest = 44, 
+    RuleSymbolic = 45, RuleSymbolic_underscore = 46, RuleSymbolic_bracket = 47, 
+    RuleText = 48
   };
 
   GenTestParser(antlr4::TokenStream *input);
@@ -57,6 +60,8 @@ public:
   class TypeContext;
   class TargetContext;
   class IncludeContext;
+  class Type_definitionsContext;
+  class StructureContext;
   class NoinlineContext;
   class DsinlineContext;
   class DsnoreturnContext;
@@ -91,6 +96,9 @@ public:
   class Ds_doubleContext;
   class Ds_ushortContext;
   class Ds_ucharContext;
+  class Ds_mallocContext;
+  class Ds_c_strContext;
+  class Ds_c_struptolenContext;
   class TestContext;
   class SymbolicContext;
   class Symbolic_underscoreContext;
@@ -110,6 +118,10 @@ public:
     antlr4::tree::TerminalNode* NEWLINE(size_t i);
     std::vector<IncludeContext *> include();
     IncludeContext* include(size_t i);
+    std::vector<Type_definitionsContext *> type_definitions();
+    Type_definitionsContext* type_definitions(size_t i);
+    std::vector<StructureContext *> structure();
+    StructureContext* structure(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -123,6 +135,7 @@ public:
     LineContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     TextContext *text();
+    TargetContext *target();
     antlr4::tree::TerminalNode *NEWLINE();
     antlr4::tree::TerminalNode *WS();
 
@@ -197,8 +210,9 @@ public:
     Ds_doubleContext *ds_double();
     Ds_ucharContext *ds_uchar();
     Ds_ushortContext *ds_ushort();
-    std::vector<antlr4::tree::TerminalNode *> WS();
-    antlr4::tree::TerminalNode* WS(size_t i);
+    Ds_mallocContext *ds_malloc();
+    Ds_c_strContext *ds_c_str();
+    Ds_c_struptolenContext *ds_c_struptolen();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -220,6 +234,34 @@ public:
   };
 
   IncludeContext* include();
+
+  class  Type_definitionsContext : public antlr4::ParserRuleContext {
+  public:
+    Type_definitionsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    StructureContext *structure();
+    std::vector<antlr4::tree::TerminalNode *> WS();
+    antlr4::tree::TerminalNode* WS(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Type_definitionsContext* type_definitions();
+
+  class  StructureContext : public antlr4::ParserRuleContext {
+  public:
+    StructureContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  StructureContext* structure();
 
   class  NoinlineContext : public antlr4::ParserRuleContext {
   public:
@@ -718,6 +760,48 @@ public:
   };
 
   Ds_ucharContext* ds_uchar();
+
+  class  Ds_mallocContext : public antlr4::ParserRuleContext {
+  public:
+    Ds_mallocContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+    antlr4::tree::TerminalNode *DEEPSTATE();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Ds_mallocContext* ds_malloc();
+
+  class  Ds_c_strContext : public antlr4::ParserRuleContext {
+  public:
+    Ds_c_strContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+    antlr4::tree::TerminalNode *DEEPSTATE();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Ds_c_strContext* ds_c_str();
+
+  class  Ds_c_struptolenContext : public antlr4::ParserRuleContext {
+  public:
+    Ds_c_struptolenContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+    antlr4::tree::TerminalNode *DEEPSTATE();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Ds_c_struptolenContext* ds_c_struptolen();
 
   class  TestContext : public antlr4::ParserRuleContext {
   public:
