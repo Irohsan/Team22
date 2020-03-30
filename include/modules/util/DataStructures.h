@@ -24,6 +24,7 @@
 #include <iostream>
 #include <utility>
 #include "Util.h"
+#include "BinaryIterator.h"
 
 //TranslationEngine structures
 typedef enum NonTerminals
@@ -36,6 +37,8 @@ typedef enum NonTerminals
     WHILE_LOOP,
     COMMENT,
     DEEPSTATE_NOINLINE,
+    DEEPSTATE_INLINE,
+    DEEPSTATE_NO_RETURN,
     NO_TRANSLATE,
     NAMESPACE,
     INCLUDE,
@@ -62,6 +65,18 @@ typedef enum NonTerminals
     CHECK_NE,
     CHECK_EQ,
     CHECK,
+    DEEPSTATE_ASSERT,
+    DEEPSTATE_ASSUME,
+    DEEPSTATE_CHECK,
+    DEEPSTATE_INT,
+    DEEPSTATE_UINT8,
+    DEEPSTATE_UINT16,
+    DEEPSTATE_UINT32,
+    DEEPSTATE_UINT64,
+    DEEPSTATE_FLOAT,
+    DEEPSTATE_DOUBLE,
+    DEEPSTATE_USHORT,
+    DEEPSTATE_UCHAR,
     SYMBOLIC,
     CLOSE_BRK,
     OPEN_BRK,
@@ -182,6 +197,64 @@ private:
     bool populateNTerminals();
 
     bool assignTranslation(std::string translationString, NTerminal currentNTerminal );
+};
+
+
+class ParameterPacket;
+
+class TypedefEntry
+{
+    // Private field variables.
+    std::string name;
+    std::vector<ParameterPacket> paramList;
+
+    
+    public:
+    
+    TypedefEntry();
+    void setName( std::string name );
+    void addParam( ParameterPacket param );
+    std::vector<ParameterPacket> getParamList();
+    std::string getName();
+};
+
+class ParameterPacket
+{
+    public:
+
+    TypedefEntry prevObj;
+    std::string name;    
+    std::string type;
+    bool pointerFlag;
+    
+};
+
+// Class for managing structs.
+class StructHandler
+{
+    // Private field variables.
+    std::vector<TypedefEntry> entryList;
+    std::vector<Node> ast;
+
+    // Private functions
+    bool inList( std::vector<TypedefEntry> vector, std::string name );
+    bool entryInList( std::vector<TypedefEntry> vector, std::string name );
+    std::string getName( std::string text );
+    std::string getType( std::string var );
+    
+    public:
+    std::vector<ParameterPacket> paramList;
+
+    TypedefEntry getAssocEntry( std::string text );
+    std::vector<Node> getAST();
+    std::vector<std::string> getLine( TypedefEntry entry, int index  );
+    StructHandler( std::vector<Node> ast );
+    void lookForSymbolic( int seed );
+    void createAssoc();
+    void populateAssoc( BinaryIterator * iter );
+    std::vector<TypedefEntry> getEntryList();
+    std::vector<std::vector<std::string>> getText( TypedefEntry entry );
+    std::string getStatement( TypedefEntry entry, int index );
 };
 
 

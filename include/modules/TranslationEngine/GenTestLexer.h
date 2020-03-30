@@ -13,25 +13,19 @@ class  GenTestLexer : public antlr4::Lexer {
 public:
   enum {
     T__0 = 1, T__1 = 2, T__2 = 3, T__3 = 4, T__4 = 5, T__5 = 6, T__6 = 7, 
-    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, ASSUME_C = 12, ASSUME = 13, 
-    ASSRT = 14, ASSRT_C = 15, DEEPSTATE = 16, CHK = 17, CHK_C = 18, GREATER = 19, 
-    LESS = 20, GREATER_EQ = 21, LESS_EQ = 22, EQ = 23, NOT_E = 24, TEST = 25, 
-    DEEPSTATE_INLINE = 26, DEEPSTATE_NOINLINE = 27, DEEPSTATE_NORETURN = 28, 
-    SYMBOLIC = 29, SYMBOLIC_C = 30, FORALL = 31, INT = 32, UINT8 = 33, UINT16 = 34, 
-    UINT32 = 35, UINT64 = 36, SHORT = 37, LONG = 38, DOUBLE = 39, FLOAT = 40, 
-    CHAR = 41, UNSIGNED = 42, BOOL = 43, PRIVATE = 44, PUBLIC = 45, INLINE = 46, 
-    VIRTUAL = 47, CONSTANT = 48, STATIC = 49, EXTERN = 50, RETURN = 51, 
-    INCLUDE = 52, DEFINE = 53, WHILE = 54, FOR = 55, ENUM = 56, SPACE = 57, 
-    STRUCT = 58, TYPEDEF = 59, IFNDEF = 60, ENDIF = 61, UNDEF = 62, IFDEF = 63, 
-    IDENTIFIER = 64, NUM = 65, UNDERSCORE = 66, OPEN_PAR = 67, CLOSE_PAR = 68, 
-    COMMA = 69, PERIOD = 70, ARROW = 71, SCOPE = 72, LT = 73, GT = 74, GE = 75, 
-    LE = 76, EQUALS = 77, NE = 78, INVERSE = 79, SEMICOLON = 80, OPEN_SQ = 81, 
-    CLOSE_SQ = 82, EQUAL = 83, PLUS_EQ = 84, MINUS_EQ = 85, TIMES_EQ = 86, 
-    DIV_EQ = 87, PLUS = 88, SUB = 89, DIV = 90, MUL = 91, MOD = 92, OPEN_BRK = 93, 
-    CLOSE_BRK = 94, LEFT_SHIFT = 95, HASH = 96, QUOTE = 97, LINE_COMMENT = 98, 
-    MULTI_LINE_O = 99, MULTI_LINE_E = 100, ADDRESS = 101, AND = 102, OR = 103, 
-    CAR_R = 104, DOTS = 105, PRINT = 106, PRINT_F = 107, WS = 108, NEWLINE = 109, 
-    TAB = 110, TRUE = 111, FALSE = 112
+    T__7 = 8, T__8 = 9, T__9 = 10, T__10 = 11, T__11 = 12, T__12 = 13, T__13 = 14, 
+    T__14 = 15, T__15 = 16, T__16 = 17, T__17 = 18, T__18 = 19, T__19 = 20, 
+    T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
+    T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
+    T__32 = 33, T__33 = 34, T__34 = 35, T__35 = 36, T__36 = 37, T__37 = 38, 
+    T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, T__42 = 43, ASSUME_C = 44, 
+    ASSUME = 45, ASSRT = 46, ASSRT_C = 47, DEEPSTATE = 48, CHK = 49, CHK_C = 50, 
+    GREATER = 51, LESS = 52, GREATER_EQ = 53, LESS_EQ = 54, EQ = 55, NOT_E = 56, 
+    TEST = 57, DEEPSTATE_INLINE = 58, DEEPSTATE_NOINLINE = 59, DEEPSTATE_NORETURN = 60, 
+    SYMBOLIC = 61, SYMBOLIC_C = 62, FORALL = 63, INT = 64, UINT8 = 65, UINT16 = 66, 
+    UINT32 = 67, UINT64 = 68, SHORT = 69, LONG = 70, DOUBLE = 71, FLOAT = 72, 
+    CHAR = 73, UNSIGNED = 74, BOOL = 75, IDENTIFIER = 76, NUM = 77, WS = 78, 
+    NEWLINE = 79, TAB = 80, SEMICOLON = 81, TRUE = 82, FALSE = 83
   };
 
   GenTestLexer(antlr4::CharStream *input);
