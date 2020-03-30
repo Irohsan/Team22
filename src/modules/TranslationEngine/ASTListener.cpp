@@ -50,6 +50,11 @@ void ASTListener::enterDsnoreturn(GenTestParser::DsnoreturnContext * ctx)
 }
 
 
+void ASTListener::enterAssrt(GenTestParser::AssrtContext * ctx )
+{
+    this->addToList( ASSERT, ctx->getText() );
+}
+
 
 void ASTListener::enterAssert_gt(GenTestParser::Assert_gtContext * ctx)
 {
