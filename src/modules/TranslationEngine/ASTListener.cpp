@@ -252,7 +252,10 @@ void ASTListener::enterInclude(GenTestParser::IncludeContext * ctx)
 
 void ASTListener::enterStructure(GenTestParser::StructureContext * ctx)
 {
-    this->addToList( STRUCT, ctx->getText() );
+    if( this->list.at( list.size() - 1 ).type != TYPEDEF )
+    {
+        this->addToList( STRUCT, ctx->getText() );
+    }
 }
 
 void ASTListener::enterType_definitions(GenTestParser::Type_definitionsContext * ctx)
