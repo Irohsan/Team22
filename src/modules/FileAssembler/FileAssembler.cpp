@@ -34,9 +34,11 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     // Struct translation handler.
     StructHandler handler( transEngineOutput );
+
     handler.createAssoc();
 
     handler.populateAssoc( &it );
+
     transEngineOutput = handler.getAST();
 
     TranslationDictionary translate;
@@ -64,6 +66,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         std::string currentString = stripWhiteSpace( current->text );
 
         currentString = stripNewLine( currentString );
+
+        std::cout<<"Node: " + currentString + "\nType: " + std::to_string(current->type) + "\n";
 
         //Workaround for TE adding an additional blank line
         if( currentString.length() == 0 )
@@ -182,6 +186,12 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             output += generatePadding( currentDepth ) + questionTranslation( translation, statement ) + '\n';
 
             added = true;
+        }
+        else if( current->type >= DEEPSTATE_INT && current->type <= DEEPSTATE_MALLOC )
+        {
+            //TODO: Implement DeepState_Types
+
+
         }
 
         //get rid of namespace

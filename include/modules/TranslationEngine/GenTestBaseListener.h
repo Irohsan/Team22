@@ -31,6 +31,12 @@ public:
   virtual void enterInclude(GenTestParser::IncludeContext * /*ctx*/) override { }
   virtual void exitInclude(GenTestParser::IncludeContext * /*ctx*/) override { }
 
+  virtual void enterType_definitions(GenTestParser::Type_definitionsContext * /*ctx*/) override { }
+  virtual void exitType_definitions(GenTestParser::Type_definitionsContext * /*ctx*/) override { }
+
+  virtual void enterStructure(GenTestParser::StructureContext * /*ctx*/) override { }
+  virtual void exitStructure(GenTestParser::StructureContext * /*ctx*/) override { }
+
   virtual void enterNoinline(GenTestParser::NoinlineContext * /*ctx*/) override { }
   virtual void exitNoinline(GenTestParser::NoinlineContext * /*ctx*/) override { }
 
@@ -132,6 +138,15 @@ public:
 
   virtual void enterDs_uchar(GenTestParser::Ds_ucharContext * /*ctx*/) override { }
   virtual void exitDs_uchar(GenTestParser::Ds_ucharContext * /*ctx*/) override { }
+
+  virtual void enterDs_malloc(GenTestParser::Ds_mallocContext * /*ctx*/) override { }
+  virtual void exitDs_malloc(GenTestParser::Ds_mallocContext * /*ctx*/) override { }
+
+  virtual void enterDs_c_str(GenTestParser::Ds_c_strContext * /*ctx*/) override { }
+  virtual void exitDs_c_str(GenTestParser::Ds_c_strContext * /*ctx*/) override { }
+
+  virtual void enterDs_c_struptolen(GenTestParser::Ds_c_struptolenContext * /*ctx*/) override { }
+  virtual void exitDs_c_struptolen(GenTestParser::Ds_c_struptolenContext * /*ctx*/) override { }
 
   virtual void enterTest(GenTestParser::TestContext * /*ctx*/) override { }
   virtual void exitTest(GenTestParser::TestContext * /*ctx*/) override { }
