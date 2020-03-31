@@ -22,20 +22,22 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
 std::string stripNewLine( std::string stringToStrip );
 
-std::string symbolicLine( std::string variableName, BinaryIterator * iterator, std::string type );
+std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type );
 
 std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary );
 
-std::string questionTranslation( TranslationEntry translation, std::string originalString );
+std::string questionTranslation( const TranslationEntry& translation, const std::string& originalString );
 
-int questionClosingParen( std::string args );
+int questionClosingParen( const std::string& args );
 
-std::string stripWhiteSpace( std::string toStrip );
+std::string generatePadding( int depth );
 
-std::string questionWhichCheck( std::string toCheck, std::string baseCase );
+std::string stripWhiteSpace( const std::string& toStrip );
 
-int commaLocation( std::string toFind );
+std::string questionWhichCheck( const std::string& toCheck, const std::string& baseCase );
+
+int commaLocation( const std::string& toFind );
 
 NTerminal findBaseCase( NTerminal currentCase );
 
-void writeToFile( std::string fileLocation, std::string fileContents );
+void writeToFile( const std::string& fileLocation, const std::string& fileContents );

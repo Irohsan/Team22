@@ -202,63 +202,96 @@ private:
     bool assignTranslation(std::string translationString, NTerminal currentNTerminal );
 };
 
-
-class ParameterPacket;
-
-class TypedefEntry
+class VariablePacket
 {
-    // Private field variables.
-    std::string name;
-    std::vector<ParameterPacket> paramList;
+    private:
+        std::string name;
+        std::string datatype;
 
-    
     public:
-    
-    TypedefEntry();
-    void setName( std::string name );
-    void addParam( ParameterPacket param );
-    std::vector<ParameterPacket> getParamList();
-    std::string getName();
+        void setVarName( std::string name );
+        void setDatatype( std::string datatype );
+        std::string getName();
+        std::string getDatatype();
 };
 
-class ParameterPacket
+class StructPacket
 {
+    private:
+        std::string name;
+        std::vector<VariablePacket> varList;
+
     public:
 
-    TypedefEntry prevObj;
-    std::string name;    
-    std::string type;
-    bool pointerFlag;
-    
+        void setName( std::string name );
+        void addParam( VariablePacket &packet );
+        std::string getName();
+        size_t length();
+        VariablePacket getVarAt( int index );
 };
 
-// Class for managing structs.
-class StructHandler
+class SymbolicPacket
 {
-    // Private field variables.
-    std::vector<TypedefEntry> entryList;
-    std::vector<Node> ast;
+    private:
+        uint8_t uint8;
+        uint16_t uint16;
+        uint32_t uint32;
+        uint64_t uint64;
+        int integer;
+        float flt;
+        double dbl;
+        short shrt;
+        long lng;
+        char character;
+        bool boolean;
+        std::string string;
 
-    // Private functions
-    bool inList( std::vector<TypedefEntry> vector, std::string name );
-    bool entryInList( std::vector<TypedefEntry> vector, std::string name );
-    std::string getName( std::string text );
-    std::string getType( std::string var );
+    public:
+        
+        SymbolicPacket();
+        void fetchSymbolic( std::string datatype, BinaryIterator * it );  
+        uint8_t getUInt8();
+        uint16_t getUInt16();
+        uint32_t getUInt32();
+        uint64_t getUInt64();
+        int getInt();
+        float getFloat();
+        double getDouble();
+        short getShort();
+        long getLong();
+        char getChar();
+        bool getBool();
+        std::string getString(); 
+};
+
+        
+class StructHandler 
+{
+    private:
+        std::vector<StructPacket> structList;
+        
+        bool structInList( std::string name );
+        StructPacket getPacket( std::string name );
+        std::vector<std::string> assembleStatement( StructPacket packet, BinaryIterator * it  );
+	
     
     public:
-    std::vector<ParameterPacket> paramList;
 
-    TypedefEntry getAssocEntry( std::string text );
-    std::vector<Node> getAST();
-    std::vector<std::string> getLine( TypedefEntry entry, int index  );
-    StructHandler( std::vector<Node> ast );
-    void lookForSymbolic( int seed );
-    void createAssoc();
-    void populateAssoc( BinaryIterator * iter );
-    std::vector<TypedefEntry> getEntryList();
-    std::vector<std::vector<std::string>> getText( TypedefEntry entry );
-    std::string getStatement( TypedefEntry entry, int index );
+        typedef enum StructAssemblyCodes {
+
+            ASSEMBLE = 0,
+            ADD_VAR,
+            CLEAR_CURRENT
+
+
+        } AssemblyCode;
+
+        std::string getStructName( std::string header );
+        std::string getVarName( std::string decl );
+        std::string getTypeName( std::string decl );
+        StructPacket assemblePacket( Node declNode, AssemblyCode command );
+        void lookForSymbolic( std::vector<Node> ast );
+        std::string writeStatementFor( Node declNode, BinaryIterator * it );
 };
-
-
+    
 #endif //GENTEST_DATASTRUCTURES_H
