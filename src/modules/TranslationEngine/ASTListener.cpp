@@ -25,6 +25,10 @@ void ASTListener::addToList( NTerminal type, std::string text )
         // Push to back of AST.
         ASTListener::list.push_back( newNode );
     }
+    else
+    {
+        ASTListener::list.at( list.size() - 1 ).type = type;
+    }
 }
 
 
