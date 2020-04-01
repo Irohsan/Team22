@@ -24,7 +24,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     std::string output;
 
-    bool structFlag = false, testFlag = false;
+    bool structFlag = false, testFlag = false, prevQuestion = false;
 
     BinaryParser bp;
 
@@ -37,8 +37,6 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     StructHandler handler;
 
     handler.lookForSymbolic( transEngineOutput );
-
-    auto names = handler.getStructNames();
 
     if( !translate.loadFile(translateCFG) )
     {
@@ -58,7 +56,9 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         //maybe move individual translations to a separate class/function that the translation is passed into
         //convert testing library to correct library
 
-        bool added = false;
+        bool added = false, currentQuestion = false;
+
+        std::vector<std::string> stringsToAdd;
 
         std::string currentString = stripWhiteSpace( current->text );
 
@@ -75,17 +75,17 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         //translate the deepstate include statement
         if( current->type == INCLUDE && current->text.find( INCLUDE_STATEMENT ) != std::string::npos )
         {
-            output += generatePadding( currentDepth ) + translate.findTranslationFromNTerminal(INCLUDE).translateTo + '\n';
-
             added = true;
+
+            output += generatePadding( currentDepth ) + translate.findTranslationFromNTerminal(INCLUDE).translateTo + '\n';
         }
         else if( current->type == STRUCT || current->type == TYPEDEF )
         {
             structFlag = true;
 
-            output += generatePadding( currentDepth ) + currentString + "\n";
-
             added = true;
+
+            output += generatePadding( currentDepth ) + currentString + "\n";
         }
         else if( current->type == SYMBOLIC && structFlag )
         {
@@ -101,141 +101,104 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         }
         else if( current->type == SYMBOLIC )
         {
-            //if multi variable line
-            while( currentString.find(',') != std::string::npos )
-            {
-                auto startOfVar = currentString.find_first_of(' ') + 1;
-
-                auto location = currentString.find(',');
-
-                std::string variableName = currentString.substr( startOfVar, location - startOfVar );
-
-                output += generatePadding( currentDepth ) + symbolicLine( variableName, &it, current->datatype ) + "\n";
-
-                auto firstPart = currentString.substr( 0, startOfVar );
-
-                auto secondPart = currentString.substr(location + 1, currentString.length() - location );
-
-                //strip additional spaces
-                while( secondPart.substr(0,1).find(' ') != std::string::npos )
-                {
-                    secondPart = secondPart.substr(1, secondPart.length() - 1 );
-                }
-
-                currentString = firstPart + secondPart;
-            }
-
-            //locate the variable name
-            auto startOfVar = currentString.find_last_of(' ') + 1;
-
-            auto endOfVar = currentString.find(';');
-
-            std::string variableName = currentString.substr(startOfVar, endOfVar - startOfVar );
-
             added = true;
 
-            output += generatePadding( currentDepth ) + symbolicLine( variableName, &it, current->datatype ) + '\n';
+            stringsToAdd = symbolicValHandle( currentString, &it, current->datatype );
         }
 
         //handle ASSERT/CHECK/ASSUME statements
         else if( current->type >= ASSERT_GT && current->type <= CHECK )
         {
-            TranslationEntry translation = translate.findTranslationFromNTerminal(current->type );
-
-            //If translation doesnt exist, convert to base case with the correct sign
-            if( translation.newEntry )
-            {
-                output += generatePadding( currentDepth ) + questionConversion( currentString, current->type, &translate ) + '\n';
-            }
-            else
-            {
-                output += generatePadding( currentDepth ) + questionTranslation( translation, currentString ) + '\n';
-            }
-
             added = true;
+
+            currentQuestion = true;
+
+            stringsToAdd = questionHandle( &translate, current->type, currentString );
         }
         //handles deepstate_question
         else if( current->type >= DEEPSTATE_ASSERT && current->type <= DEEPSTATE_CHECK )
         {
-            auto startOfStatement = currentString.find_first_of('_') + 1;
-
-            auto statement = currentString.substr(startOfStatement, currentString.length() - startOfStatement);
-
-            NTerminal currentType;
-
-            if( statement.find("Assume") != std::string::npos )
-            {
-                currentType = ASSUME;
-            }
-            else if( statement.find("Assert") != std::string::npos )
-            {
-                currentType = ASSERT;
-            }
-            else
-            {
-                currentType = CHECK;
-            }
-
-            auto translation = translate.findTranslationFromNTerminal( currentType );
-
-            output += generatePadding( currentDepth ) + questionTranslation( translation, statement ) + '\n';
-
             added = true;
+
+            currentQuestion = true;
+
+            stringsToAdd = deepstateQuestionHandle( &translate, currentString );
         }
         else if( current->type >= DEEPSTATE_INT && current->type <= DEEPSTATE_MALLOC )
         {
-            auto equals = currentString.find('=') + 1;
-
-            std::string line = currentString.substr(0, equals);
-
-            std::string args = currentString.substr(equals, currentString.length() - equals );
-
-            output += line + deepstateTypeReturn( (*current), stripWhiteSpace(args), &it) + '\n';
-
             added = true;
+
+            stringsToAdd = deepstateTypeHandle( currentString, &it, &(*current) );
         }
 
         //get rid of namespace
         else if( currentString.find("using namespace deepstate;") != std::string::npos )
         {
-            currentString = "";
+            stringsToAdd.emplace_back("" );
 
             added = true;
         }
         //if a function has a NO_INLINE
-        else if( current->type == FUNC && currentString.find(S_DEEPSTATE_NOINLINE) != std::string::npos )
+        else if( current->type >= DEEPSTATE_NOINLINE && current->type <= DEEPSTATE_NO_RETURN )
         {
-            //TODO: Gracefully crash if no translation for NO_INLINE in the cfg
-            output += generatePadding( currentDepth ) +
-                    translate.findTranslationFromNTerminal(DEEPSTATE_NOINLINE).translateTo +
-                    currentString.substr(S_DEEPSTATE_NOINLINE.length());
+            auto translation = translate.findTranslationFromNTerminal(current->type );
+
+            if( translation.newEntry )
+            {
+                //TODO: Log this
+                std::cout<<"Translation in line " + currentString + " is not found\n";
+            }
+            else
+            {
+                auto output = translate.findTranslationFromNTerminal(current->type ).translateTo +
+                              currentString.substr( translation.nTerminalVal.length() - 1 ) + "\n";
+            }
 
             added = true;
         }
         //checking for struct declarations
         else if( !structFlag && testFlag && current->type == NO_TRANSLATE )
         {
-            output += generatePadding(currentDepth) + currentString + "\n";
+            stringsToAdd = structHandle( currentString, &handler, &(*current), &it );
 
-            //search for struct name in current structs
-            std::string structSearch = whichStructInLine( currentString, names );
-
-            if( !structSearch.empty() )
-            {
-                auto strings = handler.writeStatementFor( (*current), &it);
-
-                auto currentString = strings.begin();
-
-                while( currentString != strings.end() )
-                {
-                    output += generatePadding(currentDepth) + (*currentString);
-
-                    currentString++;
-                }
-            }
-            added = true;
+            added = !stringsToAdd.empty();
         }
 
+        //statements used to handle when there is extra information after a question statement
+        if( prevQuestion )
+        {
+            if( added )
+            {
+                output += ";\n";
+            }
+            else
+            {
+                //next statement must start with <<
+                auto firstTwo = currentString.substr(0,2);
+
+                if( firstTwo.find("<<") != std::string::npos )
+                {
+                    output += "\n";
+
+                    if( currentString.find(';') == std::string::npos )
+                    {
+                        stringsToAdd.push_back( generatePadding(2) + currentString );
+
+                        currentQuestion = true;
+                    }
+                    else
+                    {
+                        stringsToAdd.push_back( generatePadding(2) + currentString + "\n" );
+                    }
+
+                    added = true;
+                }
+                else
+                {
+                    output += ";\n";
+                }
+            }
+        }
 
         if( current->text.find('}') != std::string::npos )
         {
@@ -248,7 +211,20 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
                 testFlag = false;
             }
         }
-        if( !added )
+
+        if( added )
+        {
+            auto addStrings = stringsToAdd.begin();
+
+            while( addStrings != stringsToAdd.end() )
+            {
+                output += generatePadding( currentDepth ) + (*addStrings);
+
+                addStrings++;
+            }
+
+        }
+        else
         {
             output += generatePadding( currentDepth ) + currentString + "\n";
         }
@@ -272,6 +248,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             testFlag = true;
         }
 
+        prevQuestion = currentQuestion;
+
         current++;
     }
 
@@ -283,7 +261,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         output += mainTrans.translateTo;
     }
 
-    writeToFile( outputPath, output);
+    writeToFile( outputPath, output );
 }
 
 std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type )
@@ -418,8 +396,6 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
 
     std::string translateTo = dictionary->findTranslationFromNTerminal(baseCase).translateTo;
 
-    bool extraInfo = previousText.find("<<") != std::string::npos;
-
     //Something changed and now there is occasionally whitespace where there shouldn't be, added this line to fix
     previousText = stripWhiteSpace( previousText );
 
@@ -449,16 +425,6 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
 
     std::string output = translateTo + "( " + firstArg + ' ' + checkSign + ' ' + secondArg + " )";
 
-    if( extraInfo )
-    {
-        output += previousText.substr( end + 1 );
-
-    }
-    else
-    {
-        output += ';';
-    }
-
     return output;
 }
 
@@ -468,7 +434,9 @@ std::string questionTranslation( const TranslationEntry& translation, const std:
 
     auto start = originalString.find_first_of('(');
 
-    auto values = originalString.substr(start, originalString.length()-start);
+    auto end = originalString.find_last_of(';');
+
+    auto values = originalString.substr( start, end - start );
 
     return translateTo + values;
 }
@@ -509,6 +477,134 @@ std::string questionWhichCheck( const std::string& toCheck, const std::string& b
     auto length = baseCase.length();
 
     return toCheck.substr(length, 2);
+}
+
+std::vector<std::string> symbolicValHandle( std::string currentString, BinaryIterator * it, std::string& dataType )
+{
+    std::vector<std::string> outputVector;
+
+    //if multi variable line
+    while( currentString.find(',') != std::string::npos )
+    {
+        auto startOfVar = currentString.find_first_of(' ') + 1;
+
+        auto location = currentString.find(',');
+
+        std::string variableName = currentString.substr( startOfVar, location - startOfVar );
+
+        outputVector.push_back( symbolicLine( variableName, it, dataType ) + "\n" );
+
+        auto firstPart = currentString.substr( 0, startOfVar );
+
+        auto secondPart = currentString.substr(location + 1, currentString.length() - location );
+
+        //strip additional spaces
+        while( secondPart.substr(0,1).find(' ') != std::string::npos )
+        {
+            secondPart = secondPart.substr(1, secondPart.length() - 1 );
+        }
+
+        currentString = firstPart + secondPart;
+    }
+
+    //locate the variable name
+    auto startOfVar = currentString.find_last_of(' ') + 1;
+
+    auto endOfVar = currentString.find(';');
+
+    std::string variableName = currentString.substr(startOfVar, endOfVar - startOfVar );
+
+    outputVector.push_back( symbolicLine( variableName, it, dataType ) + '\n' );
+
+    return outputVector;
+}
+
+std::vector<std::string> questionHandle( TranslationDictionary * translate, NTerminal current, const std::string& currentString )
+{
+    std::vector<std::string> outputVector;
+
+    TranslationEntry translation = translate->findTranslationFromNTerminal( current );
+
+    //If translation doesnt exist, convert to base case with the correct sign
+    if( translation.newEntry )
+    {
+        outputVector.push_back( questionConversion(currentString, current, translate ) );
+    }
+    else
+    {
+        outputVector.push_back(questionTranslation(translation, currentString ) );
+    }
+
+    return outputVector;
+}
+
+std::vector<std::string> deepstateQuestionHandle( TranslationDictionary * translate, const std::string& currentString )
+{
+    std::vector<std::string> outputVector;
+
+    auto startOfStatement = currentString.find_first_of('_') + 1;
+
+    auto statement = currentString.substr(startOfStatement, currentString.length() - startOfStatement);
+
+    NTerminal currentType;
+
+    if( statement.find("Assume") != std::string::npos )
+    {
+        currentType = ASSUME;
+    }
+    else if( statement.find("Assert") != std::string::npos )
+    {
+        currentType = ASSERT;
+    }
+    else
+    {
+        currentType = CHECK;
+    }
+
+    auto translation = translate->findTranslationFromNTerminal( currentType );
+
+    outputVector.push_back( questionTranslation( translation, statement ) );
+
+    return outputVector;
+}
+
+std::vector<std::string> deepstateTypeHandle( const std::string& currentString, BinaryIterator * it, Node * current )
+{
+    std::vector<std::string> outputVector;
+
+    auto equals = currentString.find('=') + 1;
+
+    std::string line = currentString.substr(0, equals);
+
+    std::string args = currentString.substr(equals, currentString.length() - equals );
+
+    outputVector.push_back( line + deepstateTypeReturn( *current, stripWhiteSpace(args), it) + '\n' );
+
+    return outputVector;
+}
+
+std::vector<std::string> structHandle( const std::string& currentString, StructHandler * handler, Node * current, BinaryIterator * it )
+{
+    std::vector<std::string> outputVector;
+
+    //search for struct name in current structs
+    std::string structSearch = whichStructInLine( currentString, handler->getStructNames() );
+
+    if( structSearch.size() != 0 )
+    {
+        outputVector.push_back( currentString + "\n" );
+
+        auto strings = handler->writeStatementFor( (*current), it);
+
+        auto currentLine = strings.begin();
+
+        while(currentLine != strings.end() )
+        {
+            outputVector.push_back( ( *currentLine++ ) );
+        }
+    }
+
+    return outputVector;
 }
 
 NTerminal findBaseCase( NTerminal currentCase )

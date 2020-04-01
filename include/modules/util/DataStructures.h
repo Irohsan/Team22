@@ -93,7 +93,9 @@ const std::map < std::string, NonTerminals > vitalTranslations =
 
 //Contains all translations not vital to run the program, but can still be used.
 const std::map < std::string, NonTerminals > nonVital =
-        {{"NO_INLINE", DEEPSTATE_NOINLINE},
+        {{"DEEPSTATE_NO_INLINE", DEEPSTATE_NOINLINE},
+         {"DEEPSTATE_INLINE", DEEPSTATE_INLINE},
+         {"DEEPSTATE_NO_RETURN", DEEPSTATE_NO_RETURN},
          {"MAIN_FUNC", MAIN_FUNC},
          { "ASSERT_GT", ASSERT_GT },
          { "ASSERT_GE", ASSERT_GE },
