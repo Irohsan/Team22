@@ -182,15 +182,16 @@ bool TranslationDictionary::assignTranslation(std::string translationString, NTe
  */
 std::string StructHandler::getStructName( std::string header )
 {
-    // Trim whitespace from both sides of struct declaration and {
-    header = header.substr( header.find_first_not_of( " " ) , header.size() - 1 );
+    //trim open bracket
     header = header.substr( 0, header.find( "{" ) );
 
-    // Trim any whitespace between the former { and the name of the struct.
-    header = header.substr( 0, header.find_last_not_of( " " ) + 1 );
+    // Trim whitespace
+    header = stripWhiteSpace( header );
 
-    // Eliminate struct keyword.
-    header = header.substr( header.find_first_of( " " ) + 1, header.size() - 1 );
+    auto firstStruct = header.find("struct" ) + 6;
+
+    //gets only the struct name
+    header = stripWhiteSpace( header.substr(firstStruct, header.size() - firstStruct) );
 
     return header;
 }
@@ -355,7 +356,7 @@ void StructHandler::lookForSymbolic( std::vector<Node> ast )
 
     for( int index = 0; index < (int) ast.size(); index++ )
     {
-        if( ast.at( index ).type == STRUCT )
+        if( ast.at( index ).type == STRUCT || ast.at(index).type == TYPEDEF )
         { 
             // Set struct flag.
             structFlag = true;
@@ -392,10 +393,9 @@ StructPacket StructHandler::getPacket( std::string name )
 }
 
 
-std::string StructHandler::writeStatementFor( Node declNode, BinaryIterator * it )
+std::vector<std::string> StructHandler::writeStatementFor( Node declNode, BinaryIterator * it )
 {
-    // Declare local variables.
-    std::string outputString = "";
+    std::vector<std::string> stringOutputs;
 
     if( this->structInList( this->getTypeName( declNode.text ) ) )
     {
@@ -408,11 +408,11 @@ std::string StructHandler::writeStatementFor( Node declNode, BinaryIterator * it
         // Write statements.
         for( int index = 0; index < (int) statements.size(); index++ )
         {
-            outputString += this->getVarName( declNode.text ) + statements.at( index ) + "\n";   
+            stringOutputs.push_back( this->getVarName( declNode.text ) + statements.at( index ) + "\n" );
         }
     }
 
-    return outputString;
+    return stringOutputs;
 }
 
 
@@ -466,6 +466,22 @@ std::vector<std::string> StructHandler::assembleStatement( StructPacket packet, 
     }
 
     return returnStatements;
+}
+
+std::vector<std::string> StructHandler::getStructNames()
+{
+    std::vector<std::string> structNames;
+
+    auto currentStruct = structList.begin();
+
+    while( currentStruct != structList.end() )
+    {
+        structNames.push_back( currentStruct->getName() );
+
+        currentStruct++;
+    }
+
+    return structNames;
 }
 
 

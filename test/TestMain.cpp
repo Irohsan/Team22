@@ -84,6 +84,25 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 
 // FileAssembler Tests
 
+TEST_CASE( "StripWhiteSpace Tests","[file_assembler]")
+{
+    std::string testString1 = "  WhiteSpaces   ";
+
+    assert( "WhiteSpaces" == stripWhiteSpace( testString1 ) );
+
+    std::string testString2 = " W h i t e S p a c e s  ";
+
+    assert( "W h i t e S p a c e s" == stripWhiteSpace( testString2 ) );
+
+    std::string testString3 = "W h i t e S p a c e s  ";
+
+    assert( "W h i t e S p a c e s" == stripWhiteSpace( testString3 ) );
+
+    std::string testString4 = "X mySecondEvilPlan;";
+
+    assert( "X mySecondEvilPlan;" == stripWhiteSpace( testString4 ) );
+}
+
 // TranslationEngine Tests
 
 // Util Tests

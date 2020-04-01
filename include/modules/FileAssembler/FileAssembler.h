@@ -16,11 +16,10 @@
 
 #include "DataStructures.h"
 #include "BinaryParser.h"
+#include <algorithm>
 
 void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         char * outputPath, char * translateCFG );
-
-std::string stripNewLine( std::string stringToStrip );
 
 std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type );
 
@@ -30,13 +29,7 @@ std::string questionTranslation( const TranslationEntry& translation, const std:
 
 int questionClosingParen( const std::string& args );
 
-std::string generatePadding( int depth );
-
-std::string stripWhiteSpace( const std::string& toStrip );
-
 std::string questionWhichCheck( const std::string& toCheck, const std::string& baseCase );
-
-int commaLocation( const std::string& toFind );
 
 NTerminal findBaseCase( NTerminal currentCase );
 

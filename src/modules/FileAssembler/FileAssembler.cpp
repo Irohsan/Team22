@@ -24,7 +24,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     std::string output;
 
-    bool structFlag = false;
+    bool structFlag = false, testFlag = false;
 
     BinaryParser bp;
 
@@ -32,16 +32,13 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     auto it = bp.getIterator();
 
-    // Struct translation handler.
-    StructHandler handler( transEngineOutput );
-
-    handler.createAssoc();
-
-    handler.populateAssoc( &it );
-
-    transEngineOutput = handler.getAST();
-
     TranslationDictionary translate;
+
+    StructHandler handler;
+
+    handler.lookForSymbolic( transEngineOutput );
+
+    auto names = handler.getStructNames();
 
     if( !translate.loadFile(translateCFG) )
     {
@@ -58,7 +55,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     for( int currentTranslation = 0; currentTranslation < (int) size; currentTranslation++ )
     {
-        //maybe move individual translations to a seperate class/function that the translation is passed into
+        //maybe move individual translations to a separate class/function that the translation is passed into
         //convert testing library to correct library
 
         bool added = false;
@@ -67,9 +64,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
         currentString = stripNewLine( currentString );
 
-        std::cout<<"Node: " + currentString + "\nType: " + std::to_string(current->type) + "\n";
-
-        //Workaround for TE adding an additional blank line
+        //Workaround for TE occasionally adding an additional blank line
         if( currentString.length() == 0 )
         {
             current++;
@@ -84,15 +79,13 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             added = true;
         }
-        else if( current->type == CLOSE_BRK )
-        {
-            structFlag = false;
-            output += generatePadding( currentDepth ) + "\n" + current->text + "\n";
-        }
         else if( current->type == STRUCT || current->type == TYPEDEF )
         {
             structFlag = true;
-            output += generatePadding( currentDepth ) + current->text;
+
+            output += generatePadding( currentDepth ) + currentString + "\n";
+
+            added = true;
         }
         else if( current->type == SYMBOLIC && structFlag )
         {
@@ -102,7 +95,9 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             std::string variableName = currentString.substr( startOfVar, location - startOfVar );
 
-            output += generatePadding( currentDepth ) + current->datatype + " " + variableName + ";" + "\n";
+            output += generatePadding( currentDepth ) + current->datatype + " " + variableName + "\n";
+
+            added = true;
         }
         else if( current->type == SYMBOLIC )
         {
@@ -211,12 +206,41 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             added = true;
         }
+        //checking for struct declarations
+        else if( !structFlag && testFlag && current->type == NO_TRANSLATE )
+        {
+            output += generatePadding(currentDepth) + currentString + "\n";
+
+            std::string structSearch = whichStructInLine( currentString, names );
+
+            if( !structSearch.empty() )
+            {
+                auto strings = handler.writeStatementFor( (*current), &it);
+
+                auto currentString = strings.begin();
+
+                while( currentString != strings.end() )
+                {
+                    output += generatePadding(currentDepth) + (*currentString);
+
+                    currentString++;
+                }
+            }
+            added = true;
+        }
+
 
         if( current->text.find('}') != std::string::npos )
         {
             currentDepth--;
-        }
 
+            if( currentDepth == 0 )
+            {
+                structFlag = false;
+
+                testFlag = false;
+            }
+        }
         if( !added )
         {
             output += generatePadding( currentDepth ) + currentString + "\n";
@@ -237,9 +261,9 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         if( current->type == TEST )
         {
             it.reset();
+
+            testFlag = true;
         }
-
-
 
         current++;
     }
@@ -253,17 +277,6 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     }
 
     writeToFile( outputPath, output);
-}
-
-std::string stripNewLine( std::string stringToStrip )
-{
-    while( stringToStrip.find('\n') != std::string::npos )
-    {
-        auto location = stringToStrip.find('\n');
-
-        stringToStrip.erase( location, 1 );
-    }
-    return stringToStrip;
 }
 
 std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type )
@@ -406,69 +419,11 @@ int questionClosingParen( const std::string& args )
     return index;
 }
 
-std::string generatePadding( int depth )
-{
-    return std::string(depth, '\t');
-}
-
-std::string stripWhiteSpace( const std::string& toStrip )
-{
-    int startSpaces = 0, endSpaces = 0;
-
-    auto cStr = toStrip.c_str();
-
-    for( int index = 0; index < toStrip.length(); index++ )
-    {
-        char currentChar = cStr[index];
-
-        if( currentChar == ' ' )
-        {
-            //still in starting spaces
-            if( startSpaces == endSpaces )
-            {
-                startSpaces++;
-
-                endSpaces++;
-            }
-        }
-        else
-        {
-            endSpaces = index;
-        }
-    }
-
-    return toStrip.substr(startSpaces, endSpaces-startSpaces+1);
-}
-
 std::string questionWhichCheck( const std::string& toCheck, const std::string& baseCase )
 {
     auto length = baseCase.length();
 
     return toCheck.substr(length, 2);
-}
-
-int commaLocation( const std::string& toFind )
-{
-    const char * cStr = toFind.c_str();
-
-    int currentDepth = 0;
-
-    for( int index = 0; index < toFind.length(); index++ )
-    {
-        char current = cStr[index];
-
-        if( current == '(') currentDepth++;
-        else if (current == ')' ) currentDepth--;
-        else if (current == ',' )
-        {
-            if( currentDepth == 0 )
-            {
-                return index;
-            }
-        }
-    }
-
-    return 0;
 }
 
 NTerminal findBaseCase( NTerminal currentCase )
@@ -494,3 +449,4 @@ void writeToFile( const std::string& fileLocation, const std::string& fileConten
 
     outputFile.close();
 }
+
