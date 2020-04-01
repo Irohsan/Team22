@@ -23,6 +23,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
 std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type );
 
+std::string deepstateTypeReturn( Node currentNode, std::string currentString, BinaryIterator * it  );
+
 std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary );
 
 std::string questionTranslation( const TranslationEntry& translation, const std::string& originalString );

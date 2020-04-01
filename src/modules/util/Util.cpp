@@ -90,6 +90,8 @@ std::string whichStructInLine( std::string lineToCheck, std::vector<std::string>
 {
     auto currentSearch = vectorToSearch.begin();
 
+    //TODO: Make this more robust
+
     for( int current = 0; current < vectorToSearch.size(); current++ )
     {
         std::string currentString = (*currentSearch);

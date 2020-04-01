@@ -184,9 +184,15 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         }
         else if( current->type >= DEEPSTATE_INT && current->type <= DEEPSTATE_MALLOC )
         {
-            //TODO: Implement DeepState_Types
+            auto equals = currentString.find('=') + 1;
 
+            std::string line = currentString.substr(0, equals);
 
+            std::string args = currentString.substr(equals, currentString.length() - equals );
+
+            output += line + deepstateTypeReturn( (*current), stripWhiteSpace(args), &it) + '\n';
+
+            added = true;
         }
 
         //get rid of namespace
@@ -211,6 +217,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         {
             output += generatePadding(currentDepth) + currentString + "\n";
 
+            //search for struct name in current structs
             std::string structSearch = whichStructInLine( currentString, names );
 
             if( !structSearch.empty() )
@@ -323,6 +330,84 @@ std::string symbolicLine( const std::string& variableName, BinaryIterator * iter
     //TODO: Support all data types
 
     return outputString + ';';
+}
+
+std::string deepstateTypeReturn( Node currentNode, std::string currentString, BinaryIterator * it )
+{
+    std::string outputStr = " ";
+
+    if( currentNode.type == DEEPSTATE_INT )
+    {
+        outputStr += std::to_string( it->nextInt() );
+    }
+    else if( currentNode.type == DEEPSTATE_UINT8 )
+    {
+        //TODO: Add UInt8 to iterator
+    }
+    else if( currentNode.type == DEEPSTATE_UINT16 )
+    {
+        outputStr += std::to_string( it->nextUInt16() );
+    }
+    else if( currentNode.type == DEEPSTATE_UINT32 )
+    {
+        //TODO: Add UInt32 to iterator
+    }
+    else if( currentNode.type == DEEPSTATE_UINT64 )
+    {
+        outputStr += std::to_string( it->nextUInt64() );
+    }
+    else if( currentNode.type == DEEPSTATE_DOUBLE )
+    {
+        outputStr += std::to_string( it->nextDouble() );
+    }
+    else if( currentNode.type == DEEPSTATE_USHORT )
+    {
+        //TODO: Add UShort to iterator
+    }
+    else if( currentNode.type == DEEPSTATE_UCHAR )
+    {
+        outputStr += std::to_string( it->nextUChar() );
+    }
+    else if( currentNode.type == DEEPSTATE_C_STR )
+    {
+        auto startOfFirst = currentString.find_first_of('(');
+
+        auto end = questionClosingParen( currentString );
+
+        std::string args = currentString.substr(startOfFirst+1, end-startOfFirst-1);
+
+        auto comma = commaLocation(args);
+
+        long firstArg = std::stol(args.substr(0, comma));
+
+        std::string secondArg = args.substr(comma+1, end-comma-1);
+
+        secondArg = stripWhiteSpace(secondArg);
+
+        if(secondArg == "0")
+        {
+            outputStr += "\"" + it->nextString(firstArg, 0 ) + "\"";
+        }
+        else
+        {
+            outputStr += "\"" + it->nextString(firstArg, &secondArg ) + "\"";
+        }
+    }
+    else if( currentNode.type == DEEPSTATE_C_STRUPTO )
+    {
+        //TODO: Implement this
+    }
+    else if( currentNode.type == DEEPSTATE_MALLOC )
+    {
+        //TODO: Implement this
+    }
+
+    else
+    {
+        std::cout<<"UNIMPLEMENTED TYPE: " + currentNode.datatype;
+    }
+
+    return outputStr + ';';
 }
 
 std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary )
