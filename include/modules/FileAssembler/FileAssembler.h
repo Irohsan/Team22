@@ -18,7 +18,7 @@
 #include "BinaryParser.h"
 #include <algorithm>
 
-void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
+std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         char * outputPath, char * translateCFG );
 
 std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type );

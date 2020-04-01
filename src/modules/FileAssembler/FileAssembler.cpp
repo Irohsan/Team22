@@ -17,7 +17,7 @@
 **/
 #include "FileAssembler.h"
 
-void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
+std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         char * outputPath, char * translateCFG )
 {
     std::map<std::string, std::string> varMap;
@@ -150,8 +150,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             }
             else
             {
-                auto output = translate.findTranslationFromNTerminal(current->type ).translateTo +
-                              currentString.substr( translation.nTerminalVal.length() - 1 ) + "\n";
+                stringsToAdd.push_back( translate.findTranslationFromNTerminal(current->type ).translateTo +
+                              currentString.substr( translation.nTerminalVal.length() - 1 ) + "\n" );
             }
 
             added = true;
@@ -262,6 +262,8 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     }
 
     writeToFile( outputPath, output );
+
+    return output;
 }
 
 std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type )
