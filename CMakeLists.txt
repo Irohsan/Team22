@@ -19,8 +19,6 @@ if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Release)
 endif()
 
-set(CMAKE_BUILD_TYPE RelWithDebInfo)
-
 add_library(gentest_binaryparser STATIC src/modules/BinaryParser/BinaryParser.cpp
         src/modules/BinaryParser/BinaryIterator.cpp
   )
@@ -47,25 +45,25 @@ set( GENTEST_MODULES
 target_link_libraries( gentest_translationengine gentest_binaryparser )
 target_link_libraries( gentest_translationengine ${CMAKE_CURRENT_SOURCE_DIR}/lib/libantlr4-runtime.a )
 
-option( BUILD_TESTS OFF "Determines whether to build tests." )
+option( BUILD_TESTS ON "Determines whether to build tests." )
 if(BUILD_TESTS)
+	enable_testing()
 
-  include_directories(lib)
-  add_executable(gentest_test test/TestMain.cpp)
-  add_library( test_lib STATIC
-          test/modules/TestBinaryParser.cpp
-          test/modules/TestFileAssembler.cpp
-          test/modules/TestTranslationEngine.cpp
-          test/modules/TestUtil.cpp
-  )  
-  enable_testing()
+	include_directories(lib)
+	add_executable(gentest_test test/TestMain.cpp)
+	add_library( test_lib STATIC
+		  test/modules/TestBinaryParser.cpp
+		  test/modules/TestFileAssembler.cpp
+		  test/modules/TestTranslationEngine.cpp
+		  test/modules/TestUtil.cpp
+		  )
 
-  target_link_libraries(gentest_test PUBLIC
-                        test_lib
+	target_link_libraries(gentest_test PUBLIC
+						test_lib
 						${GENTEST_MODULES}
-                       )
+					   )
 
-  add_test( NAME test COMMAND gentest_test ) 
+	add_test( NAME test COMMAND gentest_test )
 endif()
 
 target_link_libraries(GenTest 

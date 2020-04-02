@@ -61,7 +61,7 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 
 }
 
-    TEST_CASE( "Test Parser and Iterator with deepstate values", "[binary_parser]" ) {
+TEST_CASE( "Test Parser and Iterator with deepstate values", "[binary_parser]" ) {
     BinaryParser bp;
 
     bp.parse("../test/test_data/test.new");
@@ -84,23 +84,128 @@ TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 
 // FileAssembler Tests
 
-TEST_CASE( "StripWhiteSpace Tests","[file_assembler]")
+TEST_CASE( "Test TranslationDictionary and correct operations", "[file_assembler]")
 {
-    std::string testString1 = "  WhiteSpaces   ";
+    std::string correctFile = "../test/test_data/gtestTranslation.cfg";
 
-    assert( "WhiteSpaces" == stripWhiteSpace( testString1 ) );
+    std::string incorrectFile = "../test/test_data/gtestTranslationMissingVital.cfg";
 
-    std::string testString2 = " W h i t e S p a c e s  ";
+    SECTION( "Test correct loading of a file" )
+    {
+        TranslationDictionary translate;
 
-    assert( "W h i t e S p a c e s" == stripWhiteSpace( testString2 ) );
+        assert( translate.loadFile( correctFile ) );
+    }
 
-    std::string testString3 = "W h i t e S p a c e s  ";
+    SECTION( "Identify incorrect load of a file" )
+    {
+        TranslationDictionary translate;
 
-    assert( "W h i t e S p a c e s" == stripWhiteSpace( testString3 ) );
+        assert( !translate.loadFile( incorrectFile ) );
+    }
 
-    std::string testString4 = "X mySecondEvilPlan;";
+    TranslationDictionary translate;
 
-    assert( "X mySecondEvilPlan;" == stripWhiteSpace( testString4 ) );
+    translate.loadFile(correctFile);
+
+    SECTION( "Test that values can be pulled from the translation dictionary")
+    {
+        auto entry = translate.findTranslationFromNTerminal(ASSUME);
+
+        assert( entry.nTerminal == ASSUME );
+
+        assert( entry.nTerminalVal == "ASSUME");
+
+        //not invalid translation
+        assert( !entry.newEntry );
+
+        //translation has been added
+        assert( entry.translationAdded );
+
+        assert( entry.translateTo == "ASSUME" );
+    }
+
+    SECTION( "Test that invalid translations are identified" )
+    {
+        //invalid translation
+        auto entry = translate.findTranslationFromNTerminal(ASSERT_GT);
+
+        //assert that this entry doesn't exist
+        assert( entry.newEntry );
+    }
+}
+
+TEST_CASE( "Build File Helper Functions", "[file_assembler]")
+{
+    TranslationDictionary td;
+
+    std::string correctCFGFile = "../test/test_data/gtestTranslation.cfg";
+
+    td.loadFile(correctCFGFile);
+
+    BinaryParser bp;
+
+    std::string binaryFile = "../test/test_data/test.fail";
+
+    bp.parse( binaryFile );
+
+    SECTION("symbolicLine tests")
+    {
+        auto it = bp.getIterator();
+
+        std::string types[] = {"int", "char", "long", "double", "float", "short", "unsigned", "bool"};
+
+        for( auto &&type : types )
+        {
+            auto itCopy = it;
+
+            std::string expected = type + " name = ";
+
+            auto output = symbolicLine( "name", &it, type );
+
+            if( type == "int" )
+            {
+                 expected += std::to_string( itCopy.nextInt() );
+            }
+            else if( type == "char" )
+            {
+                expected += std::to_string( itCopy.nextChar() );
+            }
+            else if( type == "long" )
+            {
+                expected += std::to_string( itCopy.nextLong() );
+            }
+            else if( type == "double" )
+            {
+                expected += std::to_string( itCopy.nextDouble() );
+            }
+            else if( type == "float" )
+            {
+                expected += std::to_string( itCopy.nextFloat() );
+            }
+            else if( type == "short" )
+            {
+                expected += std::to_string( itCopy.nextShort() );
+            }
+            else if( type == "unsigned" )
+            {
+                expected += std::to_string( itCopy.nextUInt() );
+            }
+            else if( type == "bool" )
+            {
+                expected += std::to_string( itCopy.nextBool() );
+            }
+
+            expected += ";";
+
+            assert( expected == output );
+
+        }
+    }
+
+
+
+
 }
 
 // TranslationEngine Tests
