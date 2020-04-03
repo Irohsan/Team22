@@ -16,13 +16,14 @@
 
 #include "DataStructures.h"
 #include "BinaryParser.h"
+#include <algorithm>
 
-void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
+std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         char * outputPath, char * translateCFG );
 
-std::string stripNewLine( std::string stringToStrip );
-
 std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type );
+
+std::string deepstateTypeReturn( Node currentNode, std::string currentString, BinaryIterator * it  );
 
 std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary );
 
@@ -30,13 +31,17 @@ std::string questionTranslation( const TranslationEntry& translation, const std:
 
 int questionClosingParen( const std::string& args );
 
-std::string generatePadding( int depth );
+std::vector<std::string> symbolicValHandle( std::string currentString, BinaryIterator * it, std::string& dataType );
 
-std::string stripWhiteSpace( const std::string& toStrip );
+std::vector<std::string> questionHandle(TranslationDictionary * translate, NTerminal current, const std::string& currentString );
+
+std::vector<std::string> deepstateQuestionHandle( TranslationDictionary * translate, const std::string& currentString );
+
+std::vector<std::string> deepstateTypeHandle( const std::string& currentString, BinaryIterator * it, Node * current );
+
+std::vector<std::string> structHandle( const std::string& currentString, StructHandler * handler, Node * current, BinaryIterator * it );
 
 std::string questionWhichCheck( const std::string& toCheck, const std::string& baseCase );
-
-int commaLocation( const std::string& toFind );
 
 NTerminal findBaseCase( NTerminal currentCase );
 

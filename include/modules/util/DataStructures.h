@@ -17,12 +17,7 @@
 #ifndef GENTEST_DATASTRUCTURES_H
 #define GENTEST_DATASTRUCTURES_H
 
-#include <map>
-#include <string>
-#include <vector>
-#include <fstream>
-#include <iostream>
-#include <utility>
+
 #include "Util.h"
 #include "BinaryIterator.h"
 
@@ -98,7 +93,9 @@ const std::map < std::string, NonTerminals > vitalTranslations =
 
 //Contains all translations not vital to run the program, but can still be used.
 const std::map < std::string, NonTerminals > nonVital =
-        {{"NO_INLINE", DEEPSTATE_NOINLINE},
+        {{"DEEPSTATE_NO_INLINE", DEEPSTATE_NOINLINE},
+         {"DEEPSTATE_INLINE", DEEPSTATE_INLINE},
+         {"DEEPSTATE_NO_RETURN", DEEPSTATE_NO_RETURN},
          {"MAIN_FUNC", MAIN_FUNC},
          { "ASSERT_GT", ASSERT_GT },
          { "ASSERT_GE", ASSERT_GE },
@@ -127,31 +124,6 @@ const std::map <std::string, std::string> checkCoversion =
         {"NE", "!="},
         {"EQ", "=="}};
 
-class GoogleTestDictionary
-{
-public:
-
-    // Constants
-    const std::string EXPECT_GT = "EXPECT_GT";
-    const std::string EXPECT_LT = "EXPECT_LT";
-    const std::string EXPECT_GE = "EXPECT_GE";
-    const std::string EXPECT_LE = "EXPECT_LE";
-    const std::string EXPECT_EQ = "EXPECT_EQ";
-    const std::string EXPECT_NE = "EXPECT_NE";
-    const std::string EXPECT_TRUE = "EXPECT_TRUE";
-
-    const std::string GT = ">";
-    const std::string LT = "<";
-    const std::string GE = ">=";
-    const std::string LE = "<=";
-    const std::string EQ = "==";
-    const std::string NE = "!=";
-
-    const std::string GTEST_NOINLINE = "GTEST_NO_INLINE_";
-    const std::string GTEST = "TEST";
-
-    std::string decodeNonTerminal( NTerminal nt );
-};
 
 class Node {
 	
@@ -291,7 +263,8 @@ class StructHandler
         std::string getTypeName( std::string decl );
         StructPacket assemblePacket( Node declNode, AssemblyCode command );
         void lookForSymbolic( std::vector<Node> ast );
-        std::string writeStatementFor( Node declNode, BinaryIterator * it );
+        std::vector<std::string> writeStatementFor( Node declNode, BinaryIterator * it );
+        std::vector<std::string> getStructNames();
 };
     
 #endif //GENTEST_DATASTRUCTURES_H
