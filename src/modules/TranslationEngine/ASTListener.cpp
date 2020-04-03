@@ -13,15 +13,40 @@ return ASTListener::list;
 // Private functions
 void ASTListener::addToList( NTerminal type, std::string text )
 {
-    // Create a new node.
-    Node newNode;
+    if( type == NO_TRANSLATE )
+    {
+        // Create a new node.
+        Node newNode;
 
-    // Set type and text.
-    newNode.type = type;
-    newNode.text = text;
+        // Set type and text.
+        newNode.type = type;
+        newNode.text = text;
 
-    // Push to back of AST.
-    ASTListener::list.push_back( newNode );
+        // Push to back of AST.
+        ASTListener::list.push_back( newNode );
+    }
+    else if( ( type >= ASSERT_GT && type <= DEEPSTATE_CHECK ) 
+               || type == SYMBOLIC )
+    {
+        // Remove node from back as it is a duplicate!
+        if( list.at( list.size() - 1 ).type == NO_TRANSLATE )
+        {
+            list.pop_back();
+        }
+        // Create a new node.
+        Node newNode;
+
+        // Set type and text.
+        newNode.type = type;
+        newNode.text = text;
+
+        // Push to back of AST.
+        ASTListener::list.push_back( newNode );
+    }
+    else
+    {
+        ASTListener::list.at( list.size() - 1 ).type = type;
+    }
 }
 
 
@@ -50,6 +75,10 @@ void ASTListener::enterDsnoreturn(GenTestParser::DsnoreturnContext * ctx)
 }
 
 
+void ASTListener::enterAssrt(GenTestParser::AssrtContext * ctx )
+{
+    this->addToList( ASSERT, ctx->getText() );
+}
 
 void ASTListener::enterAssert_gt(GenTestParser::Assert_gtContext * ctx)
 {
@@ -204,6 +233,21 @@ void ASTListener::enterDs_uchar(GenTestParser::Ds_ucharContext * ctx)
     this->addToList( DEEPSTATE_UCHAR, ctx->getText() );
 }
 
+void ASTListener::enterDs_c_str(GenTestParser::Ds_c_strContext * ctx)
+{
+    this->addToList( DEEPSTATE_C_STR, ctx->getText() );
+}
+
+void ASTListener::enterDs_c_struptolen(GenTestParser::Ds_c_struptolenContext * ctx)
+{
+    this->addToList( DEEPSTATE_C_STRUPTO, ctx->getText() );
+}
+
+void ASTListener::enterDs_malloc(GenTestParser::Ds_mallocContext * ctx)
+{
+    this->addToList( DEEPSTATE_MALLOC, ctx->getText() );
+}
+
 void ASTListener::enterTest(GenTestParser::TestContext * ctx)
 {
     this->addToList( TEST, ctx->getText() );
@@ -224,4 +268,16 @@ void ASTListener::enterInclude(GenTestParser::IncludeContext * ctx)
     this->addToList( INCLUDE, ctx->getText() );
 }
 
+void ASTListener::enterStructure(GenTestParser::StructureContext * ctx)
+{
+    if( this->list.at( list.size() - 1 ).type != TYPEDEF )
+    {
+        this->addToList( STRUCT, ctx->getText() );
+    }
+}
+
+void ASTListener::enterType_definitions(GenTestParser::Type_definitionsContext * ctx)
+{
+    this->addToList( TYPEDEF, ctx->getText() );
+}
 

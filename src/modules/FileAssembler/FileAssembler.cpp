@@ -23,6 +23,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     std::map<std::string, std::string> varMap;
 
     std::string output;
+
     bool structFlag = false;
 
     BinaryParser bp;
@@ -51,33 +52,43 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     auto size = transEngineOutput.size();
 
+    int currentDepth = 0;
+
     for( int currentTranslation = 0; currentTranslation < (int) size; currentTranslation++ )
     {
         //maybe move individual translations to a seperate class/function that the translation is passed into
         //convert testing library to correct library
 
-        std::string currentString = current->text;
+        bool added = false;
 
-        //strip the \n on everything but comments to make it consistent
-        //comments do not have a \n at the end of their statement
-        if( current->type != COMMENT )
+        std::string currentString = stripWhiteSpace( current->text );
+
+        currentString = stripNewLine( currentString );
+
+        //Workaround for TE adding an additional blank line
+        if( currentString.length() == 0 )
         {
-            currentString = stripNewLine( currentString );
+            current++;
+
+            continue;
         }
+
         //translate the deepstate include statement
-        if( current->type == INCLUDE && current->text.find(INCLUDE_STATEMENT) != std::string::npos )
+        if( current->type == INCLUDE && current->text.find( INCLUDE_STATEMENT ) != std::string::npos )
         {
-            output += translate.findTranslationFromNTerminal(INCLUDE).translateTo + '\n';
+            output += generatePadding( currentDepth ) + translate.findTranslationFromNTerminal(INCLUDE).translateTo + '\n';
+
+            added = true;
         }
         else if( current->type == CLOSE_BRK )
         {
             structFlag = false;
-            output += "\n" + current->text + "\n";
+            output += generatePadding( currentDepth ) + "\n" + current->text + "\n";
         }
         else if( current->type == STRUCT || current->type == TYPEDEF )
         {
             structFlag = true;
-            output += current->text;
+            output += generatePadding( currentDepth ) + current->text;
         }
         else if( current->type == SYMBOLIC && structFlag )
         {
@@ -87,14 +98,10 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             std::string variableName = currentString.substr( startOfVar, location - startOfVar );
 
-            output += current->datatype + " " + variableName + ";" + "\n";
+            output += generatePadding( currentDepth ) + current->datatype + " " + variableName + ";" + "\n";
         }
         else if( current->type == SYMBOLIC )
         {
-
-            //Added due to AST functionality
-            currentString = stripWhiteSpace( currentString);
-
             //if multi variable line
             while( currentString.find(',') != std::string::npos )
             {
@@ -104,7 +111,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
                 std::string variableName = currentString.substr( startOfVar, location - startOfVar );
 
-                output += symbolicLine( variableName, &it, current->datatype ) + '\n';
+                output += generatePadding( currentDepth ) + symbolicLine( variableName, &it, current->datatype ) + "\n";
 
                 auto firstPart = currentString.substr( 0, startOfVar );
 
@@ -126,7 +133,9 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             std::string variableName = currentString.substr(startOfVar, endOfVar - startOfVar );
 
-            output += symbolicLine( variableName, &it, current->datatype ) + '\n';
+            added = true;
+
+            output += generatePadding( currentDepth ) + symbolicLine( variableName, &it, current->datatype ) + '\n';
         }
 
         //handle ASSERT/CHECK/ASSUME statements
@@ -137,30 +146,90 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             //If translation doesnt exist, convert to base case with the correct sign
             if( translation.newEntry )
             {
-                output += questionConversion( currentString, current->type, &translate ) + '\n';
+                output += generatePadding( currentDepth ) + questionConversion( currentString, current->type, &translate ) + '\n';
             }
             else
             {
-                output += questionTranslation( translation, currentString ) + '\n';
+                output += generatePadding( currentDepth ) + questionTranslation( translation, currentString ) + '\n';
             }
+
+            added = true;
+        }
+        //handles deepstate_question
+        else if( current->type >= DEEPSTATE_ASSERT && current->type <= DEEPSTATE_CHECK )
+        {
+            auto startOfStatement = currentString.find_first_of('_') + 1;
+
+            auto statement = currentString.substr(startOfStatement, currentString.length() - startOfStatement);
+
+            NTerminal currentType;
+
+            if( statement.find("Assume") != std::string::npos )
+            {
+                currentType = ASSUME;
+            }
+            else if( statement.find("Assert") != std::string::npos )
+            {
+                currentType = ASSERT;
+            }
+            else
+            {
+                currentType = CHECK;
+            }
+
+            auto translation = translate.findTranslationFromNTerminal( currentType );
+
+            output += generatePadding( currentDepth ) + questionTranslation( translation, statement ) + '\n';
+
+            added = true;
         }
 
         //get rid of namespace
         else if( currentString.find("using namespace deepstate;") != std::string::npos )
         {
             currentString = "";
+
+            added = true;
         }
         //if a function has a NO_INLINE
         else if( current->type == FUNC && currentString.find(S_DEEPSTATE_NOINLINE) != std::string::npos )
         {
             //TODO: Gracefully crash if no translation for NO_INLINE in the cfg
-            output += translate.findTranslationFromNTerminal(DEEPSTATE_NOINLINE).translateTo +
+            output += generatePadding( currentDepth ) +
+                    translate.findTranslationFromNTerminal(DEEPSTATE_NOINLINE).translateTo +
                     currentString.substr(S_DEEPSTATE_NOINLINE.length());
+
+            added = true;
         }
-        else
+
+        if( current->text.find('}') != std::string::npos )
         {
-            output+=currentString + "\n";
+            currentDepth--;
         }
+
+        if( !added )
+        {
+            output += generatePadding( currentDepth ) + currentString + "\n";
+        }
+
+        //if at the end of a function, add an additional new line
+        if( currentDepth == 0 && currentString.find('}') != std::string::npos )
+        {
+            output += '\n';
+        }
+
+        if( current->text.find('{') != std::string::npos )
+        {
+            currentDepth++;
+        }
+
+        //reset the iterator for each test
+        if( current->type == TEST )
+        {
+            it.reset();
+        }
+
+
 
         current++;
     }
@@ -170,7 +239,7 @@ void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
     if( mainTrans.translationAdded )
     {
-        output +=  '\n' + mainTrans.translateTo;
+        output += mainTrans.translateTo;
     }
 
     writeToFile( outputPath, output);
@@ -184,11 +253,10 @@ std::string stripNewLine( std::string stringToStrip )
 
         stringToStrip.erase( location, 1 );
     }
-
     return stringToStrip;
 }
 
-std::string symbolicLine( std::string variableName, BinaryIterator * iterator, std::string type )
+std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type )
 {
     std::string outputString;
 
@@ -234,7 +302,6 @@ std::string symbolicLine( std::string variableName, BinaryIterator * iterator, s
     return outputString + ';';
 }
 
-
 std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary )
 {
     NTerminal baseCase = findBaseCase( currentNTerminal );
@@ -258,7 +325,7 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
     }
     else whichCheck = questionWhichCheck( previousText, "ASSERT_" );
 
-    auto checkSign = checkCoversion.at(whichCheck);
+    const auto& checkSign = checkCoversion.at(whichCheck);
 
     auto start = previousText.find_first_of('(');
 
@@ -287,8 +354,7 @@ std::string questionConversion( std::string previousText, NTerminal currentNTerm
     return output;
 }
 
-
-std::string questionTranslation( TranslationEntry translation, std::string originalString )
+std::string questionTranslation( const TranslationEntry& translation, const std::string& originalString )
 {
     std::string translateTo = translation.translateTo;
 
@@ -299,7 +365,7 @@ std::string questionTranslation( TranslationEntry translation, std::string origi
     return translateTo + values;
 }
 
-int questionClosingParen( std::string args )
+int questionClosingParen( const std::string& args )
 {
     auto cstr = args.c_str();
 
@@ -330,7 +396,12 @@ int questionClosingParen( std::string args )
     return index;
 }
 
-std::string stripWhiteSpace( std::string toStrip )
+std::string generatePadding( int depth )
+{
+    return std::string(depth, '\t');
+}
+
+std::string stripWhiteSpace( const std::string& toStrip )
 {
     int startSpaces = 0, endSpaces = 0;
 
@@ -359,14 +430,14 @@ std::string stripWhiteSpace( std::string toStrip )
     return toStrip.substr(startSpaces, endSpaces-startSpaces+1);
 }
 
-std::string questionWhichCheck( std::string toCheck, std::string baseCase )
+std::string questionWhichCheck( const std::string& toCheck, const std::string& baseCase )
 {
     auto length = baseCase.length();
 
     return toCheck.substr(length, 2);
 }
 
-int commaLocation( std::string toFind )
+int commaLocation( const std::string& toFind )
 {
     const char * cStr = toFind.c_str();
 
@@ -403,7 +474,7 @@ NTerminal findBaseCase( NTerminal currentCase )
     else return CHECK;
 }
 
-void writeToFile( std::string fileLocation, std::string fileContents )
+void writeToFile( const std::string& fileLocation, const std::string& fileContents )
 {
     std::ofstream outputFile;
 

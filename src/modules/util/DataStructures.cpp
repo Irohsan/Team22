@@ -157,355 +157,684 @@ bool TranslationDictionary::assignTranslation(std::string translationString, NTe
     return added;
 }
 
-// Structure Support Code
+/********************************
+* Structure Support Code
+*********************************/
 
-TypedefEntry::TypedefEntry(){ }
 
 
-std::string TypedefEntry::getName()
+/* Function: getStructName - Returns the name of
+ * the struct held within a header declaration.
+ *
+ * Inputs:
+ *
+ *   std::string header - The header of the struct.
+ *
+ * Outputs: 
+ *
+ *   std::string header - The name of the struct.
+ *
+ * Precondition: A string containing a struct header provided.
+ * Postcondition: Name of the struct parsed from the string and
+ * returned. 
+ *
+ *
+ */
+std::string StructHandler::getStructName( std::string header )
 {
-    return this->name;
+    // Trim whitespace from both sides of struct declaration and {
+    header = header.substr( header.find_first_not_of( " " ) , header.size() - 1 );
+    header = header.substr( 0, header.find( "{" ) );
+
+    // Trim any whitespace between the former { and the name of the struct.
+    header = header.substr( 0, header.find_last_not_of( " " ) + 1 );
+
+    // Eliminate struct keyword.
+    header = header.substr( header.find_first_of( " " ) + 1, header.size() - 1 );
+
+    return header;
 }
 
-void TypedefEntry::setName( std::string name )
+
+/* Function: getVarName - Takes in a string
+ * representing a symbolic declarartion. Finds
+ * the variable name and returns to user.
+ *
+ * Inputs:
+ *
+ *   std::string decl - The symbolic declaration to parse.
+ *
+ * Outputs: 
+ *
+ *   std::string decl - The name of the variable in the
+ *   symbolic declaration.
+ *
+ * Precondition: A string symbolic declaration provided.
+ * Postcondition: Name of the variable in the string returned.
+ *
+ * Notes: This function only works for single variable declarations.
+ * It will not work for Symbolic<int> a, b, c, d;
+ */
+std::string StructHandler::getVarName( std::string decl )
+{
+    // Trim whitespace from both sides of declaration and {
+    decl = decl.substr( decl.find_first_not_of( " " ) , decl.size() - 1 );
+    decl = decl.substr( 0, decl.find( ";" ) );
+
+    // Trim any whitespace between the former ; and the name of the variable.
+    decl = decl.substr( 0, decl.find_last_not_of( " " ) + 1 );
+
+    // Eliminate Symbolic keyword.
+    decl = decl.substr( decl.find_last_of( " " ) + 1, decl.size() );
+
+    return decl;
+}
+
+std::string StructHandler::getTypeName( std::string decl )
+{
+    // Trim whitespace from both sides of declaration and {
+    decl = decl.substr( decl.find_first_not_of( " " ) , decl.size() - 1 );
+    decl = decl.substr( 0, decl.find( ";" ) );
+
+    // Trim any whitespace between the former ; and the name of the variable.
+    decl = decl.substr( 0, decl.find_last_not_of( " " ) + 1 );
+
+    // Eliminate Symbolic keyword.
+    decl = decl.substr( 0, decl.find_last_of( " " ) );
+
+    return decl;
+}
+
+
+
+/* Function: structInList - Takes in a name
+ * of a datatype and determines whether it references
+ * a struct presently in the list with a symbolic parameter. 
+ *
+ * Inputs:
+ *
+ *   std::string name - The name of the declaration datatype.
+ *
+ * Outputs: 
+ *
+ *   Bool true/false - True if present, false otherwise.
+ *
+ */
+bool StructHandler::structInList( std::string name )
+{
+    for( int index = 0; index < (int) this->structList.size(); index++ )
+    {
+        if( name.compare( structList.at( index ).getName() ) == 0 )
+        {
+            return true;
+        }
+    }
+
+    return false;
+} 
+
+
+/* Function: assemblePacket - Takes a node and
+ * an Assembly Code; packages StructPacket based
+ * on code provided.
+ *
+ * Inputs:
+ *
+ *   Node declNode - The current node in the struct.
+ * 
+ *   AssemblyCode command - The operation to perform with the node.
+ * 
+ * Outputs: 
+ *
+ *   StructPacket packet - The packet of the currently held Struct. 
+ *
+ */
+StructPacket StructHandler::assemblePacket( Node declNode, AssemblyCode command )
+{
+    // Declare local variables.
+    static StructPacket packet;
+    
+    if( command == CLEAR_CURRENT )
+    {
+        // Add packet to the list.
+        this->structList.push_back( packet );
+
+        // Create new packet.
+        StructPacket newPacket, tempPacket;
+        tempPacket = packet;
+        packet = newPacket;
+
+        return tempPacket;
+    }
+    else if( command == ADD_VAR )
+    {
+        // Create new variable packet.
+        VariablePacket newVar;
+
+        // Configure newVar
+        newVar.setVarName( getVarName( declNode.text ) );
+        newVar.setDatatype( declNode.datatype );
+
+        // Add to struct.
+        packet.addParam( newVar );
+
+        return packet;
+    }
+    else
+    {
+        // Configure packet.
+        packet.setName( getStructName( declNode.text ) );
+
+        return packet;
+    }
+}
+
+
+/* Function: lookForSymbolic - Takes in an ast structure,
+ * representing the structures in a unit testing file.
+ * Scans the file for any structures and stores appropriate
+ * information about it if it contains a symbolic declarartion.
+ *
+ * Inputs:
+ *
+ *   std::vector<Node> ast - The ast containing the file structure.
+ *
+ * Outputs: 
+ *
+ *   Null
+ *
+ * Precondition: A populated AST provided to handler.
+ * Postcondition: All information about relevant structs 
+ * stored in object.
+ *
+ */
+void StructHandler::lookForSymbolic( std::vector<Node> ast )
+{
+    // Declare local variables.
+    bool structFlag = false;
+
+    for( int index = 0; index < (int) ast.size(); index++ )
+    {
+        if( ast.at( index ).type == STRUCT )
+        { 
+            // Set struct flag.
+            structFlag = true;
+
+            // Place relevant info in packet.
+            assemblePacket( ast.at( index ), ASSEMBLE );
+        }
+        else if( structFlag && ( ast.at( index ).type == SYMBOLIC ||
+                                 structInList( getTypeName( ast.at( index ).text ) ) ) )         
+        {
+            assemblePacket( ast.at( index ), ADD_VAR );
+        }
+        else if( structFlag && ast.at( index ).text.find( "};" ) 
+                 != std::string::npos )
+        {
+            assemblePacket( ast.at( index ), CLEAR_CURRENT );
+
+            // Reset struct flag.
+            structFlag = false;
+        }     
+    }
+}
+
+
+StructPacket StructHandler::getPacket( std::string name )
+{
+    for( int index = 0; index < (int) this->structList.size(); index++ )
+    {
+        if( structList.at( index ).getName().compare( name ) == 0 )
+        {
+            return structList.at( index );
+        }
+    }
+}
+
+
+std::string StructHandler::writeStatementFor( Node declNode, BinaryIterator * it )
+{
+    // Declare local variables.
+    std::string outputString = "";
+
+    if( this->structInList( this->getTypeName( declNode.text ) ) )
+    {
+        // Fetch packet for declNode.
+        StructPacket packet = getPacket( this->getTypeName( declNode.text ) );
+        
+        // Assemble statement.
+        std::vector<std::string> statements = assembleStatement( packet, it  );
+
+        // Write statements.
+        for( int index = 0; index < (int) statements.size(); index++ )
+        {
+            outputString += this->getVarName( declNode.text ) + statements.at( index ) + "\n";   
+        }
+    }
+
+    return outputString;
+}
+
+
+std::vector<std::string> StructHandler::assembleStatement( StructPacket packet, BinaryIterator * it  )
+{
+    // Declare local variables.
+    std::vector<std::string> returnStatements;
+    std::string temp;
+    SymbolicPacket symbolicData;
+    
+    for( int index = 0; index < packet.length(); index++ )
+    {
+        std::string datatype = packet.getVarAt( index ).getDatatype();
+
+        if( this->structInList( datatype ) )
+        {
+            // Get packet associated with sub-variable.
+            StructPacket packet = getPacket( datatype );
+            
+            // Get statements for that subpacket.
+            std::vector<std::string> statements = assembleStatement( packet, it );
+        
+            for( int sIndex = 0; sIndex < (int) statements.size(); sIndex++ )
+            {
+                returnStatements.push_back( "." + packet.getVarAt( index ).getName() + statements.at( sIndex ) );
+            }                                   
+        }
+
+        else
+        {
+
+            // Fetch symbolic value.
+            symbolicData.fetchSymbolic( datatype, it );
+
+            // Obtain value from packet.
+            auto packetData = symbolicData.getInt() * ( datatype.compare( "int" ) == 0 ) +
+                              symbolicData.getUInt8() * ( datatype.compare( "uint8_t" ) == 0 ) +
+                              symbolicData.getUInt16() * ( datatype.compare( "uint16_t" ) == 0 ) +
+                              symbolicData.getUInt32() * ( datatype.compare( "uint32_t" ) == 0 ) +
+                              symbolicData.getUInt64() * ( datatype.compare( "uint64_t" ) == 0 ) +
+                              symbolicData.getShort() * ( datatype.compare( "short" ) == 0 ) +
+                              symbolicData.getLong() * ( datatype.compare( "long" ) == 0 ) +
+                              symbolicData.getInt() * ( datatype.compare( "unsigned" ) == 0 ) +
+                              symbolicData.getChar() * ( datatype.compare( "char" ) == 0 );
+                              //TODO Implement string functionality.
+
+            returnStatements.push_back( "." + packet.getVarAt( index ).getName() + " = " + 
+                                        std::to_string( packetData ) + ";" );
+
+        }
+    }
+
+    return returnStatements;
+}
+
+
+/********************************
+* Symbolic Packet Code
+*********************************/
+
+SymbolicPacket::SymbolicPacket()
+{
+    this->uint8 = 0;
+    this->uint16 = 0;
+    this->uint32 = 0;
+    this->uint64 = 0;
+    this->integer = 0;
+    this->flt = 0;
+    this->dbl = 0;
+    this->shrt = 0;
+    this->lng = 0;
+    this->character = 0;
+    this->boolean = -1;
+    this->string = ""; 
+}
+
+
+uint8_t SymbolicPacket::getUInt8()
+{
+    return this->uint8;
+}
+
+
+uint16_t SymbolicPacket::getUInt16()
+{
+    return this->uint16;
+}
+
+uint32_t SymbolicPacket::getUInt32()
+{
+    return this->uint32;
+}
+
+uint64_t SymbolicPacket::getUInt64()
+{
+    return this->uint64;
+}
+
+int SymbolicPacket::getInt()
+{
+    return this->integer;
+}
+
+float SymbolicPacket::getFloat()
+{
+    return this->flt;
+}
+
+
+double SymbolicPacket::getDouble()
+{
+    return this->dbl;
+}
+
+short SymbolicPacket::getShort()
+{
+    return this->shrt;
+}
+
+long SymbolicPacket::getLong()
+{
+    return this->lng;
+}
+
+char SymbolicPacket::getChar()
+{
+    return this->character;
+}
+
+bool SymbolicPacket::getBool()
+{
+    return this->boolean;
+}
+
+std::string SymbolicPacket::getString()
+{
+    return this->string;
+}
+
+void SymbolicPacket::fetchSymbolic( std::string datatype, BinaryIterator * it )
+{
+    
+    
+    if( datatype.compare( "int" ) == 0 )
+    {
+        this->integer = it->nextInt();
+    }
+    else if( datatype.compare( "uint8_t" ) == 0 )
+    {
+        this->uint8 = (uint8_t) it->nextInt();
+    }
+    else if( datatype.compare( "uint16_t" ) == 0 )
+    {
+        this->uint16 = (uint16_t) it->nextInt();
+    }
+    else if( datatype.compare( "uint32_t" ) == 0 )
+    {
+        this->uint32 = (uint8_t) it->nextInt();
+    }
+    else if( datatype.compare( "uint64_t" ) == 0 )
+    {
+        this->uint64 = (uint8_t) it->nextInt();
+    }
+    else if( datatype.compare( "short" ) == 0 )
+    {
+        this->shrt = it->nextShort();
+    }
+    else if( datatype.compare( "long" ) == 0 )
+    {
+        this->lng = it->nextLong();
+    }
+    else if( datatype.compare( "double" ) == 0 )
+    {
+        this->dbl = it->nextDouble();
+    }
+    else if( datatype.compare( "float" ) == 0 )
+    {
+        this->flt = it->nextFloat();
+    }
+    else if( datatype.compare( "char" ) == 0 )
+    {
+        this->character = it->nextChar();
+    }
+    else if( datatype.compare( "unsigned" ) == 0 )
+    {
+        this->integer = it->nextUInt();
+    }
+    else if( datatype.compare( "bool" ) == 0 )
+    {
+        this->boolean = it->nextBool();
+    }
+}
+
+
+/********************************
+* Variable Packet Code
+*********************************/
+
+
+
+/* Function: setVarName - Takes in a name for the variable
+ * object and saves it in the packet. 
+ *
+ * Inputs:
+ *
+ *   std::string name - The name of the variable.
+ *
+ * Outputs: 
+ *
+ *   Null
+ *
+ * Precondition: A string name provided for the packet.
+ * Postcondition: The string name provided is stored in the
+ *                VariablePacket object for later reference.
+ *
+ *
+ */
+void VariablePacket::setVarName( std::string name )
 {
     this->name = name;
 }
 
-void TypedefEntry::addParam( ParameterPacket param )
+
+/* Function: setDatatype - Takes in a datatype for the variable
+ * object and saves it in the packet. 
+ *
+ * Inputs:
+ *
+ *   std::string datatype - The datatype of the variable.
+ *
+ * Outputs: 
+ *
+ *   Null
+ *
+ * Precondition: A string datatype provided for the packet.
+ * Postcondition: The string datatype provided is stored in the
+ *                VariablePacket object for later reference.
+ *
+ *
+ */
+void VariablePacket::setDatatype( std::string datatype )
 {
-    this->paramList.push_back( param );
+    this->datatype = datatype;
 }
 
-std::vector<ParameterPacket> TypedefEntry::getParamList()
+
+/* Function: getName - Returns the name of the
+ * variable held within the VariablePacket object.
+ *
+ * Inputs:
+ *
+ *   null
+ *
+ * Outputs: 
+ *
+ *   std::string name - The name of the variable.
+ *
+ * Precondition: N/A
+ * Postcondition: The string name of the variable is 
+ * returned or empty string if none has been provided.
+ *
+ *
+ */
+std::string VariablePacket::getName()
 {
-    return this->paramList;
+    return this->name;
 }
 
 
-bool StructHandler::inList( std::vector<TypedefEntry> vector, std::string name )
+/* Function: getDatatype - Returns the datatype
+ * of the variable.
+ *
+ * Inputs:
+ *
+ *   Null
+ *
+ * Outputs: 
+ *
+ *   std::string datatype - The datatype of the variable.
+ *
+ * Precondition: N/A
+ * Postcondition: The datatype of the variable returned
+ * or empty string if none has been provided.
+ *
+ *
+ */
+std::string VariablePacket::getDatatype()
 {
-    for( int i = 0; i < (int) vector.size(); i++ )
+    return this->datatype;
+}
+
+
+
+/********************************
+* Structure Packet Code
+*********************************/
+
+
+
+
+/* Function: setName - Takes in a name for the struct
+ * object and saves it in the packet. 
+ *
+ * Inputs:
+ *
+ *   std::string name - The name of the struct.
+ *
+ * Outputs: 
+ *
+ *   Null
+ *
+ * Precondition: A string name provided for the packet.
+ * Postcondition: The string name provided is stored in the
+ *                StructPacket object for later reference.
+ *
+ *
+ */
+void StructPacket::setName( std::string name )
+{
+    this->name = name;
+}
+
+
+/* Function: addParam - Takes in a VariablePacket
+ * object representing a new symbolic variable
+ * found in the structure. 
+ *
+ * Inputs:
+ *
+ *   VariablePacket packet - The packet containing
+ *   all relevant info of the variable.
+ *
+ * Outputs: 
+ *
+ *   Null
+ *
+ * Precondition: A fully configured VariablePacket provided.
+ * Postcondition: The VariablePacket provided is stored in the
+ *                StructPacket object below any others 
+ *                for later reference.
+ *
+ *
+ */
+void StructPacket::addParam( VariablePacket &packet )
+{
+    this->varList.push_back( packet );
+}
+
+
+/* Function: getName - Returns the name of 
+ * the struct.
+ *
+ * Inputs:
+ *
+ *   Null
+ *
+ * Outputs: 
+ *
+ *   std::string name - The name of the struct object 
+ *   stored in the packet.
+ *
+ * Precondition: N/A
+ * Postcondition: The string name held within the object
+ *                returned or empty string if none present.
+ *
+ *
+ */
+std::string StructPacket::getName()
+{
+    return this->name;
+}
+
+
+/* Function: getVarAt - Takes in the index of the variable
+ * to retrieve from the struct (variables are recorded in
+ * linear order) and returns an object to the VariablePacket associated
+ * with this variable. 
+ *
+ * Inputs:
+ *
+ *   int index - The index of the variable to retrieve.
+ *
+ * Outputs: 
+ *
+ *   VariablePacket * variable - The the variable
+ *   at the position index in the struct.
+ *
+ * Precondition: Index is within the struct bounds.
+ * Postcondition: The object of the requested variable
+ * is returned or NULL.
+ *
+ *
+ */
+VariablePacket StructPacket::getVarAt( int index )
+{
+    if( index < (int) this->varList.size() )
     {
-        if( name.find( vector.at( i ).getName() ) != std::string::npos )
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-bool StructHandler::entryInList( std::vector<TypedefEntry> vector, std::string name )
-{
-    for( int i = 0; i < (int) vector.size(); i++ )
-    {
-        if( vector.at( i ).getName() == name )
-        {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-TypedefEntry StructHandler::getAssocEntry( std::string text )
-{
-    for( int i = 0; i < (int) entryList.size(); i++ )
-    {
-        if( text.find( entryList.at( i ).getName() ) != std::string::npos )
-        {
-            return entryList.at( i );
-        }
+        return this->varList.at( index );
     }
 }
 
-StructHandler::StructHandler( std::vector<Node> ast )
+
+/* Function: length - Returns the length of
+ * the variable list held within the struct.
+ *
+ * Inputs:
+ *
+ *   Null
+ *
+ * Outputs: 
+ *
+ *   size_t varList.size() - The size of the internal
+ *   varList vector.
+ *
+ * Precondition: N/A
+ * Postcondition: Size of the vector returned.
+ *
+ *
+ */
+size_t StructPacket::length()
 {
-    this->ast = ast;
+    return varList.size();
 }
 
-void StructHandler::lookForSymbolic( int seed )
-{
-   // Declare local variables.
-   bool flag = false;
-   Node currentNode;
-   std::string name, paramName;
-   
-   // Iterate over each node in the AST looking of TYPEDEF/STRUCT
-   for( int i = 0; i < (int) this->ast.size(); i++ )
-   {
-       // Get current node.
-       currentNode = this->ast.at( i );
-
-       if( currentNode.type == STRUCT || currentNode.type == TYPEDEF )
-       {
-           // Assign name
-           name = currentNode.text.substr( currentNode.text.find_first_not_of( " \n\r\t\f\v" ), currentNode.text.find_last_not_of( " \n\r\t\f\v" ) );
-           name = name.substr( name.find( "struct" ) + 6, name.length() - 2 );
-           name = name.substr( name.find_first_not_of( " \n\r\t\f\v" ), name.length() );
-
-           // Set flag
-           flag = true;
-       }
-
-       // Exit case.
-       if( flag && currentNode.type == CLOSE_BRK )
-       {
-           flag = false;
-       }
-
-       if( flag && ( currentNode.type == SYMBOLIC || ( inList( this->entryList, currentNode.text ) ) ) )
-       {
-      
-           // Analyze pointer information.
-           bool pointer = currentNode.text.find( "*" ) != std::string::npos;
-    
-           // Get param name.
-           paramName = currentNode.text.substr( currentNode.text.find_first_not_of( " " ), currentNode.text.find( ";" ) );
-           paramName = paramName.substr( paramName.find( " " ) + 1, paramName.length() );
-
-           // Create parameter packet.
-           ParameterPacket newParam;
-
-           // Set values.
-           newParam.name = paramName;
-           newParam.type = currentNode.datatype;
-           newParam.pointerFlag = pointer;
-           newParam.prevObj.setName( "NULL" );
-
-           if( inList( this->entryList, currentNode.text ) )
-           {
-               newParam.prevObj = getAssocEntry( currentNode.text );
-           }
-
-           this->paramList.push_back( newParam );
-        
-           // Check for entry already added.
-           if( this->entryList.size() > 0 && 
-               entryInList( this->entryList, name ) )
-           {
-               this->entryList.at( this->entryList.size() - 1 ).addParam( newParam );
-           }
-           else if( !entryInList( this->entryList, name ) )
-           {
-               // Create new entry.
-               TypedefEntry newEntry;
-
-               // Initialize entry info.
-               newEntry.setName( name );
-               newEntry.addParam( newParam );
-            
-               // Add to entryList.
-               this->entryList.push_back( newEntry );  
-           }
-       }   
-   }
-}
-
-std::vector<Node> StructHandler::getAST()
-{
-    return this->ast;
-}
-
-void StructHandler::createAssoc()
-{
-   // Declare local variables.
-   bool flag = false;
-   Node currentNode;
-   std::string name, paramName;
-
-   // Run base assoc.
-   this->lookForSymbolic( 0 );
-}
-
-std::vector<std::string> StructHandler::getLine( TypedefEntry entry, int index  )
-{   
-    // Declare local variables.
-    std::vector<std::string> lines;
-    std::vector<std::string> base;
-    std::string temp;
-    TypedefEntry currentEntry = entry.getParamList().at( index ).prevObj;
-    TypedefEntry nextEntry = currentEntry;
-
-    // Configure base
-    base.push_back( getStatement( entry, index ) );
-
-    for( int i = 0; i < (int) currentEntry.getParamList().size(); i++ )
-    { 
-        while( nextEntry.getName() != "NULL" )
-        {
-            for( int j = 0; j < (int) base.size(); j++ )
-            {
-                lines.push_back( base.at( j ) + getStatement( nextEntry, i ) );
-            }
-
-            base = lines;
-            lines.clear();
-            nextEntry = nextEntry.getParamList().at( i ).prevObj;
-        }   
-    }
-    
-    return base;   
-}
-
-std::vector<std::vector<std::string>> StructHandler::getText( TypedefEntry entry )
-{
-    // Declare local variables.
-    std::vector<std::vector<std::string>> list;
-
-    // Iterate over each parameter.
-    for( int index = 0; index < (int) entry.getParamList().size(); index++ )
-    {
-        list.push_back( getLine( entry, index ) );
-    }
-    
-    return list;
-}
-
-
-
-std::string StructHandler::getName( std::string text )
-{
-    text = text.substr( text.find_first_not_of( " \n\r\t\f\v" ),
-                        text.find_last_not_of( " \n\r\t\f\v" ) );
-
-    if( text.find( "*" ) != std::string::npos )
-    {
-        text = text.substr( text.find( "*" ) + 1, text.length() );
-    }
-
-    text = text.substr( text.find(" ") + 1, text.length() );
-    text = text.substr( 0, text.find( ";" ) );
-
-    return text;
-}
-
-std::string StructHandler::getType( std::string var )
-{
-    for( int i = 0; i < (int) this->paramList.size(); i++ )
-    {
-        if( var.find( this->paramList.at( i ).name ) != std::string::npos )
-        {
-            return this->paramList.at( i ).type;
-        }
-    }
-
-    return "";
-}
-
-void StructHandler::populateAssoc( BinaryIterator * iter )
-{
-    // Declare local variables.
-    std::vector<Node> nodeList;
-    std::string datatype;
-    std::string searchVar;
-    std::vector<Node> tempAST = this->ast;
-   
-    // Iterate over AST.
-    for( int i = 0; i < (int) this->ast.size(); i++ )
-    {
-        if( this->ast.at( i ).type == STATEMENT 
-            && inList( this->entryList, this->ast.at( i ).text ) )
-        {
-            std::vector<std::vector<std::string>> textList = getText( getAssocEntry( this->ast.at( i ).text ) );
-            std::string name = getName( this->ast.at( i ).text );
-            std::string delim = ".";
-            
-            if( this->ast.at( i ).text.find( "*" ) != std::string::npos )
-            {
-                delim = "->";
-            }
-
-            for( int string = 0; string < (int) textList.size(); string++ )
-            {
-                for( int line = 0; line < (int) textList.at( string ).size(); line++ )
-                {
-                    // Create a new Node.
-                    Node newNode;
-
-                    // Assign values.
-                    newNode.type = STATEMENT;
-                    newNode.text += name + delim + textList.at( string ).at( line ) + " = ";
-
-                    // Get last variable name to find type.
-                    searchVar = newNode.text.substr( newNode.text.find_last_of( "." ) + 1, newNode.text.find_last_not_of( " " ) );
-                    searchVar = searchVar.substr( searchVar.find_last_of( "->" ) + 1, searchVar.length() );
-                    searchVar = searchVar.substr( 0, searchVar.find_last_of( " " ) - 1 );
-                    newNode.datatype = getType( searchVar );
-                    
-                    if( newNode.datatype == "int" )
-                    {
-                        newNode.text += std::to_string( iter->nextInt() );
-                    }
-                    else if( newNode.datatype == "char" )
-                    {
-                        newNode.text += std::to_string( iter->nextChar() );
-                    }
-                    else if( newNode.datatype == "long" )
-                    {
-                        newNode.text += std::to_string( iter->nextLong() );
-                    }
-                    else if( newNode.datatype == "double" )
-                    {
-                        newNode.text += std::to_string( iter->nextDouble() );
-                    }
-                    else if( newNode.datatype == "float" )
-                    {
-                        newNode.text += std::to_string( iter->nextFloat() );
-                    }
-                    else if( newNode.datatype == "short" )
-                    {
-                        newNode.text += std::to_string( iter->nextShort() );
-                    }
-                    else if( newNode.datatype == "unsigned" )
-                    {
-                        newNode.text += std::to_string( iter->nextUInt() );
-                    }
-                    else if( newNode.datatype == "bool" )
-                    {
-                        newNode.text += std::to_string( iter->nextBool() );
-                    }
-                    else
-                    {
-                        std::cout<<"UNIMPLEMENTED type: "<<newNode.datatype<<std::endl;
-                    }
-
-                    newNode.text += ";";
-                    
-                    // Add node into tempAST
-                    tempAST.insert( (tempAST.begin() + i + 1), newNode );
-                }
-            }
-        }
-    }
-
-    // Set ast.
-    this->ast = tempAST;
-}
-
-std::string StructHandler::getStatement( TypedefEntry entry, int index )
-{
-    // Declare local variables.
-    ParameterPacket param = entry.getParamList().at( index );
-
-    if( param.prevObj.getName() == "NULL" )
-    {
-        return param.name;
-    }
-    else if( param.pointerFlag )
-    {
-        return param.name + "->";
-    }
-    else
-    {
-        return param.name + ".";
-    } 
-}
-
-
-std::vector<TypedefEntry> StructHandler::getEntryList()
-{
-    return this->entryList;
-}
 

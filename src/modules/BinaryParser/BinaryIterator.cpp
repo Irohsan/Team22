@@ -119,3 +119,8 @@ std::string BinaryIterator::nextString( std::size_t len, const std::string *allo
 
     return "";
 }
+
+void BinaryIterator::reset()
+{
+    index = 0;
+}

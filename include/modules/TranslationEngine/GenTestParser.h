@@ -18,28 +18,31 @@ public:
     T__20 = 21, T__21 = 22, T__22 = 23, T__23 = 24, T__24 = 25, T__25 = 26, 
     T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
     T__32 = 33, T__33 = 34, T__34 = 35, T__35 = 36, T__36 = 37, T__37 = 38, 
-    T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, T__42 = 43, ASSUME_C = 44, 
-    ASSUME = 45, ASSRT = 46, ASSRT_C = 47, DEEPSTATE = 48, CHK = 49, CHK_C = 50, 
-    GREATER = 51, LESS = 52, GREATER_EQ = 53, LESS_EQ = 54, EQ = 55, NOT_E = 56, 
-    TEST = 57, DEEPSTATE_INLINE = 58, DEEPSTATE_NOINLINE = 59, DEEPSTATE_NORETURN = 60, 
-    SYMBOLIC = 61, SYMBOLIC_C = 62, FORALL = 63, INT = 64, UINT8 = 65, UINT16 = 66, 
-    UINT32 = 67, UINT64 = 68, SHORT = 69, LONG = 70, DOUBLE = 71, FLOAT = 72, 
-    CHAR = 73, UNSIGNED = 74, BOOL = 75, IDENTIFIER = 76, NUM = 77, WS = 78, 
-    NEWLINE = 79, TAB = 80, SEMICOLON = 81, TRUE = 82, FALSE = 83
+    T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, T__42 = 43, T__43 = 44, 
+    T__44 = 45, T__45 = 46, T__46 = 47, T__47 = 48, T__48 = 49, ASSUME_C = 50, 
+    ASSUME = 51, ASSRT = 52, ASSRT_C = 53, DEEPSTATE = 54, CHK = 55, CHK_C = 56, 
+    GREATER = 57, LESS = 58, GREATER_EQ = 59, LESS_EQ = 60, EQ = 61, NOT_E = 62, 
+    TEST = 63, DEEPSTATE_INLINE = 64, DEEPSTATE_NOINLINE = 65, DEEPSTATE_NORETURN = 66, 
+    SYMBOLIC = 67, SYMBOLIC_C = 68, FORALL = 69, INT = 70, UINT8 = 71, UINT16 = 72, 
+    UINT32 = 73, UINT64 = 74, SHORT = 75, LONG = 76, DOUBLE = 77, FLOAT = 78, 
+    CHAR = 79, UNSIGNED = 80, BOOL = 81, IDENTIFIER = 82, NUM = 83, WS = 84, 
+    NEWLINE = 85, TAB = 86, SEMICOLON = 87, TRUE = 88, FALSE = 89
   };
 
   enum {
     RuleFile = 0, RuleLine = 1, RuleType = 2, RuleTarget = 3, RuleInclude = 4, 
-    RuleNoinline = 5, RuleDsinline = 6, RuleDsnoreturn = 7, RuleAssume_gt = 8, 
-    RuleAssume_lt = 9, RuleAssume_ge = 10, RuleAssume_le = 11, RuleAssume_eq = 12, 
-    RuleAssume_ne = 13, RuleAssrt = 14, RuleAssert_gt = 15, RuleAssert_lt = 16, 
-    RuleAssert_ge = 17, RuleAssert_le = 18, RuleAssert_eq = 19, RuleAssert_ne = 20, 
-    RuleCheck_gt = 21, RuleCheck_lt = 22, RuleCheck_ge = 23, RuleCheck_le = 24, 
-    RuleCheck_eq = 25, RuleCheck_ne = 26, RuleDs_assume = 27, RuleDs_assert = 28, 
-    RuleDs_check = 29, RuleDs_int = 30, RuleDs_uint8 = 31, RuleDs_uint16 = 32, 
-    RuleDs_uint32 = 33, RuleDs_uint64 = 34, RuleDs_float = 35, RuleDs_double = 36, 
-    RuleDs_ushort = 37, RuleDs_uchar = 38, RuleTest = 39, RuleSymbolic = 40, 
-    RuleSymbolic_underscore = 41, RuleSymbolic_bracket = 42, RuleText = 43
+    RuleType_definitions = 5, RuleStructure = 6, RuleNoinline = 7, RuleDsinline = 8, 
+    RuleDsnoreturn = 9, RuleAssume_gt = 10, RuleAssume_lt = 11, RuleAssume_ge = 12, 
+    RuleAssume_le = 13, RuleAssume_eq = 14, RuleAssume_ne = 15, RuleAssrt = 16, 
+    RuleAssert_gt = 17, RuleAssert_lt = 18, RuleAssert_ge = 19, RuleAssert_le = 20, 
+    RuleAssert_eq = 21, RuleAssert_ne = 22, RuleCheck_gt = 23, RuleCheck_lt = 24, 
+    RuleCheck_ge = 25, RuleCheck_le = 26, RuleCheck_eq = 27, RuleCheck_ne = 28, 
+    RuleDs_assume = 29, RuleDs_assert = 30, RuleDs_check = 31, RuleDs_int = 32, 
+    RuleDs_uint8 = 33, RuleDs_uint16 = 34, RuleDs_uint32 = 35, RuleDs_uint64 = 36, 
+    RuleDs_float = 37, RuleDs_double = 38, RuleDs_ushort = 39, RuleDs_uchar = 40, 
+    RuleDs_char = 41, RuleDs_malloc = 42, RuleDs_c_str = 43, RuleDs_c_struptolen = 44, 
+    RuleTest = 45, RuleSymbolic = 46, RuleSymbolic_underscore = 47, RuleSymbolic_bracket = 48, 
+    RuleText = 49
   };
 
   GenTestParser(antlr4::TokenStream *input);
@@ -57,6 +60,8 @@ public:
   class TypeContext;
   class TargetContext;
   class IncludeContext;
+  class Type_definitionsContext;
+  class StructureContext;
   class NoinlineContext;
   class DsinlineContext;
   class DsnoreturnContext;
@@ -91,6 +96,10 @@ public:
   class Ds_doubleContext;
   class Ds_ushortContext;
   class Ds_ucharContext;
+  class Ds_charContext;
+  class Ds_mallocContext;
+  class Ds_c_strContext;
+  class Ds_c_struptolenContext;
   class TestContext;
   class SymbolicContext;
   class Symbolic_underscoreContext;
@@ -104,12 +113,14 @@ public:
     antlr4::tree::TerminalNode *EOF();
     std::vector<LineContext *> line();
     LineContext* line(size_t i);
-    std::vector<TargetContext *> target();
-    TargetContext* target(size_t i);
     std::vector<antlr4::tree::TerminalNode *> NEWLINE();
     antlr4::tree::TerminalNode* NEWLINE(size_t i);
     std::vector<IncludeContext *> include();
     IncludeContext* include(size_t i);
+    std::vector<Type_definitionsContext *> type_definitions();
+    Type_definitionsContext* type_definitions(size_t i);
+    std::vector<StructureContext *> structure();
+    StructureContext* structure(size_t i);
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -122,7 +133,10 @@ public:
   public:
     LineContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    TextContext *text();
+    std::vector<TextContext *> text();
+    TextContext* text(size_t i);
+    std::vector<TargetContext *> target();
+    TargetContext* target(size_t i);
     antlr4::tree::TerminalNode *NEWLINE();
     antlr4::tree::TerminalNode *WS();
 
@@ -196,9 +210,11 @@ public:
     Ds_floatContext *ds_float();
     Ds_doubleContext *ds_double();
     Ds_ucharContext *ds_uchar();
+    Ds_charContext *ds_char();
     Ds_ushortContext *ds_ushort();
-    std::vector<antlr4::tree::TerminalNode *> WS();
-    antlr4::tree::TerminalNode* WS(size_t i);
+    Ds_mallocContext *ds_malloc();
+    Ds_c_strContext *ds_c_str();
+    Ds_c_struptolenContext *ds_c_struptolen();
 
     virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
     virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
@@ -220,6 +236,34 @@ public:
   };
 
   IncludeContext* include();
+
+  class  Type_definitionsContext : public antlr4::ParserRuleContext {
+  public:
+    Type_definitionsContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    StructureContext *structure();
+    std::vector<antlr4::tree::TerminalNode *> WS();
+    antlr4::tree::TerminalNode* WS(size_t i);
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Type_definitionsContext* type_definitions();
+
+  class  StructureContext : public antlr4::ParserRuleContext {
+  public:
+    StructureContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  StructureContext* structure();
 
   class  NoinlineContext : public antlr4::ParserRuleContext {
   public:
@@ -718,6 +762,62 @@ public:
   };
 
   Ds_ucharContext* ds_uchar();
+
+  class  Ds_charContext : public antlr4::ParserRuleContext {
+  public:
+    Ds_charContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+    antlr4::tree::TerminalNode *DEEPSTATE();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Ds_charContext* ds_char();
+
+  class  Ds_mallocContext : public antlr4::ParserRuleContext {
+  public:
+    Ds_mallocContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+    antlr4::tree::TerminalNode *DEEPSTATE();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Ds_mallocContext* ds_malloc();
+
+  class  Ds_c_strContext : public antlr4::ParserRuleContext {
+  public:
+    Ds_c_strContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+    antlr4::tree::TerminalNode *DEEPSTATE();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Ds_c_strContext* ds_c_str();
+
+  class  Ds_c_struptolenContext : public antlr4::ParserRuleContext {
+  public:
+    Ds_c_struptolenContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+    antlr4::tree::TerminalNode *DEEPSTATE();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Ds_c_struptolenContext* ds_c_struptolen();
 
   class  TestContext : public antlr4::ParserRuleContext {
   public:

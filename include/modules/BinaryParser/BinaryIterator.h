@@ -189,6 +189,11 @@ class BinaryIterator
      **/
     std::string nextString( std::size_t len, const std::string *allowed );
 
+    /**
+     * Resets the binary iterator to the initial index
+     */
+    void reset();
+
  private:
     /**
      * A pointer to unstructured binary data.

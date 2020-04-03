@@ -26,6 +26,7 @@ class ASTListener : public GenTestBaseListener
 	  void enterAssume_ne(GenTestParser::Assume_neContext * ctx);
 	  void enterAssume_eq(GenTestParser::Assume_eqContext * ctx);
 
+	  void enterAssrt(GenTestParser::AssrtContext * ctx );
 	  void enterAssert_gt(GenTestParser::Assert_gtContext * ctx);
 	  void enterAssert_lt(GenTestParser::Assert_ltContext * ctx);
 	  void enterAssert_ge(GenTestParser::Assert_geContext * ctx);
@@ -53,13 +54,14 @@ class ASTListener : public GenTestBaseListener
 	  void enterDs_double(GenTestParser::Ds_doubleContext * ctx);
 	  void enterDs_ushort(GenTestParser::Ds_ushortContext * ctx);
 	  void enterDs_uchar(GenTestParser::Ds_ucharContext * ctx);
+	  void enterDs_c_str(GenTestParser::Ds_c_strContext * ctx);
+	  void enterDs_c_struptolen(GenTestParser::Ds_c_struptolenContext * ctx);
+	  void enterDs_malloc(GenTestParser::Ds_mallocContext * ctx);
 
 	  void enterTest(GenTestParser::TestContext * ctx);
 	  void enterSymbolic(GenTestParser::SymbolicContext * ctx);
 	  void enterType(GenTestParser::TypeContext * ctx);
 	  void enterInclude(GenTestParser::IncludeContext * ctx);
-
-
-
-
+	  void enterStructure(GenTestParser::StructureContext * ctx);
+	  void enterType_definitions(GenTestParser::Type_definitionsContext * ctx);
 };
