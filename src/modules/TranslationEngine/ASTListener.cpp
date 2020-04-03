@@ -13,8 +13,26 @@ return ASTListener::list;
 // Private functions
 void ASTListener::addToList( NTerminal type, std::string text )
 {
-    if( !( type >= DEEPSTATE_INT && type <= DEEPSTATE_MALLOC ) )
+    if( type == NO_TRANSLATE )
     {
+        // Create a new node.
+        Node newNode;
+
+        // Set type and text.
+        newNode.type = type;
+        newNode.text = text;
+
+        // Push to back of AST.
+        ASTListener::list.push_back( newNode );
+    }
+    else if( ( type >= ASSERT_GT && type <= DEEPSTATE_CHECK ) 
+               || type == SYMBOLIC )
+    {
+        // Remove node from back as it is a duplicate!
+        if( list.at( list.size() - 1 ).type == NO_TRANSLATE )
+        {
+            list.pop_back();
+        }
         // Create a new node.
         Node newNode;
 

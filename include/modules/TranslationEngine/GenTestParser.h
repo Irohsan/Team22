@@ -19,14 +19,14 @@ public:
     T__26 = 27, T__27 = 28, T__28 = 29, T__29 = 30, T__30 = 31, T__31 = 32, 
     T__32 = 33, T__33 = 34, T__34 = 35, T__35 = 36, T__36 = 37, T__37 = 38, 
     T__38 = 39, T__39 = 40, T__40 = 41, T__41 = 42, T__42 = 43, T__43 = 44, 
-    T__44 = 45, T__45 = 46, T__46 = 47, T__47 = 48, ASSUME_C = 49, ASSUME = 50, 
-    ASSRT = 51, ASSRT_C = 52, DEEPSTATE = 53, CHK = 54, CHK_C = 55, GREATER = 56, 
-    LESS = 57, GREATER_EQ = 58, LESS_EQ = 59, EQ = 60, NOT_E = 61, TEST = 62, 
-    DEEPSTATE_INLINE = 63, DEEPSTATE_NOINLINE = 64, DEEPSTATE_NORETURN = 65, 
-    SYMBOLIC = 66, SYMBOLIC_C = 67, FORALL = 68, INT = 69, UINT8 = 70, UINT16 = 71, 
-    UINT32 = 72, UINT64 = 73, SHORT = 74, LONG = 75, DOUBLE = 76, FLOAT = 77, 
-    CHAR = 78, UNSIGNED = 79, BOOL = 80, IDENTIFIER = 81, NUM = 82, WS = 83, 
-    NEWLINE = 84, TAB = 85, SEMICOLON = 86, TRUE = 87, FALSE = 88
+    T__44 = 45, T__45 = 46, T__46 = 47, T__47 = 48, T__48 = 49, ASSUME_C = 50, 
+    ASSUME = 51, ASSRT = 52, ASSRT_C = 53, DEEPSTATE = 54, CHK = 55, CHK_C = 56, 
+    GREATER = 57, LESS = 58, GREATER_EQ = 59, LESS_EQ = 60, EQ = 61, NOT_E = 62, 
+    TEST = 63, DEEPSTATE_INLINE = 64, DEEPSTATE_NOINLINE = 65, DEEPSTATE_NORETURN = 66, 
+    SYMBOLIC = 67, SYMBOLIC_C = 68, FORALL = 69, INT = 70, UINT8 = 71, UINT16 = 72, 
+    UINT32 = 73, UINT64 = 74, SHORT = 75, LONG = 76, DOUBLE = 77, FLOAT = 78, 
+    CHAR = 79, UNSIGNED = 80, BOOL = 81, IDENTIFIER = 82, NUM = 83, WS = 84, 
+    NEWLINE = 85, TAB = 86, SEMICOLON = 87, TRUE = 88, FALSE = 89
   };
 
   enum {
@@ -40,9 +40,9 @@ public:
     RuleDs_assume = 29, RuleDs_assert = 30, RuleDs_check = 31, RuleDs_int = 32, 
     RuleDs_uint8 = 33, RuleDs_uint16 = 34, RuleDs_uint32 = 35, RuleDs_uint64 = 36, 
     RuleDs_float = 37, RuleDs_double = 38, RuleDs_ushort = 39, RuleDs_uchar = 40, 
-    RuleDs_malloc = 41, RuleDs_c_str = 42, RuleDs_c_struptolen = 43, RuleTest = 44, 
-    RuleSymbolic = 45, RuleSymbolic_underscore = 46, RuleSymbolic_bracket = 47, 
-    RuleText = 48
+    RuleDs_char = 41, RuleDs_malloc = 42, RuleDs_c_str = 43, RuleDs_c_struptolen = 44, 
+    RuleTest = 45, RuleSymbolic = 46, RuleSymbolic_underscore = 47, RuleSymbolic_bracket = 48, 
+    RuleText = 49
   };
 
   GenTestParser(antlr4::TokenStream *input);
@@ -96,6 +96,7 @@ public:
   class Ds_doubleContext;
   class Ds_ushortContext;
   class Ds_ucharContext;
+  class Ds_charContext;
   class Ds_mallocContext;
   class Ds_c_strContext;
   class Ds_c_struptolenContext;
@@ -112,8 +113,6 @@ public:
     antlr4::tree::TerminalNode *EOF();
     std::vector<LineContext *> line();
     LineContext* line(size_t i);
-    std::vector<TargetContext *> target();
-    TargetContext* target(size_t i);
     std::vector<antlr4::tree::TerminalNode *> NEWLINE();
     antlr4::tree::TerminalNode* NEWLINE(size_t i);
     std::vector<IncludeContext *> include();
@@ -134,8 +133,10 @@ public:
   public:
     LineContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
-    TextContext *text();
-    TargetContext *target();
+    std::vector<TextContext *> text();
+    TextContext* text(size_t i);
+    std::vector<TargetContext *> target();
+    TargetContext* target(size_t i);
     antlr4::tree::TerminalNode *NEWLINE();
     antlr4::tree::TerminalNode *WS();
 
@@ -209,6 +210,7 @@ public:
     Ds_floatContext *ds_float();
     Ds_doubleContext *ds_double();
     Ds_ucharContext *ds_uchar();
+    Ds_charContext *ds_char();
     Ds_ushortContext *ds_ushort();
     Ds_mallocContext *ds_malloc();
     Ds_c_strContext *ds_c_str();
@@ -760,6 +762,20 @@ public:
   };
 
   Ds_ucharContext* ds_uchar();
+
+  class  Ds_charContext : public antlr4::ParserRuleContext {
+  public:
+    Ds_charContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    TextContext *text();
+    antlr4::tree::TerminalNode *DEEPSTATE();
+
+    virtual void enterRule(antlr4::tree::ParseTreeListener *listener) override;
+    virtual void exitRule(antlr4::tree::ParseTreeListener *listener) override;
+   
+  };
+
+  Ds_charContext* ds_char();
 
   class  Ds_mallocContext : public antlr4::ParserRuleContext {
   public:
