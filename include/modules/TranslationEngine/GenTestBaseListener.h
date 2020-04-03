@@ -139,6 +139,9 @@ public:
   virtual void enterDs_uchar(GenTestParser::Ds_ucharContext * /*ctx*/) override { }
   virtual void exitDs_uchar(GenTestParser::Ds_ucharContext * /*ctx*/) override { }
 
+  virtual void enterDs_char(GenTestParser::Ds_charContext * /*ctx*/) override { }
+  virtual void exitDs_char(GenTestParser::Ds_charContext * /*ctx*/) override { }
+
   virtual void enterDs_malloc(GenTestParser::Ds_mallocContext * /*ctx*/) override { }
   virtual void exitDs_malloc(GenTestParser::Ds_mallocContext * /*ctx*/) override { }
 
