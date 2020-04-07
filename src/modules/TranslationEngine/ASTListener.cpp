@@ -13,7 +13,8 @@ return ASTListener::list;
 // Private functions
 void ASTListener::addToList( NTerminal type, std::string text )
 {
-    if( type == NO_TRANSLATE )
+    if( type == NO_TRANSLATE || type == INCLUDE 
+        || type == STRUCT || type == TYPEDEF )
     {
         // Create a new node.
         Node newNode;
@@ -256,6 +257,11 @@ void ASTListener::enterTest(GenTestParser::TestContext * ctx)
 void ASTListener::enterSymbolic(GenTestParser::SymbolicContext * ctx)
 {
     this->addToList( SYMBOLIC, ctx->getText() );
+}
+
+void ASTListener::enterDs_char(GenTestParser::Ds_charContext * ctx)
+{
+    this->addToList( DEEPSTATE_CHAR, ctx->getText());
 }
 
 void ASTListener::enterType(GenTestParser::TypeContext * ctx)
