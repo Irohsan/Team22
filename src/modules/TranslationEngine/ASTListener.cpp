@@ -189,6 +189,26 @@ void ASTListener::enterDs_check(GenTestParser::Ds_checkContext * ctx)
     this->addToList( DEEPSTATE_CHECK, ctx->getText() );
 }
 
+void ASTListener::enterLoop(GenTestParser::LoopContext * ctx)
+{
+    this->addToList( LOOP, ctx->getText() );
+}
+
+void ASTListener::enterFor_var(GenTestParser::For_varContext * ctx)
+{
+    this->list.at( list.size() - 1 ).list.push_back( ctx->getText() );
+}
+
+void ASTListener::enterFor_run(GenTestParser::For_runContext * ctx)
+{
+    this->list.at( list.size() - 1 ).list.push_back( ctx->getText() );
+} 
+
+void ASTListener::enterFor_inc(GenTestParser::For_incContext * ctx)
+{
+    this->list.at( list.size() - 1 ).list.push_back( ctx->getText() );
+}
+
 void ASTListener::enterDs_int(GenTestParser::Ds_intContext * ctx)
 {
     this->addToList( DEEPSTATE_INT, ctx->getText() );

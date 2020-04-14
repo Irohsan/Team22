@@ -45,6 +45,11 @@ class ASTListener : public GenTestBaseListener
 	  void enterDs_assert(GenTestParser::Ds_assertContext * ctx);
 	  void enterDs_check(GenTestParser::Ds_checkContext * ctx);
 
+	  void enterLoop(GenTestParser::LoopContext * ctx);
+	  void enterFor_var(GenTestParser::For_varContext * ctx);
+	  void enterFor_run(GenTestParser::For_runContext * ctx);
+	  void enterFor_inc(GenTestParser::For_incContext * ctx);
+
 	  void enterDs_int(GenTestParser::Ds_intContext * ctx);
 	  void enterDs_uint8(GenTestParser::Ds_uint8Context * ctx);
 	  void enterDs_uint16(GenTestParser::Ds_uint16Context * ctx);

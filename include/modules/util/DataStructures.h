@@ -28,7 +28,7 @@ typedef enum NonTerminals
     FUNC,                     // Basic non-terminals.
     TEST,
     STATEMENT,
-    FOR_LOOP,
+    LOOP,
     WHILE_LOOP,
     COMMENT,
     DEEPSTATE_NOINLINE,
@@ -133,6 +133,7 @@ class Node {
     NTerminal type;
     std::string text;
     std::string datatype;
+    std::vector<std::string> list;
 };
 
 
