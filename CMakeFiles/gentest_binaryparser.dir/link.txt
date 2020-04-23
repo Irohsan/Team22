@@ -1,2 +1,0 @@
-/usr/bin/ar qc libgentest_binaryparser.a  CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryParser.cpp.o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryIterator.cpp.o CMakeFiles/gentest_binaryparser.dir/src/modules/BinaryParser/BinaryController.cpp.o
-/usr/bin/ranlib libgentest_binaryparser.a
