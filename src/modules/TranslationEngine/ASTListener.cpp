@@ -62,7 +62,7 @@ void ASTListener::enterLine(GenTestParser::LineContext * ctx)
 // Target implementations.
 void ASTListener::enterNoinline(GenTestParser::NoinlineContext * ctx)
 {
-    this->addToList( DEEPSTATE_NOINLINE, ctx->getText() );
+    this->addToList( DEEPSTATE_NO_INLINE, ctx->getText() );
 }
 
 void ASTListener::enterDsinline(GenTestParser::DsinlineContext * ctx)

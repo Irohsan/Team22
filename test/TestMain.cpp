@@ -268,12 +268,13 @@ TEST_CASE( "Correct Targets Test", "[translation_engine]" )
     //   Include statements.
     //   Symbolic statements.
     //   Calls to DeepState_type or DeepState_Malloc
+    //   For loops
     //   DEEPSTATE_INLINE, DEEPSTATE_NOINLINE, DEEPSTATE_NORETURN
     REQUIRE( getTargetCount( tests[ TEST_EULER ] ) == 19 ); 
     REQUIRE( getTargetCount( tests[ TEST_OVERFLOW ] ) == 10 );
     REQUIRE( getTargetCount( tests[ TEST_CRASH ] ) == 5 );
-    REQUIRE( getTargetCount( tests[ TEST_ENCRASH ] ) == 7 );
-    REQUIRE( getTargetCount( tests[ TEST_PRIMES ] ) == 19 );
+    REQUIRE( getTargetCount( tests[ TEST_ENCRASH ] ) == 9 );
+    REQUIRE( getTargetCount( tests[ TEST_PRIMES ] ) == 20 );
 }
 
 

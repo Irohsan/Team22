@@ -20,9 +20,10 @@
 #include <iostream>
 #include "TranslationEngine.h"
 #include "FileAssembler.h"
+#include <dirent.h>
 
 //number of args (test, binary, output name)
-int NUM_ARGS = 4;
+int NUM_ARGS = 7;
 
 using namespace std;
 
@@ -41,7 +42,53 @@ int main( int numArgs, char** args )
     // Setting up some local variables to make code more readable
     char * binaryFile = args[ 2 ], 
 	 * outputPath = args[ 3 ],
-	 * translateCFG = args[ 4 ];
+	 * translateCFG = args[ 4 ],
+     	 * input_dir = args[ 5 ],
+	 * fuzz_flag = args[ 6 ],
+         * until_fail_flag = args[ 7 ];
+  
+    // Initialize directory variables.
+    std::string inputDir;
+    std::string name( binaryFile );
+    std::vector<std::string> fileList;
+
+    if( input_dir == NULL )
+    {
+        inputDir = "";
+    }
+    else
+    {
+        inputDir = input_dir;
+    }
+
+    // Initialize all files in provided directory if provided.
+    if( inputDir.compare( "none" ) )
+    {
+	    DIR * dir;
+	    struct dirent * ent;
+
+	    if( ( dir = opendir( input_dir ) ) != NULL ) 
+	    {
+            while( ( ent = readdir( dir ) ) != NULL )
+            {
+                std::string fileName( ent->d_name );
+
+                if( fileName.compare(".") != 0 && fileName.compare( ".." ) != 0 )
+                {
+            
+                   fileList.push_back( inputDir + ent->d_name );
+                }
+            }
+
+            closedir( dir );
+	    }
+
+	
+    }
+    else // Otherwise only provide one file, the input file name.
+    {
+        fileList.push_back( name );
+    }
 
     // Create parser object.
     TranslationEngine parser;
@@ -52,6 +99,7 @@ int main( int numArgs, char** args )
     // Get output.
     std::vector<Node> output = parser.getAST( fileToTranslate );
 
-    buildFile(output, binaryFile, outputPath, translateCFG);
+    
+    //buildFile(output, fileList, outputPath, translateCFG);
 
 }
