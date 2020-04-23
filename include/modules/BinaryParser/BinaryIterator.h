@@ -187,12 +187,7 @@ class BinaryIterator
      *        pass a pointer to null. 
      * @returns a string value from the Iterator's data.
      **/
-    std::string nextString( std::size_t len, const std::string *allowed );
-
-    /**
-     * Resets the binary iterator to the initial index
-     */
-    void reset();
+    std::string nextString( std::size_t len, const char *allowed );
 
  private:
     /**

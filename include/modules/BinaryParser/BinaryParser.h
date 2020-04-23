@@ -1,4 +1,3 @@
-
 // Program Header Information ///////////////////////////
 /**
  * @file BinaryParser.h

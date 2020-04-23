@@ -13,41 +13,40 @@
   * @version 1.00
   *          Zane Fink
   *          Created skeleton for class layout
-
   (Legal terms of use/libraries used need to be added here once we get to that point)
-
 **/
 
 #include "BinaryIterator.h"
+#include <deepstate/DeepState.h>
 
 int BinaryIterator::nextInt()
 {
-    return next<int>();
+    return DeepState_Int();
 }
 
 unsigned int BinaryIterator::nextUInt()
 {
-    return next <unsigned int>();
+    return DeepState_UInt();;
 }
 
 unsigned char BinaryIterator::nextUChar()
 {
-    return next<unsigned char>();
+    return DeepState_UChar();
 }
 
 char BinaryIterator::nextChar()
 {
-    return next<char>();
+    return DeepState_Char();
 }
 
 std::size_t BinaryIterator::nextSize_t()
 {
-    return static_cast<std::size_t>( 0 );
+    return DeepState_Size();
 }
 
 short BinaryIterator::nextShort()
 {
-    return static_cast<short>( 0 );
+    return DeepState_Short();
 }
 
 void BinaryIterator::rewind()
@@ -70,57 +69,51 @@ void BinaryIterator::rewind( std::size_t step )
 std::uint64_t BinaryIterator::nextUInt64()
 {
 
-    return static_cast<std::uint64_t>( 0 );
+    return DeepState_UInt64();
 }
 
 std::int64_t BinaryIterator::nextInt64()
 {
-    return static_cast<std::int64_t>( nextUInt64() );
+    return DeepState_Int64();
 }
 
 std::uint16_t BinaryIterator::nextUInt16()
 {
 
-    return static_cast<std::uint16_t>( 0 );
+    return static_cast<std::uint16_t>( DeepState_Short() );
 }
 
 std::int16_t BinaryIterator::nextInt16()
 {
-    return static_cast<std::int16_t>( nextUInt16() );
+    return DeepState_Short();
 }
 
 long BinaryIterator::nextLong()
 {
-    return static_cast<long>( 0 );
+    return DeepState_Long();
 }
 
 float BinaryIterator::nextFloat()
 {
-    return static_cast<float>( 0 );
+    return DeepState_Float();
 }
 
 double BinaryIterator::nextDouble()
 {
-    return static_cast<double>( 0 );
+    return DeepState_Double();
 }
 
 int BinaryIterator::nextRandInt()
 {
-    return static_cast<int>( 0 );
+    return DeepState_RandInt();
 }
 
 bool BinaryIterator::nextBool()
 {
-    return false;
+    return DeepState_Bool();
 }
 
-std::string BinaryIterator::nextString( std::size_t len, const std::string *allowed )
+std::string BinaryIterator::nextString( std::size_t len, const char *allowed )
 {
-
-    return "";
-}
-
-void BinaryIterator::reset()
-{
-    index = 0;
+    return std::string{ DeepState_CStr_C( len, allowed ) };
 }

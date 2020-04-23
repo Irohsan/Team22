@@ -17,27 +17,42 @@
 **/
 #include "FileAssembler.h"
 
-std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
-        char * outputPath, char * translateCFG )
+std::string buildFile( std::vector<Node> transEngineOutput, std::vector<std::string> binaryFiles,
+        const char * outputPath, const char * translateCFG, bool basic_fuzz, bool fuzz_until_fail )
 {
+    // Variable declarations.
+
+    // Map of all translation targets available from CFG file.
     std::map<std::string, std::string> varMap;
 
+    // The file write string that is populated in the file.
     std::string output;
 
-    bool structFlag = false, testFlag = false, prevQuestion = false;
+    // Flags for various, important test structures.
+    bool structFlag = false, testFlag = false, prevQuestion = false, loopFlag = false;
 
+    // Counter to track the current test being run for the BinaryController.
+    int testCounter = 0;
+
+    // Object declarations for necessary classes.
     BinaryParser bp;
-
-    bp.parse( binaryFile );
-
-    auto it = bp.getIterator();
-
+    BinaryController ctr;
+    BinaryIterator it = bp.getIterator();
+    ResultPacket results;
+    SymbolicGenerator generator( &ctr, &it, results, ( basic_fuzz || fuzz_until_fail ) );
     TranslationDictionary translate;
-
     StructHandler handler;
+    LoopHandler loopHandle( &ctr );
+    std::string loopParams;
+    std::string loopText;
 
+    // Start the controller for proper value playback.        
+    ctr.fuzz_file( START_CONTROLLER );
+
+    // Parse structs if they exist. 
     handler.lookForSymbolic( transEngineOutput );
 
+    // If the CFG file is incorrect, error.
     if( !translate.loadFile(translateCFG) )
     {
         std::cout<<"Bad Load\n";
@@ -45,23 +60,20 @@ std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         //TODO: Log if loading the file is bad
     }
 
+    // Get necessary values for loop.
     auto current = transEngineOutput.begin();
-
     auto size = transEngineOutput.size();
-
     int currentDepth = 0;
 
     for( int currentTranslation = 0; currentTranslation < (int) size; currentTranslation++ )
     {
-        //maybe move individual translations to a separate class/function that the translation is passed into
-        //convert testing library to correct library
-
+        
+        // Declare loop variables.
         bool added = false, currentQuestion = false;
-
         std::vector<std::string> stringsToAdd;
 
+        // Get current String
         std::string currentString = stripWhiteSpace( current->text );
-
         currentString = stripNewLine( currentString );
 
         //Workaround for TE occasionally adding an additional blank line
@@ -99,11 +111,21 @@ std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
             added = true;
         }
-        else if( current->type == SYMBOLIC )
+        else if( current->type == SYMBOLIC && loopFlag )
         {
             added = true;
 
-            stringsToAdd = symbolicValHandle( currentString, &it, current->datatype );
+            loopHandle.addType( current->datatype );
+            output += generatePadding( currentDepth ) +  
+                      loopHandle.writeSymbolicStatement( current->datatype, 
+                                                         current->text,
+                                                         loopText );
+        }
+        else if( current->type == SYMBOLIC && !loopFlag  )
+        {
+            added = true;
+
+            stringsToAdd = symbolicValHandle( currentString, generator, current->datatype );
         }
 
         //handle ASSERT/CHECK/ASSUME statements
@@ -129,6 +151,7 @@ std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             added = true;
 
             stringsToAdd = deepstateTypeHandle( currentString, &it, &(*current) );
+            
         }
 
         //get rid of namespace
@@ -139,7 +162,7 @@ std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             added = true;
         }
         //if a function has a NO_INLINE
-        else if( current->type >= DEEPSTATE_NOINLINE && current->type <= DEEPSTATE_NO_RETURN )
+        else if( current->type >= DEEPSTATE_NO_INLINE && current->type <= DEEPSTATE_NO_RETURN )
         {
             auto translation = translate.findTranslationFromNTerminal(current->type );
 
@@ -159,8 +182,8 @@ std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
         //checking for struct declarations
         else if( !structFlag && testFlag && current->type == NO_TRANSLATE )
         {
-            stringsToAdd = structHandle( currentString, &handler, &(*current), &it );
-
+            stringsToAdd = structHandle( currentString, &handler, &(*current), generator.getIterator() );
+      
             added = !stringsToAdd.empty();
         }
 
@@ -222,7 +245,6 @@ std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
 
                 addStrings++;
             }
-
         }
         else
         {
@@ -240,11 +262,52 @@ std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
             currentDepth++;
         }
 
+        if( current->type == LOOP && !loopFlag )
+        {
+            loopFlag = true;
+            loopHandle.setPos( (int) output.size() - (int) current->text.size() );
+            loopText = current->text;
+        }
+        
+        if( current->type == LOOP && loopFlag )
+        {
+            loopText = current->text;
+        }
+            
+        if( current->text.find( "}" ) != std::string::npos )
+        {
+            loopFlag = false;
+        }
+
+        if( testCounter > 0 && current->type == TEST && loopHandle.outputPos > 0 )
+        {
+            output.insert( loopHandle.outputPos, generatePadding( currentDepth + 2 ) + 
+                                                 loopHandle.writeSymbolicParams( results ) ); 
+        }
+
         //reset the iterator for each test
         if( current->type == TEST )
         {
-            it.reset();
+            // Reset controller.
+            ctr.fuzz_file( RESET );
 
+            if( basic_fuzz && fuzz_until_fail )
+            {
+                results = ctr.fuzz_file( FUZZ_UNTIL_FAIL, testCounter );
+            }
+            if( basic_fuzz )
+            {
+                results = ctr.fuzz_file( FUZZ_ONCE, testCounter );
+            }
+            else if( !( basic_fuzz && fuzz_until_fail ) )
+            {
+                generator.setIterator( binaryFiles );
+            }
+
+            // Increment test counter.
+            testCounter++;
+
+            // Set test flag.
             testFlag = true;
         }
 
@@ -266,51 +329,7 @@ std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
     return output;
 }
 
-std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type )
-{
-    std::string outputString;
 
-    if( type == "int" )
-    {
-        outputString = "int " + variableName + " = " + std::to_string( iterator->nextInt() );
-    }
-    else if( type == "char" )
-    {
-        outputString = "char " + variableName + " = " + std::to_string( iterator->nextChar() );
-    }
-    else if( type == "long" )
-    {
-        outputString = "long " + variableName + " = " + std::to_string( iterator->nextLong() );
-    }
-    else if( type == "double" )
-    {
-        outputString = "double " + variableName + " = " + std::to_string( iterator->nextDouble() );
-    }
-    else if( type == "float" )
-    {
-        outputString = "float " + variableName + " = " + std::to_string( iterator->nextFloat() );
-    }
-    else if( type == "short" )
-    {
-        outputString = "short " + variableName + " = " + std::to_string( iterator->nextShort() );
-    }
-    else if( type == "unsigned" )
-    {
-        outputString = "unsigned " + variableName + " = " + std::to_string( iterator->nextUInt() );
-    }
-    else if( type == "bool" )
-    {
-        outputString = "bool " + variableName + " = " + std::to_string( iterator->nextBool() );
-    }
-    else
-    {
-        std::cout<<"UNIMPLEMENTED TYPE: "<<type<<std::endl;
-    }
-
-    //TODO: Support all data types
-
-    return outputString + ';';
-}
 
 std::string deepstateTypeReturn( Node currentNode, std::string currentString, BinaryIterator * it )
 {
@@ -370,7 +389,8 @@ std::string deepstateTypeReturn( Node currentNode, std::string currentString, Bi
         }
         else
         {
-            outputStr += "\"" + it->nextString(firstArg, &secondArg ) + "\"";
+	    const char * character = secondArg.c_str();
+            outputStr += "\"" + it->nextString(firstArg, character ) + "\"";
         }
     }
     else if( currentNode.type == DEEPSTATE_C_STRUPTO )
@@ -481,23 +501,25 @@ std::string questionWhichCheck( const std::string& toCheck, const std::string& b
     return toCheck.substr(length, 2);
 }
 
-std::vector<std::string> symbolicValHandle( std::string currentString, BinaryIterator * it, std::string& dataType )
+
+std::vector<std::string> symbolicValHandle( std::string currentString, SymbolicGenerator generator, 
+                                            std::string &datatype )
 {
+    // Declare local variables.
     std::vector<std::string> outputVector;
 
     //if multi variable line
     while( currentString.find(',') != std::string::npos )
     {
+        // Get basic locations and names
         auto startOfVar = currentString.find_first_of(' ') + 1;
-
         auto location = currentString.find(',');
-
         std::string variableName = currentString.substr( startOfVar, location - startOfVar );
 
-        outputVector.push_back( symbolicLine( variableName, it, dataType ) + "\n" );
+        // Push to back of output vector
+        outputVector.push_back( generator.writeSymbolicLine( variableName, datatype ) + "\n" );
 
         auto firstPart = currentString.substr( 0, startOfVar );
-
         auto secondPart = currentString.substr(location + 1, currentString.length() - location );
 
         //strip additional spaces
@@ -511,12 +533,11 @@ std::vector<std::string> symbolicValHandle( std::string currentString, BinaryIte
 
     //locate the variable name
     auto startOfVar = currentString.find_last_of(' ') + 1;
-
     auto endOfVar = currentString.find(';');
-
     std::string variableName = currentString.substr(startOfVar, endOfVar - startOfVar );
 
-    outputVector.push_back( symbolicLine( variableName, it, dataType ) + '\n' );
+    // Push created string
+    outputVector.push_back( generator.writeSymbolicLine( variableName, datatype ) + '\n' );
 
     return outputVector;
 }
@@ -632,4 +653,5 @@ void writeToFile( const std::string& fileLocation, const std::string& fileConten
 
     outputFile.close();
 }
+
 
