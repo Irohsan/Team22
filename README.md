@@ -17,15 +17,22 @@ All team members are also "coders" and are expected to develop GenTest
 The GenTest solution is a light-weight translator program built on ANTLR v4.8 [ANTLR](https://www.antlr.org/). It is designed to take in DeepState [DeepState](https://github.com/trailofbits/deepstate) unit testing file, called the file-to-translate, and translate its syntax to the syntax of an external C or C++ unit testing framework. Currently, only Google Test is supported. If you would like to assist in creating more translation capability for other C or C++ libraries or would like to change the translations in Google Test for your own use, please refer to the Confgiuration File Tutorial
  
 ## Build Instructions
-Currently this is the standalone module without deepstate integration
+As of release, this software is integrated with the [DeepState](https://github.com/trailofbits/deepstate) framework. Thus, if you clone this repository directly and try to build the executable, it will fail because it has no reference to the libdeepstate.a static library. **This repository serves to document progress and information about the product.**
 
-1. Set the current directory to the working directory for GenTest
+### Cloning this Repository
+1.`git clone https://github.com/Irohsan/Team22`
 
-`mkdir build && cd build`
+2.`cd Team22 && cmake .`
 
-`cmake ..`
+3.`make`
 
-`make`
+### Cloning the DeepState Framework with GenTest
+1. `git clone https://github.com/ZwFink/deepstate/`
+2. `mkdir deepstate/build && cd deepstate/build`
+3. `cmake ../`
+4. `make`
+5. `make install`
+6. `cd /examples`
 
 ## Usage
 There are two routes to using the GenTest solution. The first route is via binary files produced from the DeepState library. The second route is using the --fuzz flag to call the DeepState library directly from the GenTest solution. Please refer to the sections below to see the relevant tutorial for your needs.
@@ -67,6 +74,8 @@ To use direct fuzzing through the GenTest solution, you can specify the `--fuzz`
 
 `--exit_on_fail` - Fuzz unique failing values for all test cases.
 
+`--output_num` - The number of standalone tests to output. MUST be used in conjunction with `--fuzz`
+
 ## Configuration File Tutorial
 For this tutorial, please reference the existing configuration file found [here](test/test_data/gtestTranslation.cfg).
 
@@ -89,6 +98,9 @@ To edit a configuration file, change the string on the right-hand side of the `=
 No parethesis are required in the translation statement--these will be produced for you by GenTest. When editing files to individually change sub-specifiors, please keep in mind that the base `ASSERT=`, `ASSUME=`, and `CHECK=` translations must be kept.
 
 **Additionally**, there can be no additional lines between configuration inputs.
+
+## Information about For Loop Support
+At the present, the GenTest solution cannot support while or do while loops. It can, however, support for loops and nested for loops. Please note that in a nested for loop, if the symbolic declarations are of different type, any symbolic declarations after the loop will be populated but might not match DeepState exactly due to limitations.
 
 
 
