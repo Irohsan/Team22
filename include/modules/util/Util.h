@@ -22,6 +22,12 @@
 * Include Libraries
 *******************************/
 #include <string>
+#include <map>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <iostream>
+#include <utility>
 
 /******************************
 * Constant Definitions
@@ -96,9 +102,15 @@ const std::string COMMA = ",";
 const std::string TWO_SPACES = "  ";
 
 
-/******************************
-* Type Definitions
-*******************************/
+std::string stripWhiteSpace( const std::string& toStrip );
+
+std::string stripNewLine( std::string stringToStrip );
+
+std::string generatePadding( int depth );
+
+int commaLocation( const std::string& toFind );
+
+std::string whichStructInLine(std::string lineToCheck, std::vector<std::string> vectorToSearch );
 
 
 

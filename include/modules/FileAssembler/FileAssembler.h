@@ -15,25 +15,39 @@
 **/
 
 #include "DataStructures.h"
-#include "BinaryParser.h"
+#include "LoopHandler.h"
+#include <algorithm>
 
-void buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
-        char * outputPath, char * translateCFG );
+std::string buildFile( std::vector<Node> transEngineOutput, std::vector<std::string> binaryFile,
+        const char * outputPath, const char * translateCFG, bool basic_fuzz, bool fuzz_until_fail );
 
-std::string stripNewLine( std::string stringToStrip );
+BinaryIterator * getIterator( std::vector<std::string> binaryFiles );
 
-std::string symbolicLine( std::string variableName, BinaryIterator * iterator, std::string type );
+std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, BinaryController& ctr, ResultPacket packet, const std::string& type, bool fuzzFlag );
+
+std::string deepstateTypeReturn( Node currentNode, std::string currentString, BinaryIterator * it  );
 
 std::string questionConversion( std::string previousText, NTerminal currentNTerminal, TranslationDictionary * dictionary );
 
-std::string stripWhiteSpace( std::string toStrip );
+std::string questionTranslation( const TranslationEntry& translation, const std::string& originalString );
 
-std::string questionTranslation( TranslationEntry translation, std::string originalString );
+int questionClosingParen( const std::string& args );
 
-std::string questionWhichCheck( std::string toCheck, std::string baseCase );
+std::vector<std::string> symbolicValHandle( std::string currentString, SymbolicGenerator generator, std::string &datatype );
 
-int commaLocation( std::string toFind );
+std::vector<std::string> questionHandle(TranslationDictionary * translate, NTerminal current, const std::string& currentString );
+
+std::vector<std::string> deepstateQuestionHandle( TranslationDictionary * translate, const std::string& currentString );
+
+std::vector<std::string> deepstateTypeHandle( const std::string& currentString, BinaryIterator * it, Node * current );
+
+std::vector<std::string> structHandle( const std::string& currentString, StructHandler * handler, Node * current, BinaryIterator * it );
+
+std::string questionWhichCheck( const std::string& toCheck, const std::string& baseCase );
 
 NTerminal findBaseCase( NTerminal currentCase );
 
-void writeToFile( std::string fileLocation, std::string fileContents );
+void writeToFile( const std::string& fileLocation, const std::string& fileContents );
+
+std::string getLoopValues( BinaryIterator * iterator, BinaryController& ctr, 
+                                        ResultPacket results, const std::string& type, bool fuzzFlag );

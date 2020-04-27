@@ -17,13 +17,9 @@
 #ifndef GENTEST_DATASTRUCTURES_H
 #define GENTEST_DATASTRUCTURES_H
 
-#include <map>
-#include <string>
-#include <vector>
-#include <fstream>
-#include <iostream>
-#include <utility>
 #include "Util.h"
+#include "BinaryIterator.h"
+
 
 //TranslationEngine structures
 typedef enum NonTerminals
@@ -32,10 +28,12 @@ typedef enum NonTerminals
     FUNC,                     // Basic non-terminals.
     TEST,
     STATEMENT,
-    FOR_LOOP,
+    LOOP,
     WHILE_LOOP,
     COMMENT,
-    DEEPSTATE_NOINLINE,
+    DEEPSTATE_NO_INLINE,
+    DEEPSTATE_INLINE,
+    DEEPSTATE_NO_RETURN,
     NO_TRANSLATE,
     NAMESPACE,
     INCLUDE,
@@ -62,6 +60,22 @@ typedef enum NonTerminals
     CHECK_NE,
     CHECK_EQ,
     CHECK,
+    DEEPSTATE_ASSERT,
+    DEEPSTATE_ASSUME,
+    DEEPSTATE_CHECK,
+    DEEPSTATE_INT,
+    DEEPSTATE_UINT8,
+    DEEPSTATE_UINT16,
+    DEEPSTATE_UINT32,
+    DEEPSTATE_UINT64,
+    DEEPSTATE_FLOAT,
+    DEEPSTATE_DOUBLE,
+    DEEPSTATE_USHORT,
+    DEEPSTATE_UCHAR,
+    DEEPSTATE_CHAR,
+    DEEPSTATE_C_STR,
+    DEEPSTATE_C_STRUPTO,
+    DEEPSTATE_MALLOC,
     SYMBOLIC,
     CLOSE_BRK,
     OPEN_BRK,
@@ -80,7 +94,9 @@ const std::map < std::string, NonTerminals > vitalTranslations =
 
 //Contains all translations not vital to run the program, but can still be used.
 const std::map < std::string, NonTerminals > nonVital =
-        {{"NO_INLINE", DEEPSTATE_NOINLINE},
+        {{"DEEPSTATE_NO_INLINE", DEEPSTATE_NO_INLINE},
+         {"DEEPSTATE_INLINE", DEEPSTATE_INLINE},
+         {"DEEPSTATE_NO_RETURN", DEEPSTATE_NO_RETURN},
          {"MAIN_FUNC", MAIN_FUNC},
          { "ASSERT_GT", ASSERT_GT },
          { "ASSERT_GE", ASSERT_GE },
@@ -109,31 +125,6 @@ const std::map <std::string, std::string> checkCoversion =
         {"NE", "!="},
         {"EQ", "=="}};
 
-class GoogleTestDictionary
-{
-public:
-
-    // Constants
-    const std::string EXPECT_GT = "EXPECT_GT";
-    const std::string EXPECT_LT = "EXPECT_LT";
-    const std::string EXPECT_GE = "EXPECT_GE";
-    const std::string EXPECT_LE = "EXPECT_LE";
-    const std::string EXPECT_EQ = "EXPECT_EQ";
-    const std::string EXPECT_NE = "EXPECT_NE";
-    const std::string EXPECT_TRUE = "EXPECT_TRUE";
-
-    const std::string GT = ">";
-    const std::string LT = "<";
-    const std::string GE = ">=";
-    const std::string LE = "<=";
-    const std::string EQ = "==";
-    const std::string NE = "!=";
-
-    const std::string GTEST_NOINLINE = "GTEST_NO_INLINE_";
-    const std::string GTEST = "TEST";
-
-    std::string decodeNonTerminal( NTerminal nt );
-};
 
 class Node {
 	
@@ -142,6 +133,7 @@ class Node {
     NTerminal type;
     std::string text;
     std::string datatype;
+    std::vector<std::string> list;
 };
 
 
@@ -184,5 +176,98 @@ private:
     bool assignTranslation(std::string translationString, NTerminal currentNTerminal );
 };
 
+class VariablePacket
+{
+    private:
+        std::string name;
+        std::string datatype;
 
+    public:
+        void setVarName( std::string name );
+        void setDatatype( std::string datatype );
+        std::string getName();
+        std::string getDatatype();
+};
+
+class StructPacket
+{
+    private:
+        std::string name;
+        std::vector<VariablePacket> varList;
+
+    public:
+
+        void setName( std::string name );
+        void addParam( VariablePacket &packet );
+        std::string getName();
+        size_t length();
+        VariablePacket getVarAt( int index );
+};
+
+class SymbolicPacket
+{
+    private:
+        uint8_t uint8;
+        uint16_t uint16;
+        uint32_t uint32;
+        uint64_t uint64;
+        int integer;
+        float flt;
+        double dbl;
+        short shrt;
+        long lng;
+        char character;
+        bool boolean;
+        std::string string;
+
+    public:
+        
+        SymbolicPacket();
+        void fetchSymbolic( std::string datatype, BinaryIterator * it );  
+        uint8_t getUInt8();
+        uint16_t getUInt16();
+        uint32_t getUInt32();
+        uint64_t getUInt64();
+        int getInt();
+        float getFloat();
+        double getDouble();
+        short getShort();
+        long getLong();
+        char getChar();
+        bool getBool();
+        std::string getString(); 
+};
+
+        
+class StructHandler 
+{
+    private:
+        std::vector<StructPacket> structList;
+        
+        bool structInList( std::string name );
+        StructPacket getPacket( std::string name );
+        std::vector<std::string> assembleStatement( StructPacket packet, BinaryIterator * it  );
+	
+    
+    public:
+
+        typedef enum StructAssemblyCodes {
+
+            ASSEMBLE = 0,
+            ADD_VAR,
+            CLEAR_CURRENT
+
+
+        } AssemblyCode;
+
+        std::string getStructName( std::string header );
+        std::string getVarName( std::string decl );
+        std::string getTypeName( std::string decl );
+        StructPacket assemblePacket( Node declNode, AssemblyCode command );
+        void lookForSymbolic( std::vector<Node> ast );
+        std::vector<std::string> writeStatementFor( Node declNode, BinaryIterator * it );
+        std::vector<std::string> getStructNames();
+};
+
+    
 #endif //GENTEST_DATASTRUCTURES_H
