@@ -13,7 +13,8 @@ return ASTListener::list;
 // Private functions
 void ASTListener::addToList( NTerminal type, std::string text )
 {
-    if( type == NO_TRANSLATE )
+    if( type == NO_TRANSLATE || type == INCLUDE 
+        || type == STRUCT || type == TYPEDEF )
     {
         // Create a new node.
         Node newNode;
@@ -61,7 +62,7 @@ void ASTListener::enterLine(GenTestParser::LineContext * ctx)
 // Target implementations.
 void ASTListener::enterNoinline(GenTestParser::NoinlineContext * ctx)
 {
-    this->addToList( DEEPSTATE_NOINLINE, ctx->getText() );
+    this->addToList( DEEPSTATE_NO_INLINE, ctx->getText() );
 }
 
 void ASTListener::enterDsinline(GenTestParser::DsinlineContext * ctx)
@@ -188,6 +189,26 @@ void ASTListener::enterDs_check(GenTestParser::Ds_checkContext * ctx)
     this->addToList( DEEPSTATE_CHECK, ctx->getText() );
 }
 
+void ASTListener::enterLoop(GenTestParser::LoopContext * ctx)
+{
+    this->addToList( LOOP, ctx->getText() );
+}
+
+void ASTListener::enterFor_var(GenTestParser::For_varContext * ctx)
+{
+    this->list.at( list.size() - 1 ).list.push_back( ctx->getText() );
+}
+
+void ASTListener::enterFor_run(GenTestParser::For_runContext * ctx)
+{
+    this->list.at( list.size() - 1 ).list.push_back( ctx->getText() );
+} 
+
+void ASTListener::enterFor_inc(GenTestParser::For_incContext * ctx)
+{
+    this->list.at( list.size() - 1 ).list.push_back( ctx->getText() );
+}
+
 void ASTListener::enterDs_int(GenTestParser::Ds_intContext * ctx)
 {
     this->addToList( DEEPSTATE_INT, ctx->getText() );
@@ -256,6 +277,11 @@ void ASTListener::enterTest(GenTestParser::TestContext * ctx)
 void ASTListener::enterSymbolic(GenTestParser::SymbolicContext * ctx)
 {
     this->addToList( SYMBOLIC, ctx->getText() );
+}
+
+void ASTListener::enterDs_char(GenTestParser::Ds_charContext * ctx)
+{
+    this->addToList( DEEPSTATE_CHAR, ctx->getText());
 }
 
 void ASTListener::enterType(GenTestParser::TypeContext * ctx)

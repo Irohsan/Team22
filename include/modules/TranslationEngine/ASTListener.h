@@ -45,6 +45,11 @@ class ASTListener : public GenTestBaseListener
 	  void enterDs_assert(GenTestParser::Ds_assertContext * ctx);
 	  void enterDs_check(GenTestParser::Ds_checkContext * ctx);
 
+	  void enterLoop(GenTestParser::LoopContext * ctx);
+	  void enterFor_var(GenTestParser::For_varContext * ctx);
+	  void enterFor_run(GenTestParser::For_runContext * ctx);
+	  void enterFor_inc(GenTestParser::For_incContext * ctx);
+
 	  void enterDs_int(GenTestParser::Ds_intContext * ctx);
 	  void enterDs_uint8(GenTestParser::Ds_uint8Context * ctx);
 	  void enterDs_uint16(GenTestParser::Ds_uint16Context * ctx);
@@ -54,6 +59,7 @@ class ASTListener : public GenTestBaseListener
 	  void enterDs_double(GenTestParser::Ds_doubleContext * ctx);
 	  void enterDs_ushort(GenTestParser::Ds_ushortContext * ctx);
 	  void enterDs_uchar(GenTestParser::Ds_ucharContext * ctx);
+	  void enterDs_char(GenTestParser::Ds_charContext * ctx);
 	  void enterDs_c_str(GenTestParser::Ds_c_strContext * ctx);
 	  void enterDs_c_struptolen(GenTestParser::Ds_c_struptolenContext * ctx);
 	  void enterDs_malloc(GenTestParser::Ds_mallocContext * ctx);

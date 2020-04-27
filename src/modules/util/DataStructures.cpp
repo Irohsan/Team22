@@ -853,4 +853,3 @@ size_t StructPacket::length()
     return varList.size();
 }
 
-

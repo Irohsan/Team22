@@ -17,9 +17,9 @@
 #ifndef GENTEST_DATASTRUCTURES_H
 #define GENTEST_DATASTRUCTURES_H
 
-
 #include "Util.h"
 #include "BinaryIterator.h"
+
 
 //TranslationEngine structures
 typedef enum NonTerminals
@@ -28,10 +28,10 @@ typedef enum NonTerminals
     FUNC,                     // Basic non-terminals.
     TEST,
     STATEMENT,
-    FOR_LOOP,
+    LOOP,
     WHILE_LOOP,
     COMMENT,
-    DEEPSTATE_NOINLINE,
+    DEEPSTATE_NO_INLINE,
     DEEPSTATE_INLINE,
     DEEPSTATE_NO_RETURN,
     NO_TRANSLATE,
@@ -72,6 +72,7 @@ typedef enum NonTerminals
     DEEPSTATE_DOUBLE,
     DEEPSTATE_USHORT,
     DEEPSTATE_UCHAR,
+    DEEPSTATE_CHAR,
     DEEPSTATE_C_STR,
     DEEPSTATE_C_STRUPTO,
     DEEPSTATE_MALLOC,
@@ -93,7 +94,7 @@ const std::map < std::string, NonTerminals > vitalTranslations =
 
 //Contains all translations not vital to run the program, but can still be used.
 const std::map < std::string, NonTerminals > nonVital =
-        {{"DEEPSTATE_NO_INLINE", DEEPSTATE_NOINLINE},
+        {{"DEEPSTATE_NO_INLINE", DEEPSTATE_NO_INLINE},
          {"DEEPSTATE_INLINE", DEEPSTATE_INLINE},
          {"DEEPSTATE_NO_RETURN", DEEPSTATE_NO_RETURN},
          {"MAIN_FUNC", MAIN_FUNC},
@@ -132,6 +133,7 @@ class Node {
     NTerminal type;
     std::string text;
     std::string datatype;
+    std::vector<std::string> list;
 };
 
 
@@ -266,5 +268,6 @@ class StructHandler
         std::vector<std::string> writeStatementFor( Node declNode, BinaryIterator * it );
         std::vector<std::string> getStructNames();
 };
+
     
 #endif //GENTEST_DATASTRUCTURES_H

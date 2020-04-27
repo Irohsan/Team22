@@ -28,6 +28,21 @@ public:
   virtual void enterTarget(GenTestParser::TargetContext * /*ctx*/) override { }
   virtual void exitTarget(GenTestParser::TargetContext * /*ctx*/) override { }
 
+  virtual void enterComment(GenTestParser::CommentContext * /*ctx*/) override { }
+  virtual void exitComment(GenTestParser::CommentContext * /*ctx*/) override { }
+
+  virtual void enterLoop(GenTestParser::LoopContext * /*ctx*/) override { }
+  virtual void exitLoop(GenTestParser::LoopContext * /*ctx*/) override { }
+
+  virtual void enterFor_var(GenTestParser::For_varContext * /*ctx*/) override { }
+  virtual void exitFor_var(GenTestParser::For_varContext * /*ctx*/) override { }
+
+  virtual void enterFor_run(GenTestParser::For_runContext * /*ctx*/) override { }
+  virtual void exitFor_run(GenTestParser::For_runContext * /*ctx*/) override { }
+
+  virtual void enterFor_inc(GenTestParser::For_incContext * /*ctx*/) override { }
+  virtual void exitFor_inc(GenTestParser::For_incContext * /*ctx*/) override { }
+
   virtual void enterInclude(GenTestParser::IncludeContext * /*ctx*/) override { }
   virtual void exitInclude(GenTestParser::IncludeContext * /*ctx*/) override { }
 

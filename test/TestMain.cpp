@@ -6,6 +6,7 @@
 #include "Util.h"
 #include "DataStructures.h"
 
+
 // BinaryParser Tests
 TEST_CASE( "Test Parser and Iterator", "[binary_parser]" )
 
@@ -84,131 +85,306 @@ TEST_CASE( "Test Parser and Iterator with deepstate values", "[binary_parser]" )
 
 // FileAssembler Tests
 
-TEST_CASE( "Test TranslationDictionary and correct operations", "[file_assembler]")
+
+// TE Constants
+const int TEST_EULER = 0;
+const int TEST_OVERFLOW = 1;
+const int TEST_CRASH = 2;
+const int TEST_ENCRASH = 3;
+const int TEST_PRIMES = 4;
+const int TEST_EULER_MOD = 5;
+
+// TE Support Functions
+std::vector<std::vector<Node>> fetchTestFiles()
 {
-    std::string correctFile = "../test/test_data/gtestTranslation.cfg";
+    // Create vector structrue.
+    static std::vector<std::vector<Node>> test_asts;
+    static int counter = 0;
 
-    std::string incorrectFile = "../test/test_data/gtestTranslationMissingVital.cfg";
-
-    SECTION( "Test correct loading of a file" )
+    if( counter == 0 )
     {
-        TranslationDictionary translate;
 
-        assert( translate.loadFile( correctFile ) );
+        // Test File Paths
+        // Note: If running on new system, please change path of 
+        // test directory to its position on your system.
+        std::string TEST_DIR = "/home/iroh/Documents/CS486/Team22/test/test_data/";
+        std::string eulerTest = TEST_DIR + "Euler.cpp";
+        std::string intOverflowTest = TEST_DIR + "IntegerOverflow.cpp";
+        std::string crashTest = TEST_DIR + "Crash.cpp";
+        std::string ensembledCrashTest = TEST_DIR + "EnsembledCrash.cpp";
+        std::string primesTest = TEST_DIR + "Primes.cpp";
+        std::string eulerModTest = TEST_DIR + "EulerModified.cpp";
+
+        // Declare Translation Engine object.
+        TranslationEngine parser;
+
+        // Fetch parsing results from parser.
+        std::vector<Node> resultEuler = parser.getAST( eulerTest );
+        std::vector<Node> resultIntOverflow = parser.getAST( intOverflowTest );
+        std::vector<Node> resultCrash = parser.getAST( crashTest );
+        std::vector<Node> resultEnCrash = parser.getAST( ensembledCrashTest );
+        std::vector<Node> resultPrimes = parser.getAST( primesTest );
+        std::vector<Node> resultEulerMod = parser.getAST( eulerModTest );
+
+        // Add results
+        test_asts.push_back( resultEuler );
+        test_asts.push_back( resultIntOverflow );
+        test_asts.push_back( resultCrash );
+        test_asts.push_back( resultEnCrash );
+        test_asts.push_back( resultPrimes );
+        test_asts.push_back( resultEulerMod );
+
+        // Increment counter
+        counter++;
     }
 
-    SECTION( "Identify incorrect load of a file" )
-    {
-        TranslationDictionary translate;
-
-        assert( !translate.loadFile( incorrectFile ) );
-    }
-
-    TranslationDictionary translate;
-
-    translate.loadFile(correctFile);
-
-    SECTION( "Test that values can be pulled from the translation dictionary")
-    {
-        auto entry = translate.findTranslationFromNTerminal(ASSUME);
-
-        assert( entry.nTerminal == ASSUME );
-
-        assert( entry.nTerminalVal == "ASSUME");
-
-        //not invalid translation
-        assert( !entry.newEntry );
-
-        //translation has been added
-        assert( entry.translationAdded );
-
-        assert( entry.translateTo == "ASSUME" );
-    }
-
-    SECTION( "Test that invalid translations are identified" )
-    {
-        //invalid translation
-        auto entry = translate.findTranslationFromNTerminal(ASSERT_GT);
-
-        //assert that this entry doesn't exist
-        assert( entry.newEntry );
-    }
+    return test_asts;
 }
 
-TEST_CASE( "Build File Helper Functions", "[file_assembler]")
+
+int getTargetCount( std::vector<Node> resultVector )
 {
-    TranslationDictionary td;
+    int targetCount = 0;
 
-    std::string correctCFGFile = "../test/test_data/gtestTranslation.cfg";
-
-    td.loadFile(correctCFGFile);
-
-    BinaryParser bp;
-
-    std::string binaryFile = "../test/test_data/test.fail";
-
-    bp.parse( binaryFile );
-
-    SECTION("symbolicLine tests")
+    for( int i = 0; i < (int) resultVector.size(); i++ )
     {
-        auto it = bp.getIterator();
-
-        std::string types[] = {"int", "char", "long", "double", "float", "short", "unsigned", "bool"};
-
-        for( auto &&type : types )
+        if( resultVector.at( i ).type != NO_TRANSLATE )
         {
-            auto itCopy = it;
-
-            std::string expected = type + " name = ";
-
-            auto output = symbolicLine( "name", &it, type );
-
-            if( type == "int" )
-            {
-                 expected += std::to_string( itCopy.nextInt() );
-            }
-            else if( type == "char" )
-            {
-                expected += std::to_string( itCopy.nextChar() );
-            }
-            else if( type == "long" )
-            {
-                expected += std::to_string( itCopy.nextLong() );
-            }
-            else if( type == "double" )
-            {
-                expected += std::to_string( itCopy.nextDouble() );
-            }
-            else if( type == "float" )
-            {
-                expected += std::to_string( itCopy.nextFloat() );
-            }
-            else if( type == "short" )
-            {
-                expected += std::to_string( itCopy.nextShort() );
-            }
-            else if( type == "unsigned" )
-            {
-                expected += std::to_string( itCopy.nextUInt() );
-            }
-            else if( type == "bool" )
-            {
-                expected += std::to_string( itCopy.nextBool() );
-            }
-
-            expected += ";";
-
-            assert( expected == output );
-
+            targetCount++;
         }
     }
 
-
-
-
+    return targetCount;
 }
 
+
+int getIncludeCount( std::vector<Node> resultVector )
+{
+    int targetCount = 0;
+
+    for( int i = 0; i < (int) resultVector.size(); i++ )
+    {
+        if( resultVector.at( i ).type == INCLUDE )
+        {
+            targetCount++;
+        }
+    }
+
+    return targetCount;
+}
+
+
+int getTestCount( std::vector<Node> resultVector )
+{
+    int targetCount = 0;
+
+    for( int i = 0; i < (int) resultVector.size(); i++ )
+    {
+        if( resultVector.at( i ).type == TEST )
+        {
+            targetCount++;
+        }
+    }
+
+    return targetCount;
+}
+
+
+int getAssertCount( std::vector<Node> resultVector )
+{
+    int targetCount = 0;
+
+    for( int i = 0; i < (int) resultVector.size(); i++ )
+    {
+        if( resultVector.at( i ).type >= ASSERT_GT &&  
+            resultVector.at( i ).type <= ASSERT )
+        {
+            targetCount++;
+        }
+    }
+
+    return targetCount;
+}
+
+
+int getAssumeCount( std::vector<Node> resultVector )
+{
+    int targetCount = 0;
+
+    for( int i = 0; i < (int) resultVector.size(); i++ )
+    {
+        if( resultVector.at( i ).type >= ASSUME_GT &&  
+            resultVector.at( i ).type <= ASSUME )
+        {
+            targetCount++;
+        }
+    }
+
+    return targetCount;
+}
+
+int getCheckCount( std::vector<Node> resultVector )
+{
+    int targetCount = 0;
+
+    for( int i = 0; i < (int) resultVector.size(); i++ )
+    {
+        if( resultVector.at( i ).type >= CHECK_GT &&  
+            resultVector.at( i ).type <= CHECK )
+        {
+            targetCount++;
+        }
+    }
+
+    return targetCount;
+}
+
+
+int getDeepStateCount( std::vector<Node> resultVector )
+{
+    int targetCount = 0;
+
+    for( int i = 0; i < (int) resultVector.size(); i++ )
+    {
+        if( resultVector.at( i ).type >= DEEPSTATE_ASSERT &&  
+            resultVector.at( i ).type <= DEEPSTATE_MALLOC )
+        {
+            targetCount++;
+        }
+    }
+
+    return targetCount;
+}
+
+
 // TranslationEngine Tests
+TEST_CASE( "Correct Targets Test", "[translation_engine]" )
+{
+    std::vector<std::vector<Node>> tests = fetchTestFiles();
+
+    // Any of the following are considered targets:
+    //   ASSERT/ASSUME/CHECK clauses.
+    //   TEST function declarations.
+    //   Include statements.
+    //   Symbolic statements.
+    //   Calls to DeepState_type or DeepState_Malloc
+    //   For loops
+    //   DEEPSTATE_INLINE, DEEPSTATE_NOINLINE, DEEPSTATE_NORETURN
+    REQUIRE( getTargetCount( tests[ TEST_EULER ] ) == 19 ); 
+    REQUIRE( getTargetCount( tests[ TEST_OVERFLOW ] ) == 10 );
+    REQUIRE( getTargetCount( tests[ TEST_CRASH ] ) == 5 );
+    REQUIRE( getTargetCount( tests[ TEST_ENCRASH ] ) == 9 );
+    REQUIRE( getTargetCount( tests[ TEST_PRIMES ] ) == 20 );
+}
+
+
+TEST_CASE( "All Includes Found", "[translation_engine]" )
+{
+    std::vector<std::vector<Node>> tests = fetchTestFiles();
+
+    // Any of the following are considered targets:
+    //   ASSERT/ASSUME/CHECK clauses.
+    //   TEST function declarations.
+    //   Include statements.
+    //   Symbolic statements.
+    //   Calls to DeepState_type or DeepState_Malloc
+    //   DEEPSTATE_INLINE, DEEPSTATE_NOINLINE, DEEPSTATE_NORETURN
+    REQUIRE( getIncludeCount( tests[ TEST_EULER ] ) == 1 ); 
+    REQUIRE( getIncludeCount( tests[ TEST_OVERFLOW ] ) == 2 );
+    REQUIRE( getIncludeCount( tests[ TEST_CRASH ] ) == 1 );
+    REQUIRE( getIncludeCount( tests[ TEST_ENCRASH ] ) == 1 );
+    REQUIRE( getIncludeCount( tests[ TEST_PRIMES ] ) == 1 );
+}
+
+TEST_CASE( "All Tests Found", "[translation_engine]" )
+{
+    std::vector<std::vector<Node>> tests = fetchTestFiles();
+
+    // Any of the following are considered targets:
+    //   ASSERT/ASSUME/CHECK clauses.
+    //   TEST function declarations.
+    //   Include statements.
+    //   Symbolic statements.
+    //   Calls to DeepState_type or DeepState_Malloc
+    //   DEEPSTATE_INLINE, DEEPSTATE_NOINLINE, DEEPSTATE_NORETURN
+    REQUIRE( getTestCount( tests[ TEST_EULER ] ) == 1 ); 
+    REQUIRE( getTestCount( tests[ TEST_OVERFLOW ] ) == 2 );
+    REQUIRE( getTestCount( tests[ TEST_CRASH ] ) == 1 );
+    REQUIRE( getTestCount( tests[ TEST_ENCRASH ] ) == 1 );
+    REQUIRE( getTestCount( tests[ TEST_PRIMES ] ) == 2 );
+}
+
+TEST_CASE( "All ASSERTS Found", "[translation_engine]" )
+{
+    std::vector<std::vector<Node>> tests = fetchTestFiles();
+
+    // Any of the following are considered targets:
+    //   ASSERT/ASSUME/CHECK clauses.
+    //   TEST function declarations.
+    //   Include statements.
+    //   Symbolic statements.
+    //   Calls to DeepState_type or DeepState_Malloc
+    //   DEEPSTATE_INLINE, DEEPSTATE_NOINLINE, DEEPSTATE_NORETURN
+    REQUIRE( getAssertCount( tests[ TEST_EULER ] ) == 16 ); 
+    REQUIRE( getAssertCount( tests[ TEST_OVERFLOW ] ) == 2 );
+    REQUIRE( getAssertCount( tests[ TEST_CRASH ] ) == 1 );
+    REQUIRE( getAssertCount( tests[ TEST_ENCRASH ] ) == 2 );
+    REQUIRE( getAssertCount( tests[ TEST_PRIMES ] ) == 2 );
+}
+
+TEST_CASE( "All ASSUMES Found", "[translation_engine]" )
+{
+    std::vector<std::vector<Node>> tests = fetchTestFiles();
+
+    // Any of the following are considered targets:
+    //   ASSERT/ASSUME/CHECK clauses.
+    //   TEST function declarations.
+    //   Include statements.
+    //   Symbolic statements.
+    //   Calls to DeepState_type or DeepState_Malloc
+    //   DEEPSTATE_INLINE, DEEPSTATE_NOINLINE, DEEPSTATE_NORETURN
+    REQUIRE( getAssumeCount( tests[ TEST_EULER ] ) == 0 ); 
+    REQUIRE( getAssumeCount( tests[ TEST_OVERFLOW ] ) == 0 );
+    REQUIRE( getAssumeCount( tests[ TEST_CRASH ] ) == 0 );
+    REQUIRE( getAssumeCount( tests[ TEST_ENCRASH ] ) == 0 );
+    REQUIRE( getAssumeCount( tests[ TEST_PRIMES ] ) == 5 );
+}
+
+TEST_CASE( "All Checks Found", "[translation_engine]" )
+{
+    std::vector<std::vector<Node>> tests = fetchTestFiles();
+
+    // Any of the following are considered targets:
+    //   ASSERT/ASSUME/CHECK clauses.
+    //   TEST function declarations.
+    //   Include statements.
+    //   Symbolic statements.
+    //   Calls to DeepState_type or DeepState_Malloc
+    //   DEEPSTATE_INLINE, DEEPSTATE_NOINLINE, DEEPSTATE_NORETURN
+    REQUIRE( getCheckCount( tests[ TEST_EULER ] ) == 0 ); 
+    REQUIRE( getCheckCount( tests[ TEST_OVERFLOW ] ) == 0 );
+    REQUIRE( getCheckCount( tests[ TEST_CRASH ] ) == 0 );
+    REQUIRE( getCheckCount( tests[ TEST_ENCRASH ] ) == 0 );
+    REQUIRE( getCheckCount( tests[ TEST_PRIMES ] ) == 0 );
+}
+
+TEST_CASE( "All DeepState_clause Found", "[translation_engine]" )
+{
+    std::vector<std::vector<Node>> tests = fetchTestFiles();
+
+    // Any of the following are considered targets:
+    //   ASSERT/ASSUME/CHECK clauses.
+    //   TEST function declarations.
+    //   Include statements.
+    //   Symbolic statements.
+    //   Calls to DeepState_type or DeepState_Malloc
+    //   DEEPSTATE_INLINE, DEEPSTATE_NOINLINE, DEEPSTATE_NORETURN
+    REQUIRE( getDeepStateCount( tests[ TEST_EULER ] ) == 0 ); 
+    REQUIRE( getDeepStateCount( tests[ TEST_OVERFLOW ] ) == 0 );
+    REQUIRE( getDeepStateCount( tests[ TEST_CRASH ] ) == 0 );
+    REQUIRE( getDeepStateCount( tests[ TEST_ENCRASH ] ) == 2 );
+    REQUIRE( getDeepStateCount( tests[ TEST_PRIMES ] ) == 7 );
+}
 
 // Util Tests
 

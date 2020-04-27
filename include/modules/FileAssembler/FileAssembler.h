@@ -15,13 +15,15 @@
 **/
 
 #include "DataStructures.h"
-#include "BinaryParser.h"
+#include "LoopHandler.h"
 #include <algorithm>
 
-std::string buildFile( std::vector<Node> transEngineOutput, char * binaryFile,
-        char * outputPath, char * translateCFG );
+std::string buildFile( std::vector<Node> transEngineOutput, std::vector<std::string> binaryFile,
+        const char * outputPath, const char * translateCFG, bool basic_fuzz, bool fuzz_until_fail );
 
-std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, const std::string& type );
+BinaryIterator * getIterator( std::vector<std::string> binaryFiles );
+
+std::string symbolicLine( const std::string& variableName, BinaryIterator * iterator, BinaryController& ctr, ResultPacket packet, const std::string& type, bool fuzzFlag );
 
 std::string deepstateTypeReturn( Node currentNode, std::string currentString, BinaryIterator * it  );
 
@@ -31,7 +33,7 @@ std::string questionTranslation( const TranslationEntry& translation, const std:
 
 int questionClosingParen( const std::string& args );
 
-std::vector<std::string> symbolicValHandle( std::string currentString, BinaryIterator * it, std::string& dataType );
+std::vector<std::string> symbolicValHandle( std::string currentString, SymbolicGenerator generator, std::string &datatype );
 
 std::vector<std::string> questionHandle(TranslationDictionary * translate, NTerminal current, const std::string& currentString );
 
@@ -46,3 +48,6 @@ std::string questionWhichCheck( const std::string& toCheck, const std::string& b
 NTerminal findBaseCase( NTerminal currentCase );
 
 void writeToFile( const std::string& fileLocation, const std::string& fileContents );
+
+std::string getLoopValues( BinaryIterator * iterator, BinaryController& ctr, 
+                                        ResultPacket results, const std::string& type, bool fuzzFlag );

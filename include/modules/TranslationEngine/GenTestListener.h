@@ -26,6 +26,21 @@ public:
   virtual void enterTarget(GenTestParser::TargetContext *ctx) = 0;
   virtual void exitTarget(GenTestParser::TargetContext *ctx) = 0;
 
+  virtual void enterComment(GenTestParser::CommentContext *ctx) = 0;
+  virtual void exitComment(GenTestParser::CommentContext *ctx) = 0;
+
+  virtual void enterLoop(GenTestParser::LoopContext *ctx) = 0;
+  virtual void exitLoop(GenTestParser::LoopContext *ctx) = 0;
+
+  virtual void enterFor_var(GenTestParser::For_varContext *ctx) = 0;
+  virtual void exitFor_var(GenTestParser::For_varContext *ctx) = 0;
+
+  virtual void enterFor_run(GenTestParser::For_runContext *ctx) = 0;
+  virtual void exitFor_run(GenTestParser::For_runContext *ctx) = 0;
+
+  virtual void enterFor_inc(GenTestParser::For_incContext *ctx) = 0;
+  virtual void exitFor_inc(GenTestParser::For_incContext *ctx) = 0;
+
   virtual void enterInclude(GenTestParser::IncludeContext *ctx) = 0;
   virtual void exitInclude(GenTestParser::IncludeContext *ctx) = 0;
 
