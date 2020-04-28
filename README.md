@@ -17,14 +17,27 @@ All team members are also "coders" and are expected to develop GenTest
 The GenTest solution is a light-weight translator program built on ANTLR v4.8 [ANTLR](https://www.antlr.org/). It is designed to take in DeepState [DeepState](https://github.com/trailofbits/deepstate) unit testing file, called the file-to-translate, and translate its syntax to the syntax of an external C or C++ unit testing framework. Currently, only Google Test is supported. If you would like to assist in creating more translation capability for other C or C++ libraries or would like to change the translations in Google Test for your own use, please refer to the Confgiuration File Tutorial
  
 ## Build Instructions
-As of release, this software is integrated with the [DeepState](https://github.com/trailofbits/deepstate) framework. Thus, if you clone this repository directly and try to build the executable, it will fail because it has no reference to the libdeepstate.a static library. **This repository serves to document progress and information about the product.**
+As of release, this software is integrated with the [DeepState](https://github.com/trailofbits/deepstate) framework. Thus, if you clone this repository directly and try to build the executable, it will fail because it has no reference to the libdeepstate.a static library. **This repository serves to document progress and information about the product. You must use the installer script to actually use the software with DeepState after cloning!**
 
-### Cloning this Repository
-1.`git clone https://github.com/Irohsan/Team22`
+### Cloning this Repository into an existing DeepState installation
+1. `Navigate to your /deepstate directory`
 
-2.`cd Team22 && cmake .`
+2.`git clone https://github.com/Irohsan/Team22`
 
-3.`make`
+3.`mv Team22 GenTest`
+
+4.`cd GenTest/install && bash gentest_installer.sh`
+
+### Cloning this Repository into a new installation of DeepState
+1. `git clone https://github.com/trailofbits/deepstate.git`
+
+2. `cd deepstate`
+
+3.`git clone https://github.com/Irohsan/Team22`
+
+4.`mv Team22 GenTest`
+
+5.`cd GenTest/install && bash gentest_installer.sh`
 
 ### Cloning the DeepState Framework with GenTest
 1. `git clone https://github.com/ZwFink/deepstate/`
@@ -32,7 +45,9 @@ As of release, this software is integrated with the [DeepState](https://github.c
 3. `cmake ../`
 4. `make`
 5. `make install`
-6. `cd /examples`
+
+### After Build
+After you have succesfully built the GenTest software, navigate to the `/deepstate/build/examples` directory to get started. This is where you can run the software on unit testing executables using the flags below. 
 
 ## Usage
 There are two routes to using the GenTest solution. The first route is via binary files produced from the DeepState library. The second route is using the --fuzz flag to call the DeepState library directly from the GenTest solution. Please refer to the sections below to see the relevant tutorial for your needs.
@@ -102,11 +117,25 @@ No parethesis are required in the translation statement--these will be produced 
 ## Information about For Loop Support
 At the present, the GenTest solution cannot support while or do while loops. It can, however, support for loops and nested for loops. Please note that in a nested for loop, if the symbolic declarations are of different type, any symbolic declarations after the loop will be populated but might not match DeepState exactly due to limitations.
 
-
-
-
-
-
+## Information on Type Support 
+| Type               | Binary Files | Fuzzing | DeepState_Type() |
+|--------------------|--------------|---------|------------------|
+| int/int32_t        | Yes          | Yes     | Yes              |
+| int8_t             | Yes          | Yes     | No               |
+| int16_t            | Yes          | Yes     | No               |
+| int64_t            | Yes          | Yes     | Yes              |
+| uint8_t            | Yes          | Yes     | No               |
+| uint16_t           | Yes          | Yes     | No               |
+| unsigned/uint32_t  | Yes          | Yes     | Yes              |
+| uint64_t           | Yes          | Yes     | Yes              |
+| short              | Yes          | Yes     | Yes              |
+| long               | Yes          | Yes     | Yes              |
+| double             | Yes          | Yes     | Yes              |
+| float              | Yes          | Yes     | Yes              |
+| char               | Yes          | Yes     | Yes              |
+| unsigned char      | Yes          | Yes     | Yes              |
+| String             | Yes          | No      | Yes              |
+| DeepState_Malloc() | No           | No      | No               |
 
 ## Team Website
 A website has been setup for this project. It can be found at this link:
