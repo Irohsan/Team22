@@ -20,7 +20,7 @@ The GenTest solution is a light-weight translator program built on ANTLR v4.8 [A
 As of release, this software is integrated with the [DeepState](https://github.com/trailofbits/deepstate) framework. Thus, if you clone this repository directly and try to build the executable, it will fail because it has no reference to the libdeepstate.a static library. **This repository serves to document progress and information about the product. You must use the installer script to actually use the software with DeepState after cloning!**
 
 ### Cloning this Repository into an existing DeepState installation
-1. `Navigate to your /deepstate directory`
+1.`Navigate to your /deepstate directory`
 
 2.`git clone https://github.com/Irohsan/Team22`
 
@@ -29,9 +29,9 @@ As of release, this software is integrated with the [DeepState](https://github.c
 4.`cd GenTest/install && bash gentest_installer.sh`
 
 ### Cloning this Repository into a new installation of DeepState
-1. `git clone https://github.com/trailofbits/deepstate.git`
+1.`git clone https://github.com/trailofbits/deepstate.git`
 
-2. `cd deepstate`
+2.`cd deepstate`
 
 3.`git clone https://github.com/Irohsan/Team22`
 
@@ -72,6 +72,9 @@ The above line is a template example of how to run the system after following th
 To use direct fuzzing through the GenTest solution, you can specify the `--fuzz` flag in addition to an optional `--exit_on_fail` flag. The `--fuzz` flag tells the solution to simple-fuzz values for the test cases in the unit test. The `--exit_on_fail` flag is an optional flag specifior which indicates to the software that you want to fuzz each test case until failing values are produced, at which point the solution will econde these failing values into the output file. 
 
 **Please note** that the current GenTest solution only uses a simple-fuzzing approach and cannot use the more advanced fuzzing capabilities of DeepState.
+
+### Where to Find Configuration Files
+`GenTest/Config Files`
 
 ### All Flags and their Use
 #### Required Flags
