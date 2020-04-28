@@ -1,1 +1,0 @@
-/usr/bin/c++  -O2 -g -DNDEBUG   CMakeFiles/GenTest.dir/src/main.cpp.o  -o GenTest libgentest_binaryparser.a libgentest_fileassembler.a libgentest_translationengine.a libgentest_util.a libgentest_binaryparser.a ../build/libdeepstate.a lib/libantlr4-runtime.a 
