@@ -345,17 +345,9 @@ std::string deepstateTypeReturn( Node currentNode, std::string currentString, Bi
     {
         outputStr += std::to_string( it->nextInt() );
     }
-    else if( currentNode.type == DEEPSTATE_UINT8 )
-    {
-        //TODO: Add UInt8 to iterator
-    }
     else if( currentNode.type == DEEPSTATE_UINT16 )
     {
         outputStr += std::to_string( it->nextUInt16() );
-    }
-    else if( currentNode.type == DEEPSTATE_UINT32 )
-    {
-        //TODO: Add UInt32 to iterator
     }
     else if( currentNode.type == DEEPSTATE_UINT64 )
     {
@@ -367,7 +359,7 @@ std::string deepstateTypeReturn( Node currentNode, std::string currentString, Bi
     }
     else if( currentNode.type == DEEPSTATE_USHORT )
     {
-        //TODO: Add UShort to iterator
+        outputStr += std::to_string( it->nextUShort() );
     }
     else if( currentNode.type == DEEPSTATE_UCHAR )
     {
@@ -395,24 +387,46 @@ std::string deepstateTypeReturn( Node currentNode, std::string currentString, Bi
         }
         else
         {
-	    const char * character = secondArg.c_str();
+            const char * character = secondArg.c_str();
             outputStr += "\"" + it->nextString(firstArg, character ) + "\"";
         }
     }
-    else if( currentNode.type == DEEPSTATE_C_STRUPTO )
+    else if( currentNode.type == DEEPSTATE_CHAR )
     {
-        //TODO: Implement this
+        outputStr += "\'" + std::to_string(it->nextChar()) + "\'";
     }
-    else if( currentNode.type == DEEPSTATE_MALLOC )
+    else if( currentNode.type == DEEPSTATE_FLOAT )
     {
-        //TODO: Implement this
+        outputStr += std::to_string(it->nextFloat());
     }
-
+    else if( currentNode.type == DEEPSTATE_INT )
+    {
+        outputStr += std::to_string(it->nextInt64() );
+    }
+    else if( currentNode.type == DEEPSTATE_BOOL )
+    {
+        outputStr += std::to_string(it->nextBool());
+    }
+    else if (currentNode.type == DEEPSTATE_LONG )
+    {
+        outputStr += std::to_string(it->nextLong());
+    }
+    else if (currentNode.type == DEEPSTATE_SHORT )
+    {
+        outputStr += std::to_string(it->nextShort());
+    }
+    else if (currentNode.type == DEEPSTATE_UINT )
+    {
+        outputStr += std::to_string(it->nextUInt());
+    }
+    else if (currentNode.type == DEEPSTATE_INT64 )
+    {
+        outputStr += std::to_string(it->nextInt64());
+    }
     else
     {
         std::cout<<"UNIMPLEMENTED TYPE: " + currentNode.datatype;
     }
-
     return outputStr + ';';
 }
 
