@@ -3,7 +3,7 @@
 # Install Manifests
 DeepState_C_Manifest='48i/* Standalone Output Flags for GenTest software */\nDEFINE_string(input_translation_config, InputOutputGroup, "", "Name of the file containing the translation " \n              "configuration for creating standalone tests."\n             );\nDEFINE_string(output_standalone_test, InputOutputGroup, "", "Name of the file to write standalone test to.");\nDEFINE_string(output_num, InputOutputGroup, "", "The number of standalone output tests to generate. Only works with --fuzz flag." );\nDEFINE_string(input_source_file, InputOutputGroup, "", "Name of source file to create standalone version of.");'
 DeepState_H_Manifest='93iDECLARE_string(output_standalone_test);\nDECLARE_string(input_source_file);\nDECLARE_string(output_num);\nDECLARE_string(input_translation_config);'
-DeepState_H_Manifest_2='/static int DeepState_Run(void) {/ a  if (HAS_FLAG_output_standalone_test) {\n      return DeepStateCreateStandalone( FLAGS_output_standalone_test,\n                                        FLAGS_input_source_file,\n                                        FLAGS_input_test_file,\n                                        FLAGS_input_translation_config,\n					FLAGS_input_test_dir,\n					FLAGS_output_num,\n					FLAGS_fuzz,\n					FLAGS_fuzz && FLAGS_exit_on_fail\n                                      );\n  }'
+DeepState_H_Manifest_2='/static int DeepState_Run(void) {/ a  if (HAS_FLAG_output_standalone_test) {\n      return DeepStateCreateStandalone( FLAGS_output_standalone_test,\n                                        FLAGS_input_source_file,\n                                        FLAGS_input_test_file,\n                                        FLAGS_input_translation_config,\n					FLAGS_input_test_dir,\n					FLAGS_output_num,\n					FLAGS_fuzz,\n					FLAGS_fuzz && FLAGS_exit_on_fail,\n FLAGS_input_which_test                                     );\n  }'
 DeepState_H_Manifest_3='/Stream.h>/ a #include <deepstate/GenTestBridge.h>'
 DeepState_CMake_Manifest_1='143ifile( GLOB gentest_header_files "${CMAKE_SOURCE_DIR}/GenTest/include/modules/*" )\nfile( GLOB gentest_files "${CMAKE_SOURCE_DIR}/GenTest/src/modules/*/*.cpp" )\nfile( GLOB gentest_lib "${CMAKE_SOURCE_DIR}/GenTest/lib/*.a" )'
 DeepState_CMake_Manifest_2='/add_library(${PROJECT_NAME} STATIC/ a src/lib/GenTestBridge.cpp\n  ${gentest_files}\n  ${gentest_lib}'
@@ -47,7 +47,7 @@ echo "Configuration complete."
 echo "Making DeepState...."
 echo "Navigate to: "${current_dir}/../../
 cd ${current_dir}/../../
-mkdir build && cd build
+mkdir -p build && cd build
 cmake ../
 make
 sudo make install
