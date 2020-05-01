@@ -1028,7 +1028,8 @@ static int DeepState_Run(void) {
 					FLAGS_input_test_dir,
 					FLAGS_output_num,
 					FLAGS_fuzz,
-					FLAGS_fuzz && FLAGS_exit_on_fail
+					FLAGS_fuzz && FLAGS_exit_on_fail,
+					FLAGS_input_which_test
                                       );
   }
 
