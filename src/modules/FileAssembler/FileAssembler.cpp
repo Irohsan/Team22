@@ -359,7 +359,7 @@ std::string deepstateTypeReturn( Node currentNode, std::string currentString, Bi
     }
     else if( currentNode.type == DEEPSTATE_USHORT )
     {
-        outputStr += std::to_string( it->nextUShort() );
+        outputStr += std::to_string( (unsigned short) it->nextShort() );
     }
     else if( currentNode.type == DEEPSTATE_UCHAR )
     {
