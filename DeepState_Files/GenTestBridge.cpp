@@ -12,7 +12,8 @@ int DeepStateCreateStandalone( const char *output_filename,
                                const char *input_dir,
                                const char *run_num,
                                const bool standard_fuzz,
-                               const bool fuzz_until_fail
+                               const bool fuzz_until_fail,
+                               const char * test_case
                              )
 {
     // Convert const char to string.
@@ -20,9 +21,11 @@ int DeepStateCreateStandalone( const char *output_filename,
     std::string inputName( input_source_filename );
     std::string outBaseName ( output_filename );
     std::string binaryName( binary_filename );
+    std::string config( translation_config_filename );
     std::string fuzzFlag( std::to_string( standard_fuzz ) );
     std::string untilFail( std::to_string( fuzz_until_fail ) );
     std::string runNum( run_num );
+    std::string test( test_case );
     int runTimes = 1;
     
     // Basic data structures.
@@ -34,6 +37,11 @@ int DeepStateCreateStandalone( const char *output_filename,
     if( runNum.size() != 0 )
     {
         runTimes = stoi( runNum );
+    }
+
+    if( config.size() == 0 )
+    {
+	config = "../../GenTest/test/test_data/gtestTranslation.cfg";
     }
 
     // Initialize all files in provided directory if provided.
@@ -75,8 +83,8 @@ int DeepStateCreateStandalone( const char *output_filename,
         outName = outBaseName;
         outName.insert( outName.find( ".cpp" ), + "_" + std::to_string( i ) );
 
-        buildFile( output, fileList, outName.c_str(), translation_config_filename,
-                   standard_fuzz, fuzz_until_fail );
+        buildFile( output, fileList, outName.c_str(), config.c_str(),
+                   standard_fuzz, fuzz_until_fail, test );
 
     }
 

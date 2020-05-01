@@ -25,7 +25,8 @@ int DeepStateCreateStandalone( const char *output_filename,
 			       const char *input_dir,
                                const char *run_num,
 			       const bool standard_fuzz,
-			       const bool fuzz_until_fail	       
+			       const bool fuzz_until_fail,
+			       const char * test_case	       
                              );
 
 
